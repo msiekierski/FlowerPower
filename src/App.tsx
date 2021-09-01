@@ -1,7 +1,7 @@
 import { Container, createTheme, ThemeProvider } from "@material-ui/core";
-import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+import ContentSwitch from "./components/ContentSwitch/ContentSwitch";
 import NavBar from "./components/NavBar/NavBar";
-import MainPage from "./pages/MainPage/MainPage";
 
 const Theme = createTheme({
   shape: {
@@ -9,19 +9,21 @@ const Theme = createTheme({
   },
   palette: {
     primary: {
-      main: '#FFF'
-    }
-  }
+      main: "#FFF",
+    },
+  },
 });
 
 const App = () => {
   return (
-    <ThemeProvider theme={Theme}>
-      <Container>
-        <NavBar />
-        <MainPage />
-      </Container>
-    </ThemeProvider>
+    <Router>
+      <ThemeProvider theme={Theme}>
+        <Container>
+          <NavBar />
+          <ContentSwitch />
+        </Container>
+      </ThemeProvider>
+    </Router>
   );
 };
 
