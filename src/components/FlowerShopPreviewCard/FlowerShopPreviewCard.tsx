@@ -9,8 +9,10 @@ import React from 'react';
 import Rating from '@material-ui/lab/Rating';
 import LocalShippingTwoToneIcon from '@material-ui/icons/LocalShippingTwoTone';
 
-const useStyle = makeStyles({
+const useStyle = makeStyles((theme) => ({
   container: {
+    minHeight: '17vh',
+    height: '50%',
     display: 'flex',
     columnGap: '5%',
     flex: 1,
@@ -18,6 +20,9 @@ const useStyle = makeStyles({
   shopImage: {
     width: '40%',
     order: 1,
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    borderRadius: 4,
   },
   details: {
     marginLeft: '1rem',
@@ -34,7 +39,7 @@ const useStyle = makeStyles({
     order: 3,
     fontSize: '2.5em',
   },
-});
+}));
 
 export type FlowerShopPreviewCardProps = {
   name: string;
@@ -57,11 +62,10 @@ const FlowerShopPreviewCard = ({
       <CardActionArea>
         <CardContent>
           <div className={classes.container}>
-            <img
+            <div
               className={classes.shopImage}
-              src={imagePath}
-              alt={`${name} flower shop`}
-            />
+              style={{ backgroundImage: `url(${imagePath})` }}
+            ></div>
             <div className={classes.details}>
               <div>
                 <Typography variant="h6">{name}</Typography>
