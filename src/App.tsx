@@ -3,7 +3,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import ContentSwitch from './components/ContentSwitch/ContentSwitch';
 import NavBar from './components/NavBar/NavBar';
 
-
 export const Theme = createTheme({
   shape: {
     borderRadius: 16,
