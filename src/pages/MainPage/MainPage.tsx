@@ -50,7 +50,7 @@ const kwiaciarnie: Array<FlowerShopPreviewCardProps> = [
   },
   {
     name: 'Kwiaciarnia4',
-    address: 'jebacdisa.pl',
+    address: 'randomowyAdres',
     rating: 4.0,
     imagePath:
       'https://www.kreator-kwiatow.pl/sklep/blog/wp-content/uploads/2017/10/IMG_20171005_143816_HDR-1024x768.jpg',

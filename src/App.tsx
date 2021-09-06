@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import ContentSwitch from './components/ContentSwitch/ContentSwitch';
 import NavBar from './components/NavBar/NavBar';
 
-const Theme = createTheme({
+export const Theme = createTheme({
   shape: {
     borderRadius: 16,
   },
@@ -15,7 +15,7 @@ const Theme = createTheme({
   breakpoints: {
     values: {
       xs: 0,
-      sm: 425,
+      sm: 320,
       md: 768,
       lg: 1024,
       xl: 1440,

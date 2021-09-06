@@ -9,13 +9,20 @@ import {
   Popper,
   ClickAwayListener,
   MenuList,
+  Typography,
+  Collapse,
+  Grow,
 } from '@material-ui/core';
 import { ReactComponent as Logo } from '../../resources/icons/logo.svg';
 import SearchIcon from '@material-ui/icons/Search';
 import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 import ShoppingBasketOutlinedIcon from '@material-ui/icons/ShoppingBasketOutlined';
 import MenuIcon from '@material-ui/icons/Menu';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import MobileMenu from '../Menu/Mobile/Menu';
+import { Theme } from '../../App';
+import { useWindowSize } from '../../utils/customHooks/useWindowSize';
+import { categories } from '../../utils/constants/Categories';
 
 const useStyles = makeStyles((theme) => ({
   navigation: {
@@ -64,18 +71,33 @@ const useStyles = makeStyles((theme) => ({
     display: 'none',
   },
   mobileMenu: {
-    display: 'none',
-    position: 'relative',
-    zIndex: 100,
+    display: 'flex',
+    justifyItems: 'center',
     backgroundColor: `${theme.palette.primary.light}`,
-    height: '100vh',
-    width: '100vw',
+    width: 'calc(100% - 12px)',
+    zIndex: 10000,
+    border: '2px solid silver',
+    borderBottomLeftRadius: '10px',
+    borderBottomRightRadius: '10px',
   },
   accountOptions: {
-    width: '100%',
-    columnCount: 2,
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  mobileMenuIcon: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  mobileMenuSplit: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    '& h5': {
+      marginBottom: '10px',
+    },
+    margin: '2px 8px',
   },
   [theme.breakpoints.down(theme.breakpoints.values.sm)]: {
     iconsPanel: {
@@ -109,23 +131,21 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar = () => {
   const classes = useStyles();
-  const [menuPosition, setMenuPosition] = useState<SVGElement | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const navRef = useRef<HTMLDivElement | null>(null);
 
-  const onMenuIconClick = (e: React.MouseEvent<SVGElement>) => {
-    if (menuPosition) {
-      setMenuPosition(null);
+  const [width, height] = useWindowSize();
+
+  useEffect(() => {
+    const { xs, md } = Theme.breakpoints.values;
+    if (width < xs || width > md) {
+      setIsMenuOpen(false);
     }
-    e.preventDefault();
-    setMenuPosition(e.currentTarget);
-  };
-
-  const isMenuOpen = (): boolean => {
-    return menuPosition !== null;
-  };
+  }, [width]);
 
   return (
     <>
-      <AppBar elevation={0}>
+      <AppBar elevation={0} ref={navRef}>
         <Toolbar className={classes.navigation}>
           <Logo className={classes.logo} />
           <div className={classes.search}>
@@ -142,24 +162,62 @@ const NavBar = () => {
             <PersonOutlineOutlinedIcon fontSize="inherit" />
             <ShoppingBasketOutlinedIcon fontSize="inherit" />
           </div>
-          <MenuIcon className={classes.menuIcon} onClick={onMenuIconClick} />
+          <MenuIcon
+            className={classes.menuIcon}
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            fontSize="large"
+          />
         </Toolbar>
       </AppBar>
       <Toolbar />
-      <Popper className={classes.mobileMenu} open={isMenuOpen()}>
-        <ClickAwayListener onClickAway={() => setMenuPosition(null)}>
+      {/* <MobileMenu
+        isMenuOpen={true}
+        closeMenu={() => setIsMenuOpen(true)}
+        navRef={navRef.current}
+      /> */}
+      <Grow in={isMenuOpen}>
+        <Popper
+          className={classes.mobileMenu}
+          open={true}
+          style={{
+            top: `${navRef.current?.offsetHeight}px`,
+            height: `calc(${height}px - ${navRef.current?.offsetHeight}px - 3px)`,
+            margin: '0 4px',
+          }}
+        >
           <MenuList>
             <div className={classes.accountOptions}>
-              <PersonOutlineOutlinedIcon />
-              <ShoppingBasketOutlinedIcon />
+              <MenuItem>
+                <div className={classes.mobileMenuIcon}>
+                  <PersonOutlineOutlinedIcon fontSize="large" />
+                  Profile
+                </div>
+              </MenuItem>
+              <MenuItem>
+                <div className={classes.mobileMenuIcon}>
+                  <ShoppingBasketOutlinedIcon fontSize="large" />
+                  Cart
+                </div>
+              </MenuItem>
             </div>
-            <MenuItem>Item 1</MenuItem>
-            <MenuItem>Item 2</MenuItem>
-            <MenuItem>Item 3</MenuItem>
-            <MenuItem>Item 4</MenuItem>
+            <hr />
+            <div className={classes.mobileMenuSplit}>
+              <div>
+                <Typography variant="h5">Categories</Typography>
+                {categories.slice(0, 6).map((category, index) => {
+                  return <MenuItem key={index}>{category}</MenuItem>;
+                })}
+              </div>
+              <div>
+                <Typography variant="h5">Tools</Typography>
+                {categories.slice(6).map((category, index) => {
+                  return <MenuItem key={index}>{category}</MenuItem>;
+                })}
+              </div>
+            </div>
           </MenuList>
-        </ClickAwayListener>
-      </Popper>
+        </Popper>
+      </Grow>
     </>
   );
 };
