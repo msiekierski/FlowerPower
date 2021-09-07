@@ -18,7 +18,8 @@ const useStyle = makeStyles((theme) => ({
     flex: 1,
   },
   shopImage: {
-    width: '40%',
+    minWidth: '100px',
+    width: '100%',
     order: 1,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
@@ -35,9 +36,25 @@ const useStyle = makeStyles((theme) => ({
   address: {
     marginBottom: '1rem',
   },
+  shippingIconDisabled: {
+    order: 3,
+    fontSize: '1.75em',
+    position: 'relative',
+    '&::after': {
+      position: 'absolute',
+      content: '"/"',
+      color: 'red',
+      fontWeight: 500,
+      fontSize: '2.5em',
+      left: '10.4px',
+      top: '-13.7px',
+      transform: 'rotate(15deg)',
+    },
+  },
   shippingIcon: {
     order: 3,
-    fontSize: '2.5em',
+    fontSize: '1.75em',
+    position: 'relative',
   },
 }));
 
@@ -73,9 +90,21 @@ const FlowerShopPreviewCard = ({
               </div>
               <span className={classes.address}>{address}</span>
             </div>
-            {hasShipping && (
-              <LocalShippingTwoToneIcon className={classes.shippingIcon} />
-            )}
+            <span
+              className={
+                hasShipping
+                  ? classes.shippingIcon
+                  : classes.shippingIconDisabled
+              }
+            >
+              <LocalShippingTwoToneIcon
+                className={
+                  hasShipping
+                    ? classes.shippingIcon
+                    : classes.shippingIconDisabled
+                }
+              />
+            </span>
           </div>
         </CardContent>
       </CardActionArea>
