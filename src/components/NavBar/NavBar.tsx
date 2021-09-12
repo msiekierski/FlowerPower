@@ -4,13 +4,10 @@ import {
   makeStyles,
   Toolbar,
   InputBase,
-  Menu,
   MenuItem,
   Popper,
-  ClickAwayListener,
   MenuList,
   Typography,
-  Collapse,
   Grow,
 } from '@material-ui/core';
 import { ReactComponent as Logo } from '../../resources/icons/logo.svg';
@@ -19,10 +16,10 @@ import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined'
 import ShoppingBasketOutlinedIcon from '@material-ui/icons/ShoppingBasketOutlined';
 import MenuIcon from '@material-ui/icons/Menu';
 import React, { useEffect, useRef, useState } from 'react';
-import MobileMenu from '../Menu/Mobile/Menu';
 import { Theme } from '../../App';
 import { useWindowSize } from '../../utils/customHooks/useWindowSize';
 import { categories } from '../../utils/constants/Categories';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   navigation: {
@@ -147,7 +144,9 @@ const NavBar = () => {
     <>
       <AppBar elevation={0} ref={navRef}>
         <Toolbar className={classes.navigation}>
-          <Logo className={classes.logo} />
+          <Link to="/">
+            <Logo className={classes.logo} />
+          </Link>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -159,8 +158,12 @@ const NavBar = () => {
             />
           </div>
           <div className={classes.iconsPanel}>
-            <PersonOutlineOutlinedIcon fontSize="inherit" />
-            <ShoppingBasketOutlinedIcon fontSize="inherit" />
+            <Link to="/settings">
+              <PersonOutlineOutlinedIcon fontSize="inherit" />
+            </Link>
+            <Link to="/cart">
+              <ShoppingBasketOutlinedIcon fontSize="inherit" />
+            </Link>
           </div>
           <MenuIcon
             className={classes.menuIcon}
@@ -170,11 +173,6 @@ const NavBar = () => {
         </Toolbar>
       </AppBar>
       <Toolbar />
-      {/* <MobileMenu
-        isMenuOpen={true}
-        closeMenu={() => setIsMenuOpen(true)}
-        navRef={navRef.current}
-      /> */}
       <Grow in={isMenuOpen}>
         <Popper
           className={classes.mobileMenu}

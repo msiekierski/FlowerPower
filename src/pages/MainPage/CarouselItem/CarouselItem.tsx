@@ -1,5 +1,5 @@
-import { makeStyles, Paper } from "@material-ui/core";
-import React from "react";
+import { makeStyles, Paper } from '@material-ui/core';
+import React from 'react';
 
 type CarouselItemProps = {
   imageSource: string;
@@ -7,11 +7,11 @@ type CarouselItemProps = {
 
 const useStyles = makeStyles(() => ({
   card: {
-    height: "300px",
-    width: "100%",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center center",
-    backgroundSize: "cover",
+    height: '300px',
+    width: '100%',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center center',
+    backgroundSize: 'cover',
   },
 }));
 
