@@ -18,6 +18,7 @@ const CustomInputField: React.FC<FieldProps & TextFieldProps> = ({
       focused={true}
       error={error}
       helperText={helperText}
+      type={field.name}
       color="secondary"
       {...field}
     />

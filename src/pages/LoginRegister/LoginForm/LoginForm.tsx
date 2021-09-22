@@ -7,7 +7,6 @@ import * as Yup from 'yup';
 const useStyles = makeStyles((theme) => ({
   loginContainer: {
     display: 'flex',
-    marginTop: '20vh',
     flexDirection: 'column',
     alignItems: 'center',
   },
