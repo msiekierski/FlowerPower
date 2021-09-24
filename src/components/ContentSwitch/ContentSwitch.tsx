@@ -20,9 +20,9 @@ const ContentSwitch = () => {
       <Route path="/cart">
         <CartPage />
       </Route>
-      <Route path="/login">
+      <PrivateRoute isAuth={!isAuth} redirectPath={'/'} path="/login">
         <LoginRegister />
-      </Route>
+      </PrivateRoute>
       <Route path="*">
         <div>Error page</div>
       </Route>

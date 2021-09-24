@@ -24,13 +24,16 @@ export const Theme = createTheme({
       xl: 1440,
     },
   },
+  typography: {
+    fontFamily: `"Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace`,
+  },
 });
 
 const App = () => {
   return (
     <Router>
       <ThemeProvider theme={Theme}>
-        <Container>
+        <Container maxWidth="xl">
           <NavBar />
           <ContentSwitch />
         </Container>

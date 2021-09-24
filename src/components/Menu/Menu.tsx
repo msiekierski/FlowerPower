@@ -23,11 +23,7 @@ const Menu = () => {
       {categories.map((category, index) => {
         console.log(category);
         return (
-          <Typography
-            key={index}
-            variant="h6"
-            style={{ fontFamily: ['Balsamiq Sans', 'cursive'].join(',') }}
-          >
+          <Typography key={index} variant="h5" style={{ fontWeight: 'bold' }}>
             {category}
           </Typography>
         );
