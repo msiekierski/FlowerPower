@@ -4,6 +4,11 @@ import { Action } from './user.actions';
 export type User = {
   email: string;
   password: string;
+  name?: string;
+  surname?: string;
+  street?: string;
+  city?: string;
+  zipCode?: string;
 } | null;
 
 const reducer = (state: User = null, action: Action) => {

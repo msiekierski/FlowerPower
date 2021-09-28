@@ -16,11 +16,16 @@ import {
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
     display: 'flex',
+    columnGap: '7%'
   },
   menuContainer: {
+    width: '300px',
     marginTop: theme.spacing(10),
   },
-  contentContainer: {},
+  contentContainer: {
+    width: '100%',
+    marginTop: theme.spacing(6),
+  },
 }));
 
 const SettingsPage = () => {
@@ -45,9 +50,7 @@ const SettingsPage = () => {
       <div className={classes.menuContainer}>
         <SettingsMenu setChosenPage={setChosenPage} chosenPage={chosenPage} />
       </div>
-      <div>
-        {renderSettingsContent()}
-      </div>
+      <div className={classes.contentContainer}>{renderSettingsContent()}</div>
     </div>
   );
 };
