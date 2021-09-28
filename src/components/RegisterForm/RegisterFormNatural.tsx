@@ -30,6 +30,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '20px',
     width: '50%',
   },
+  footerContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 }));
 
 const RegisterFormNatural: React.FC<Props> = ({ onRegisterNaturalSubmit }) => {
@@ -68,13 +73,16 @@ const RegisterFormNatural: React.FC<Props> = ({ onRegisterNaturalSubmit }) => {
             error={errors.passwordRepeat && touched.passwordRepeat}
             helperText={touched.passwordRepeat && errors.passwordRepeat}
           />
-          <Button
-            className={classes.registerButton}
-            variant="contained"
-            type="submit"
-          >
-            Register
-          </Button>
+          <div className={classes.footerContainer}>
+            <Button
+              className={classes.registerButton}
+              variant="contained"
+              type="submit"
+              color="secondary"
+            >
+              Register
+            </Button>
+          </div>
         </Form>
       )}
     </Formik>

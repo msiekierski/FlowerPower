@@ -14,6 +14,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '20px',
     width: '50%',
   },
+  footerContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 }));
 
 interface Values {
@@ -63,13 +68,16 @@ const LoginForm: React.FC<Props> = ({ onLoginSubmit }) => {
                 Forgotten your password?
               </Typography>
             </span>
-            <Button
-              className={classes.logInButton}
-              variant="contained"
-              type="submit"
-            >
-              Log In
-            </Button>
+            <div className={classes.footerContainer}>
+              <Button
+                className={classes.logInButton}
+                variant="contained"
+                type="submit"
+                color="secondary"
+              >
+                Log In
+              </Button>
+            </div>
           </Form>
         )}
       </Formik>

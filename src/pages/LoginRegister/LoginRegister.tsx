@@ -35,19 +35,20 @@ const LoginRegister = () => {
   const { logInUser } = bindActionCreators(actionCreators, dispatch);
 
   return (
-    // <div className={classes.mainContainer}>
-    //   <LoginForm onLoginSubmit={({}) => {}} />
-    //   <RegisterForm />
-    // </div>
-    <Grid container justifyContent="center" className={classes.mainContainer}>
-      <Grid item xs={6}>
+    <Grid
+      container
+      justifyContent="center"
+      className={classes.mainContainer}
+      spacing={6}
+    >
+      <Grid item xs={10} md={4}>
         <LoginForm
           onLoginSubmit={({ email, password }) => {
             logInUser({ email, password });
           }}
         />
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={10} md={4}>
         <RegisterForm />
       </Grid>
     </Grid>

@@ -187,8 +187,10 @@ const NavBar = () => {
             <div className={classes.accountOptions}>
               <MenuItem>
                 <div className={classes.mobileMenuIcon}>
-                  <PersonOutlineOutlinedIcon fontSize="large" />
-                  Profile
+                  <Link to="/settings">
+                    <PersonOutlineOutlinedIcon fontSize="large" />
+                    Profile
+                  </Link>
                 </div>
               </MenuItem>
               <MenuItem>
