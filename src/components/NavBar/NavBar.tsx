@@ -123,6 +123,9 @@ const useStyles = makeStyles((theme) => ({
     mobileMenu: {
       display: 'block',
     },
+    navigation: {
+      margin: 0,
+    }
   },
 }));
 
@@ -186,12 +189,17 @@ const NavBar = () => {
           <MenuList>
             <div className={classes.accountOptions}>
               <MenuItem>
-                <div className={classes.mobileMenuIcon}>
-                  <Link to="/settings">
+                <Link
+                  to="/settings"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  <div className={classes.mobileMenuIcon}>
                     <PersonOutlineOutlinedIcon fontSize="large" />
                     Profile
-                  </Link>
-                </div>
+                  </div>
+                </Link>
               </MenuItem>
               <MenuItem>
                 <div className={classes.mobileMenuIcon}>

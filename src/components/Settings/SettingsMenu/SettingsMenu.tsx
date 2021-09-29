@@ -43,7 +43,7 @@ const SettingsMenu: React.FC<Props> = ({ setChosenPage, chosenPage }) => {
                 style={{
                   fontWeight: `${isChosen ? 'bold' : 'inherit'}`,
                 }}
-                variant="h5"
+                variant="h6"
                 key={index}
               >
                 {settings.name}
@@ -57,7 +57,7 @@ const SettingsMenu: React.FC<Props> = ({ setChosenPage, chosenPage }) => {
         style={{
           color: 'red',
         }}
-        variant="h5"
+        variant="h6"
         className={classes.menuItem}
         onClick={() => logOutUser()}
       >
