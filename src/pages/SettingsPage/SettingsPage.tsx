@@ -1,8 +1,9 @@
 import { makeStyles } from '@material-ui/core';
 import React, { useState } from 'react';
+import { Redirect, useParams } from 'react-router';
 import ChangePassword from '../../components/Settings/Pages/ChangePassword/ChangePassword';
 import EWallet from '../../components/Settings/Pages/E-Wallet/EWallet';
-import OrderHIstory from '../../components/Settings/Pages/OrderHistory/OrderHIstory';
+import OrderHIstory from '../../components/Settings/Pages/OrderHistory/OrderHistory';
 import PersonalData from '../../components/Settings/Pages/PersonalData/PersonalData';
 import SettingsMenu from '../../components/Settings/SettingsMenu/SettingsMenu';
 import {
@@ -12,11 +13,12 @@ import {
   PERSONAL_DATA,
   settingsMenu,
 } from '../../utils/constants/SettingsMenus';
+import ErrorPage from '../ErrorPage/ErrorPage';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
     display: 'flex',
-    columnGap: '7%'
+    columnGap: '7%',
   },
   menuContainer: {
     width: '300px',
@@ -28,8 +30,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+type SettingsPageParams = {
+  option: string;
+};
+
 const SettingsPage = () => {
-  const [chosenPage, setChosenPage] = useState<number>(0);
+  const { option } = useParams<SettingsPageParams>();
+  const [chosenPage, setChosenPage] = useState<number>(
+    settingsMenu.findIndex((menu) => menu.name === option)
+  );
   const classes = useStyles();
 
   const renderSettingsContent = () => {
@@ -44,6 +53,10 @@ const SettingsPage = () => {
         return <ChangePassword />;
     }
   };
+
+  if (chosenPage < 0) {
+    return <ErrorPage />;
+  }
 
   return (
     <div className={classes.mainContainer}>

@@ -6,9 +6,10 @@ import {
   TableCell,
   TableContainer,
   TableRow,
+  TextField,
   Typography,
 } from '@material-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/root-reducer';
 
@@ -37,6 +38,7 @@ export type PersonalDataRow = {
 const PersonalData = () => {
   const classes = useStyles();
   const user = useSelector((state: RootState) => state.user);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const rows: Array<PersonalDataRow> = [
     { title: 'Name', value: 'Jan' },
@@ -53,24 +55,47 @@ const PersonalData = () => {
       </Typography>
       <TableContainer>
         <Table>
-          {rows.map((row) => (
-            <TableRow>
-              <TableCell width="50%">
-                <Typography style={{ fontStyle: 'italic' }}>
-                  {row.title}
-                </Typography>
-              </TableCell>
-              <TableCell width="50%">
+          {rows.map((row, index) => {
+            let valueComponent = null;
+            if (isEditing) {
+              valueComponent = (
+                <TextField
+                  variant="standard"
+                  margin="none"
+                  size="small"
+                  fullWidth
+                  focused={true}
+                  color="secondary"
+                  defaultValue={row.value}
+                />
+              );
+            } else {
+              valueComponent = (
                 <Typography style={{ fontWeight: 'bold' }}>
                   {row.value}
                 </Typography>
-              </TableCell>
-            </TableRow>
-          ))}
+              );
+            }
+            return (
+              <TableRow key={index}>
+                <TableCell width="50%">
+                  <Typography style={{ fontStyle: 'italic' }}>
+                    {row.title}
+                  </Typography>
+                </TableCell>
+                <TableCell width="50%">{valueComponent}</TableCell>
+              </TableRow>
+            );
+          })}
         </Table>
       </TableContainer>
       <div className={classes.tableFooter}>
-        <Button variant="contained" color="secondary" size="large">
+        <Button
+          variant="contained"
+          color="secondary"
+          size="large"
+          onClick={() => setIsEditing(!isEditing)}
+        >
           Edit Data
         </Button>
       </div>

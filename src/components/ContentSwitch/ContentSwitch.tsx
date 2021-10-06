@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import CartPage from '../../pages/CartPage/CartPage';
+import ErrorPage from '../../pages/ErrorPage/ErrorPage';
 import LoginRegister from '../../pages/LoginRegister/LoginRegister';
 import MainPage from '../../pages/MainPage/MainPage';
 import SettingsPage from '../../pages/SettingsPage/SettingsPage';
@@ -14,7 +15,11 @@ const ContentSwitch = () => {
       <Route exact path="/">
         <MainPage />
       </Route>
-      <PrivateRoute isAuth={isAuth} redirectPath={'/login'} path="/settings">
+      <PrivateRoute
+        isAuth={isAuth}
+        redirectPath={'/login'}
+        path="/settings/:option"
+      >
         <SettingsPage />
       </PrivateRoute>
       <Route path="/cart">
@@ -24,7 +29,7 @@ const ContentSwitch = () => {
         <LoginRegister />
       </PrivateRoute>
       <Route path="*">
-        <div>Error page</div>
+        <ErrorPage />
       </Route>
     </Switch>
   );

@@ -20,6 +20,7 @@ import { Theme } from '../../App';
 import { useWindowSize } from '../../utils/customHooks/useWindowSize';
 import { categories } from '../../utils/constants/Categories';
 import { Link } from 'react-router-dom';
+import { PERSONAL_DATA } from '../../utils/constants/SettingsMenus';
 
 const useStyles = makeStyles((theme) => ({
   navigation: {
@@ -125,7 +126,7 @@ const useStyles = makeStyles((theme) => ({
     },
     navigation: {
       margin: 0,
-    }
+    },
   },
 }));
 
@@ -161,7 +162,7 @@ const NavBar = () => {
             />
           </div>
           <div className={classes.iconsPanel}>
-            <Link to="/settings">
+            <Link to={'/settings/' + PERSONAL_DATA}>
               <PersonOutlineOutlinedIcon fontSize="inherit" />
             </Link>
             <Link to="/cart">
@@ -190,7 +191,7 @@ const NavBar = () => {
             <div className={classes.accountOptions}>
               <MenuItem>
                 <Link
-                  to="/settings"
+                  to={'/settings/' + PERSONAL_DATA}
                   onClick={() => {
                     setIsMenuOpen(false);
                   }}
