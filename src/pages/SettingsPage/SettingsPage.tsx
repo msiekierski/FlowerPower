@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Redirect, useParams } from 'react-router';
 import ChangePassword from '../../components/Settings/Pages/ChangePassword/ChangePassword';
 import EWallet from '../../components/Settings/Pages/E-Wallet/EWallet';
-import OrderHIstory from '../../components/Settings/Pages/OrderHistory/OrderHistory';
+import OrderHistory from '../../components/Settings/Pages/OrderHistory/OrderHistory';
 import PersonalData from '../../components/Settings/Pages/PersonalData/PersonalData';
 import SettingsMenu from '../../components/Settings/SettingsMenu/SettingsMenu';
 import {
@@ -46,7 +46,7 @@ const SettingsPage = () => {
       case PERSONAL_DATA:
         return <PersonalData />;
       case ORDER_HISTORY:
-        return <OrderHIstory />;
+        return <OrderHistory />;
       case E_WALLET:
         return <EWallet />;
       case CHANGE_PASSWORD:
