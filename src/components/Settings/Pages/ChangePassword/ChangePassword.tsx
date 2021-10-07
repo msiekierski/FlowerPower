@@ -1,7 +1,8 @@
 import React from 'react';
+import ChangePasswordForm from '../../../ChangePasswordForm/ChangePasswordForm';
 
 const ChangePassword = () => {
-  return <div>Change password</div>;
+  return <ChangePasswordForm onFormSubmit={() => {}}/>;
 };
 
 export default ChangePassword;
