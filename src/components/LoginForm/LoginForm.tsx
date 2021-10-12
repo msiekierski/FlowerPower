@@ -3,16 +3,21 @@ import { Field, Form, Formik, yupToFormErrors } from 'formik';
 import React from 'react';
 import CustomInputField from './CustomInputField';
 import * as Yup from 'yup';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   loginContainer: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    margin: 'auto',
   },
   logInButton: {
-    marginTop: '20px',
-    width: '50%',
+    marginTop: '30px',
+    width: '70%',
+    [theme.breakpoints.down(theme.breakpoints.values.md)]: {
+      width: '100%',
+    },
   },
   footerContainer: {
     display: 'flex',
@@ -48,7 +53,13 @@ const LoginForm: React.FC<Props> = ({ onLoginSubmit }) => {
       >
         {({ errors, touched }) => (
           <Form>
-            <Typography variant="h5">Log In</Typography>
+            <Typography
+              variant="h3"
+              style={{ marginBottom: '20px' }}
+              align="center"
+            >
+              Log In
+            </Typography>
             <Field
               name="email"
               label="Email"
@@ -63,10 +74,16 @@ const LoginForm: React.FC<Props> = ({ onLoginSubmit }) => {
               helperText={touched.password && errors.password}
               component={CustomInputField}
             />
-            <span style={{ marginRight: 'auto' }}>
-              <Typography style={{ color: 'blue' }}>
+            <span style={{ margin: 'auto' }}>
+              <Typography style={{ color: 'blue' }} variant="h6">
                 Forgotten your password?
               </Typography>
+              <Link to="/register">
+                <Typography style={{ color: 'blue' }} variant="h6">
+                  Don't&nbsp;have&nbsp;an&nbsp;account?
+                  Create&nbsp;one&nbsp;now!
+                </Typography>
+              </Link>
             </span>
             <div className={classes.footerContainer}>
               <Button

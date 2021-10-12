@@ -16,6 +16,8 @@ const useStyles = makeStyles((theme) => ({
   registerContainer: {
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'center',
+    margin: 'auto',
   },
 }));
 

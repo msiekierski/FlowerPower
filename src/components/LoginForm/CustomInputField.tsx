@@ -15,7 +15,7 @@ const CustomInputField: React.FC<FieldProps & TextFieldProps> = ({
       required
       fullWidth
       label={label}
-      focused={true}
+      focused={false}
       error={error}
       helperText={helperText}
       type={field.name}

@@ -28,31 +28,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LoginRegister = () => {
+const LoginPage = () => {
   const classes = useStyles();
 
   const dispatch = useDispatch();
   const { logInUser } = bindActionCreators(actionCreators, dispatch);
 
   return (
-    <Grid
-      container
-      justifyContent="center"
-      className={classes.mainContainer}
-      spacing={6}
-    >
-      <Grid item xs={10} md={4}>
-        <LoginForm
-          onLoginSubmit={({ email, password }) => {
-            logInUser({ email, password });
-          }}
-        />
-      </Grid>
-      <Grid item xs={10} md={4}>
-        <RegisterForm />
-      </Grid>
-    </Grid>
+    <div className={classes.mainContainer}>
+      <LoginForm
+        onLoginSubmit={({ email, password }) => {
+          logInUser({ email, password });
+        }}
+      />
+    </div>
   );
 };
 
-export default LoginRegister;
+export default LoginPage;
