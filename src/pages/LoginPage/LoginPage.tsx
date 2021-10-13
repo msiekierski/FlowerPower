@@ -33,7 +33,7 @@ const LoginPage = () => {
     return () => {
       clearLoginData();
     };
-  }, [clearLoginData]);
+  }, []);
 
   return (
     <div className={classes.mainContainer}>
