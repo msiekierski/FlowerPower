@@ -9,11 +9,12 @@ import {
   Typography,
 } from '@material-ui/core';
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../redux/user';
 import LoginForm from '../../components/LoginForm/LoginForm';
 import RegisterForm from '../../components/RegisterForm/RegisterForm';
+import { RootState } from '../../redux/root-reducer';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -33,13 +34,18 @@ const LoginPage = () => {
 
   const dispatch = useDispatch();
   const { logInUser } = bindActionCreators(actionCreators, dispatch);
+  const authState = useSelector((state: RootState) => state.user);
+  console.log(authState);
 
   return (
     <div className={classes.mainContainer}>
       <LoginForm
-        onLoginSubmit={({ email, password }) => {
-          logInUser({ email, password });
+        onLoginSubmit={async ({ email, password }) => {
+          await logInUser({ email, password });
+          console.log(authState.error);
         }}
+        errorMsg={authState.error}
+        isFetching={authState.isLoading}
       />
     </div>
   );

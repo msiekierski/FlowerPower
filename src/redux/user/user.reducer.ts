@@ -11,12 +11,30 @@ export type User = {
   zipCode?: string;
 } | null;
 
-const reducer = (state: User = null, action: Action) => {
-  if (action.type === ActionType.LOGIN) {
-    return action.payload;
+export type Authentication = {
+  isLoading: boolean;
+  error: string;
+  user: User;
+};
+
+const initialState: Authentication = {
+  isLoading: false,
+  error: '',
+  user: null,
+};
+
+const reducer = (
+  state: Authentication = initialState,
+  action: Action
+): Authentication => {
+  if (action.type === ActionType.LOGIN_SUCCESSFUL) {
+    return { ...state, user: action.payload };
   }
   if (action.type === ActionType.LOGOUT) {
-    return null;
+    return { isLoading: false, error: '', user: null };
+  }
+  if (action.type === ActionType.LOGIN_ERROR) {
+    return { ...state, error: action.payload, isLoading: false };
   }
   return state;
 };

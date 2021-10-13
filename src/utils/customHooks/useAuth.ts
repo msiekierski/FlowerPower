@@ -3,5 +3,5 @@ import { RootState } from '../../redux/root-reducer';
 
 export const useAuth = () => {
   const state = useSelector((state: RootState) => state.user);
-  return state ? true : false;
+  return state.user ? true : false;
 };

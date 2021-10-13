@@ -4,6 +4,7 @@ import React from 'react';
 import CustomInputField from './CustomInputField';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
+import { Alert } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
   loginContainer: {
@@ -24,6 +25,11 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  errorMessage: {
+    backgroundColor: 'rgba(255, 0, 0, 0.3)',
+    border: '2px solid red',
+    color: 'inherit',
+  },
 }));
 
 interface Values {
@@ -33,14 +39,20 @@ interface Values {
 
 interface Props {
   onLoginSubmit: (values: Values) => void;
+  errorMsg: string;
+  isFetching: boolean;
 }
 
-const LoginForm: React.FC<Props> = ({ onLoginSubmit }) => {
-  const validationSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Required'),
-    password: Yup.string().required('Required'),
-  });
+const validationSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid email').required('Required'),
+  password: Yup.string().required('Required'),
+});
 
+const LoginForm: React.FC<Props> = ({
+  onLoginSubmit,
+  errorMsg,
+  isFetching,
+}) => {
   const classes = useStyles();
   return (
     <div className={classes.loginContainer}>
@@ -60,6 +72,15 @@ const LoginForm: React.FC<Props> = ({ onLoginSubmit }) => {
             >
               Log In
             </Typography>
+            {errorMsg && (
+              <Alert
+                severity="error"
+                variant="filled"
+                className={classes.errorMessage}
+              >
+                <Typography>{errorMsg}</Typography>
+              </Alert>
+            )}
             <Field
               name="email"
               label="Email"
