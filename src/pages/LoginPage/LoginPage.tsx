@@ -1,19 +1,9 @@
-import {
-  Button,
-  Container,
-  CssBaseline,
-  Grid,
-  makeStyles,
-  Paper,
-  TextField,
-  Typography,
-} from '@material-ui/core';
-import React from 'react';
+import { makeStyles } from '@material-ui/core';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../redux/user';
 import LoginForm from '../../components/LoginForm/LoginForm';
-import RegisterForm from '../../components/RegisterForm/RegisterForm';
 import { RootState } from '../../redux/root-reducer';
 
 const useStyles = makeStyles((theme) => ({
@@ -33,9 +23,17 @@ const LoginPage = () => {
   const classes = useStyles();
 
   const dispatch = useDispatch();
-  const { logInUser } = bindActionCreators(actionCreators, dispatch);
+  const { logInUser, clearLoginData } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
   const authState = useSelector((state: RootState) => state.user);
-  console.log(authState);
+
+  useEffect(() => {
+    return () => {
+      clearLoginData();
+    };
+  }, [clearLoginData]);
 
   return (
     <div className={classes.mainContainer}>

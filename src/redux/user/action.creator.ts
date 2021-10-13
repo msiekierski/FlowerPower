@@ -34,3 +34,9 @@ export const logOutUser = () => {
     });
   };
 };
+
+export const clearLoginData = () => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch({ type: ActionType.CLEAR_LOGIN_DATA });
+  };
+};

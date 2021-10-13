@@ -15,7 +15,12 @@ interface LogOutUserAction {
   type: ActionType.LOGOUT;
 }
 
+interface ClearLoginData {
+  type: ActionType.CLEAR_LOGIN_DATA;
+}
+
 export type Action =
   | LogInUserActionSuccessful
   | LogOutUserAction
-  | LogInUserError;
+  | LogInUserError
+  | ClearLoginData;

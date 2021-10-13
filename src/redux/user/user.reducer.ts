@@ -36,6 +36,9 @@ const reducer = (
   if (action.type === ActionType.LOGIN_ERROR) {
     return { ...state, error: action.payload, isLoading: false };
   }
+  if (action.type === ActionType.CLEAR_LOGIN_DATA) {
+    return {...state, error: ''}
+  }
   return state;
 };
 
