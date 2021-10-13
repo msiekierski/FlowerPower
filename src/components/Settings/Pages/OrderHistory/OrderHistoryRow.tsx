@@ -1,4 +1,4 @@
-import { makeStyles, TableCell, TableRow, Theme } from '@material-ui/core';
+import { makeStyles, TableCell, TableRow } from '@material-ui/core';
 import React, { useState } from 'react';
 import { Order } from '../../../../common/types';
 import OrderDetails from './Details/OrderDetails';

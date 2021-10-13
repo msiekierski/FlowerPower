@@ -7,8 +7,7 @@ import {
   RadioGroup,
   Typography,
 } from '@material-ui/core';
-import { Formik } from 'formik';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import RegisterFormLegal from './RegisterFormLegal';
 import RegisterFormNatural from './RegisterFormNatural';
 
@@ -47,7 +46,7 @@ const RegisterForm = () => {
           />
         </RadioGroup>
         {formType === 'natural' ? (
-          <RegisterFormNatural onRegisterNaturalSubmit={({}) => {}} />
+          <RegisterFormNatural onRegisterNaturalSubmit={() => {}} />
         ) : (
           <RegisterFormLegal />
         )}

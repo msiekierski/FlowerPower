@@ -1,4 +1,4 @@
-import { Container, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import React from 'react';
 import { settingsMenu } from '../../../utils/constants/SettingsMenus';

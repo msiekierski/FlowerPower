@@ -1,7 +1,6 @@
 import {
   Button,
   makeStyles,
-  Paper,
   Table,
   TableCell,
   TableContainer,
@@ -9,9 +8,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/root-reducer';
+import { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -37,7 +34,6 @@ export type PersonalDataRow = {
 
 const PersonalData = () => {
   const classes = useStyles();
-  const user = useSelector((state: RootState) => state.user);
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const rows: Array<PersonalDataRow> = [

@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core';
-import React, { useState } from 'react';
-import { Redirect, useParams } from 'react-router';
+import { useState } from 'react';
+import { useParams } from 'react-router';
 import ChangePassword from '../../components/Settings/Pages/ChangePassword/ChangePassword';
 import EWallet from '../../components/Settings/Pages/E-Wallet/EWallet';
 import OrderHistory from '../../components/Settings/Pages/OrderHistory/OrderHistory';
