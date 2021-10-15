@@ -32,3 +32,11 @@ export enum FlowerColor {
   BLUE = 'BLUE',
   WHITE = 'WHITE',
 }
+
+export type CartProduct = {
+  productImageUrl: string;
+  itemDescription: string;
+  storeName: string;
+  itemPrice: number;
+  quantity: number;
+};
