@@ -1,4 +1,4 @@
-import { makeStyles, TableCell, TableRow } from '@material-ui/core';
+import { makeStyles, TableCell, TableRow, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import { Order } from '../../../../common/types';
 import OrderDetails from './Details/OrderDetails';
@@ -27,14 +27,20 @@ const OrderHistoryRow: React.FC<Props> = ({ order }) => {
   return (
     <>
       <TableRow className={`${isExpanded && classes['expandedRow']}`}>
-        <TableCell>{orderNumber}</TableCell>
-        <TableCell>{date.toDateString()}</TableCell>
-        <TableCell>{status}</TableCell>
+        <TableCell>
+          <Typography>{orderNumber}</Typography>
+        </TableCell>
+        <TableCell>
+          <Typography>{date.toDateString()}</Typography>
+        </TableCell>
+        <TableCell>
+          <Typography>{status}</Typography>
+        </TableCell>
         <TableCell
           onClick={() => setIsExpanded(!isExpanded)}
           className={classes.detailsCell}
         >
-          {isExpanded ? '-' : '+'}
+          <Typography>{isExpanded ? '-' : '+'}</Typography>
         </TableCell>
       </TableRow>
       <TableRow></TableRow>

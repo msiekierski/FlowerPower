@@ -116,11 +116,15 @@ const OrderHistory = () => {
         Order History
       </Typography>
       <TableContainer>
-        <Table size="small">
+        <Table size="medium">
           <TableHead>
             <TableRow>
               {tableColumns.map((columnName, index) => {
-                return <TableCell key={index}>{columnName}</TableCell>;
+                return (
+                  <TableCell key={index}>
+                    <Typography>{columnName}</Typography>
+                  </TableCell>
+                );
               })}
             </TableRow>
           </TableHead>
