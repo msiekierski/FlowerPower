@@ -1,31 +1,19 @@
 import {
-  Button,
   Table,
   TableBody,
   TableCell,
   TableContainer,
-  TableFooter,
   TableHead,
   TableRow,
   Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import React from 'react';
+import { useSelector } from 'react-redux';
 import { CartProduct } from '../../common/types';
 import CartTableRow from './CartTableRow/CartTableRow';
+import { RootState } from '../../redux/root-reducer';
 
 const cartColumns: Array<string> = ['PRODUCT', 'PRICE', 'QTY', 'TOTAL'];
-
-const cartData: Array<CartProduct> = [
-  {
-    productImageUrl:
-      'https://www.trigartflowernursery.com/wp-content/uploads/2020/12/red-rose.jpg',
-    itemDescription: 'Red rose (#000001)',
-    storeName: `Nowak's Flower Shop`,
-    itemPrice: 5.99,
-    quantity: 4,
-  },
-];
 
 const useStyles = makeStyles((theme) => ({
   detailsRow: {
@@ -36,11 +24,14 @@ const useStyles = makeStyles((theme) => ({
       borderBottom: 'none',
     },
   },
-  
 }));
 
 const CartTable = () => {
   const classes = useStyles();
+
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+  
+
   return (
     <TableContainer>
       <Table size="medium">
@@ -59,7 +50,7 @@ const CartTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {cartData.map((orderItem, index) => (
+          {cartItems.map((orderItem, index) => (
             <CartTableRow key={index} cartProduct={orderItem} />
           ))}
         </TableBody>

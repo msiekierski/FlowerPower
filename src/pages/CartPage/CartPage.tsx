@@ -3,6 +3,11 @@ import { IoIosReturnLeft } from 'react-icons/io';
 import { FiTrash } from 'react-icons/fi';
 import React from 'react';
 import CartTable from '../../components/CartTable/CartTable';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/root-reducer';
+import { useHistory } from 'react-router';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../redux/cart';
 
 const useStyles = makeStyles((theme) => ({
   iconItem: {
@@ -10,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     columnGap: '10px',
+    cursor: 'pointer',
   },
   iconLabel: {
     fontSize: '1.5rem',
@@ -42,6 +48,13 @@ const useStyles = makeStyles((theme) => ({
 const CartPage = () => {
   const classes = useStyles();
 
+  const dispatch = useDispatch();
+  const { clearCart } = bindActionCreators(actionCreators, dispatch);
+
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+
+  const history = useHistory();
+
   return (
     <>
       <div className={classes.title}>
@@ -50,28 +63,43 @@ const CartPage = () => {
         </Typography>
       </div>
       <div className={classes.cartButtons}>
-        <div className={classes.iconItem}>
+        <div className={classes.iconItem} onClick={() => history.goBack()}>
           <IoIosReturnLeft style={{ fontSize: '2rem' }} />
           <Typography className={classes.iconLabel}>RETURN</Typography>
         </div>
-        <div className={classes.iconItem}>
-          <Typography className={classes.iconLabel}>CLEAR CART</Typography>
-          <FiTrash style={{ fontSize: '1.7rem' }} />
-        </div>
+        {cartItems.length > 0 && (
+          <div className={classes.iconItem} onClick={() => clearCart()}>
+            <Typography className={classes.iconLabel}>CLEAR CART</Typography>
+            <FiTrash style={{ fontSize: '1.7rem' }} />
+          </div>
+        )}
       </div>
-      <CartTable />
-      <div className={classes.cartFooter}>
-        <Typography variant="h5" align="right">
-          <b>IN TOTAL: </b> 23,96 PLN
+      {cartItems.length ? (
+        <>
+          <CartTable />
+          <div className={classes.cartFooter}>
+            <Typography variant="h5" align="right">
+              <b>IN TOTAL: </b>{' '}
+              {cartItems
+                .map((item) => item.itemPrice * item.quantity)
+                .reduce((sum, item) => sum + item)
+                .toFixed(2)}{' '}
+              PLN
+            </Typography>
+            <Button
+              color="secondary"
+              variant="contained"
+              className={classes.orderButton}
+            >
+              <Typography>PAY AND ORDER</Typography>
+            </Button>
+          </div>
+        </>
+      ) : (
+        <Typography variant="h3" align="center" style={{ marginTop: '20vh' }}>
+          YOUR&nbsp;CART IS&nbsp;EMPTY
         </Typography>
-        <Button
-          color="secondary"
-          variant="contained"
-          className={classes.orderButton}
-        >
-          <Typography>PAY AND ORDER</Typography>
-        </Button>
-      </div>
+      )}
     </>
   );
 };

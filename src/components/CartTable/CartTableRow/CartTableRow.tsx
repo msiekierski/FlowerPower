@@ -4,6 +4,9 @@ import React from 'react';
 import { CartProduct } from '../../../common/types';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { ImCross } from 'react-icons/im';
+import { useDispatch } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../../redux/cart';
 
 type Props = {
   cartProduct: CartProduct;
@@ -11,7 +14,7 @@ type Props = {
 
 const useStyles = makeStyles((theme) => ({
   actionText: {
-    cursor: 'ponter',
+    cursor: 'pointer',
   },
   articleDescription: {
     display: 'flex',
@@ -37,35 +40,61 @@ const useStyles = makeStyles((theme) => ({
 
 const CartTableRow: React.FC<Props> = ({ cartProduct }) => {
   const classes = useStyles();
+  const {
+    productImageUrl,
+    itemDescription,
+    storeName,
+    quantity,
+    itemPrice,
+    productId,
+  } = cartProduct;
+
+  const dispatch = useDispatch();
+  const { removeItem, increaseQuantity, decreaseQuanitity } =
+    bindActionCreators(actionCreators, dispatch);
 
   return (
     <TableRow>
       <TableCell>
         <div className={classes.articleDescription}>
-          <img src={cartProduct.productImageUrl} alt="cart item" />
+          <img src={productImageUrl} alt="cart item" />
           <div>
-            <Typography>{cartProduct.itemDescription}</Typography>
-            <Typography>from {cartProduct.storeName}</Typography>
+            <Typography>{itemDescription}</Typography>
+            <Typography>from {storeName}</Typography>
           </div>
         </div>
       </TableCell>
       <TableCell align="center">
-        <Typography variant="h5">{cartProduct.itemPrice} PLN</Typography>
+        <Typography variant="h5">{itemPrice} PLN</Typography>
       </TableCell>
       <TableCell align="center">
         <div className={classes.quantity}>
-          <AiOutlineMinus size={25} style={{ padding: '10px' }} />
-          <Typography variant="h4">{cartProduct.quantity}</Typography>
-          <AiOutlinePlus size={25} style={{ padding: '10px' }} />
+          <div
+            className={classes.actionText}
+            onClick={() => decreaseQuanitity(productId)}
+          >
+            <AiOutlineMinus size={25} style={{ padding: '10px' }} />
+          </div>
+          <Typography variant="h4">{quantity}</Typography>
+          <div
+            className={classes.actionText}
+            onClick={() => increaseQuantity(productId)}
+          >
+            <AiOutlinePlus size={25} style={{ padding: '10px' }} />
+          </div>
         </div>
       </TableCell>
       <TableCell align="center">
         <Typography variant="h5">
-          {cartProduct.itemPrice * cartProduct.quantity} PLN
+          {(itemPrice * quantity).toFixed(2)} PLN
         </Typography>
       </TableCell>
       <TableCell>
-        <ImCross style={{ color: 'rgba(204, 77, 3, 0.9)' }} size={25} />
+        <ImCross
+          style={{ color: 'rgba(204, 77, 3, 0.9)' }}
+          size={25}
+          onClick={() => removeItem(productId)}
+        />
       </TableCell>
     </TableRow>
   );

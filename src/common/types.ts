@@ -34,9 +34,15 @@ export enum FlowerColor {
 }
 
 export type CartProduct = {
+  productId: string;
   productImageUrl: string;
   itemDescription: string;
   storeName: string;
   itemPrice: number;
   quantity: number;
+};
+
+export type CartTotals = {
+  total: number;
+  amount: number;
 };
