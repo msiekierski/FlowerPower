@@ -1,7 +1,6 @@
-import { Button, ListItem, makeStyles, Typography } from '@material-ui/core';
+import { Button, makeStyles, Typography } from '@material-ui/core';
 import { IoIosReturnLeft } from 'react-icons/io';
 import { FiTrash } from 'react-icons/fi';
-import React from 'react';
 import CartTable from '../../components/CartTable/CartTable';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root-reducer';

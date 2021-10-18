@@ -1,5 +1,4 @@
 import { Dispatch } from 'react';
-import { CartTotals } from '../../common/types';
 import { ActionType } from './action.types';
 import { Action } from './cart.actions';
 

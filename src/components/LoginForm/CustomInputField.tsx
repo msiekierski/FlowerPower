@@ -7,20 +7,22 @@ const CustomInputField: React.FC<FieldProps & TextFieldProps> = ({
   field,
   error,
   helperText,
+  required,
+  type,
 }) => {
   return (
     <TextField
       variant="outlined"
       margin="normal"
-      required
       fullWidth
       label={label}
       focused={false}
       error={error}
       helperText={helperText}
-      type={field.name}
       color="secondary"
       {...field}
+      required={required}
+      type={type}
     />
   );
 };

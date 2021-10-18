@@ -91,6 +91,7 @@ const LoginForm: React.FC<Props> = ({
             <Field
               name="password"
               label="Password"
+              type="password"
               error={errors.password && touched.password}
               helperText={touched.password && errors.password}
               component={CustomInputField}
