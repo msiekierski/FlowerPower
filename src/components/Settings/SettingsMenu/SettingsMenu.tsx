@@ -34,7 +34,7 @@ const SettingsMenu: React.FC<Props> = ({ setChosenPage, chosenPage }) => {
       {settingsMenu.map((settings, index) => {
         const isChosen = index === chosenPage;
         return (
-          <Link to={`/settings/${settings.name}`}>
+          <Link to={`/settings/${settings.name}`} replace={true}>
             <div
               className={classes.menuItem}
               onClick={() => setChosenPage(index)}

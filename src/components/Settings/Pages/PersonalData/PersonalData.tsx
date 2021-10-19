@@ -46,9 +46,6 @@ const PersonalData = () => {
 
   return (
     <>
-      <Typography className={classes.title} variant="h4">
-        Personal Data
-      </Typography>
       <TableContainer>
         <Table>
           {rows.map((row, index) => {

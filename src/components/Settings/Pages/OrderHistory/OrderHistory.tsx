@@ -112,9 +112,6 @@ const OrderHistory = () => {
   const classes = useStyles();
   return (
     <>
-      <Typography className={classes.title} variant="h4">
-        Order History
-      </Typography>
       <TableContainer>
         <Table size="medium">
           <TableHead>

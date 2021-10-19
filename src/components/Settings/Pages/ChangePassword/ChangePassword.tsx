@@ -13,7 +13,6 @@ const ChangePassword = () => {
   const classes = useStyles()
   return (
     <>
-      <Typography variant="h4" className={classes.title}>Change Password</Typography>
       <ChangePasswordForm onFormSubmit={() => {}} />;
     </>
   );
