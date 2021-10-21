@@ -10,10 +10,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChangePassword = () => {
-  const classes = useStyles()
+  const classes = useStyles();
   return (
     <>
-      <ChangePasswordForm onFormSubmit={() => {}} />;
+      <ChangePasswordForm onFormSubmit={() => {}} />
     </>
   );
 };

@@ -119,7 +119,9 @@ const OrderHistory = () => {
               {tableColumns.map((columnName, index) => {
                 return (
                   <TableCell key={index}>
-                    <Typography>{columnName}</Typography>
+                    <Typography style={{ fontWeight: 'bold' }}>
+                      {columnName}
+                    </Typography>
                   </TableCell>
                 );
               })}

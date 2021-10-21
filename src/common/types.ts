@@ -46,3 +46,4 @@ export type CartTotals = {
   total: number;
   amount: number;
 };
+

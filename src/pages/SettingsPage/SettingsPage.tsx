@@ -16,6 +16,7 @@ import {
 import ErrorPage from '../ErrorPage/ErrorPage';
 import { IoIosReturnLeft } from 'react-icons/io';
 
+
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
     display: 'flex',
@@ -28,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
     width: '300px',
     marginTop: theme.spacing(10),
     [theme.breakpoints.down(theme.breakpoints.values.md)]: {
+      width: '100%',
       marginTop: theme.spacing(3),
     },
   },
@@ -108,7 +110,7 @@ const SettingsPage = () => {
             className={classes.iconItem}
             onClick={() => moveBackFromSettings()}
           >
-            <IoIosReturnLeft style={{ fontSize: '2rem' }} />
+            <IoIosReturnLeft style={{ fontSize: '2rem' }}/>
             <Typography className={classes.iconLabel}>RETURN</Typography>
           </div>
         </div>

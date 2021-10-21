@@ -40,7 +40,6 @@ const LoginPage = () => {
       <LoginForm
         onLoginSubmit={async ({ email, password }) => {
           await logInUser({ email, password });
-          console.log(authState.error);
         }}
         errorMsg={authState.error}
         isFetching={authState.isLoading}

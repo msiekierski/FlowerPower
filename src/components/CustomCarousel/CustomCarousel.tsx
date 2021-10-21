@@ -51,7 +51,6 @@ const CustomCarousel: React.FC<Props> = ({ carouselComponents }) => {
   const classes = useStyles();
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const carouselRef = useRef<HTMLDivElement | null>(null);
-  console.log(carouselRef.current?.offsetWidth);
   const scroll = (scrollOffset: number) => {
     if (carouselRef && carouselRef.current) {
       carouselRef.current.scrollLeft += scrollOffset;

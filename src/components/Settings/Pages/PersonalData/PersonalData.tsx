@@ -2,6 +2,7 @@ import {
   Button,
   makeStyles,
   Table,
+  TableBody,
   TableCell,
   TableContainer,
   TableRow,
@@ -23,6 +24,14 @@ const useStyles = makeStyles((theme) => ({
       '& .MuiButton-root': {
         width: '100%',
       },
+    },
+  },
+  submitButton: {
+    whiteSpace: 'nowrap',
+    textAlign: 'center',
+    width: '25%',
+    [theme.breakpoints.down(theme.breakpoints.values.md)]: {
+      width: '100%',
     },
   },
 }));
@@ -48,38 +57,40 @@ const PersonalData = () => {
     <>
       <TableContainer>
         <Table>
-          {rows.map((row, index) => {
-            let valueComponent = null;
-            if (isEditing) {
-              valueComponent = (
-                <TextField
-                  variant="standard"
-                  margin="none"
-                  size="small"
-                  fullWidth
-                  focused={true}
-                  color="secondary"
-                  defaultValue={row.value}
-                />
-              );
-            } else {
-              valueComponent = (
-                <Typography style={{ fontWeight: 'bold' }}>
-                  {row.value}
-                </Typography>
-              );
-            }
-            return (
-              <TableRow key={index}>
-                <TableCell width="50%">
-                  <Typography style={{ fontStyle: 'italic' }}>
-                    {row.title}
+          <TableBody>
+            {rows.map((row, index) => {
+              let valueComponent = null;
+              if (isEditing) {
+                valueComponent = (
+                  <TextField
+                    variant="standard"
+                    margin="none"
+                    size="small"
+                    fullWidth
+                    focused={true}
+                    color="secondary"
+                    defaultValue={row.value}
+                  />
+                );
+              } else {
+                valueComponent = (
+                  <Typography style={{ fontWeight: 'bold' }}>
+                    {row.value}
                   </Typography>
-                </TableCell>
-                <TableCell width="50%">{valueComponent}</TableCell>
-              </TableRow>
-            );
-          })}
+                );
+              }
+              return (
+                <TableRow key={index}>
+                  <TableCell width="50%">
+                    <Typography style={{ fontStyle: 'italic' }}>
+                      {row.title}
+                    </Typography>
+                  </TableCell>
+                  <TableCell width="50%">{valueComponent}</TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
         </Table>
       </TableContainer>
       <div className={classes.tableFooter}>
@@ -88,8 +99,9 @@ const PersonalData = () => {
           color="secondary"
           size="large"
           onClick={() => setIsEditing(!isEditing)}
+          className={classes.submitButton}
         >
-          Edit Data
+          {isEditing ? 'Save' : 'Edit Data'}
         </Button>
       </div>
     </>

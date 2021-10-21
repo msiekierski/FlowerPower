@@ -44,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
       borderBottom: 'none',
     },
   },
+  details: {
+    minWidth: '550px',
+  },
 }));
 
 const detailsColumns: Array<String> = [
@@ -62,11 +65,11 @@ const OrderDetails: React.FC<Props> = ({ orderedItems }) => {
 
   return (
     <>
-      <Table>
+      <Table className={classes.details}>
         <TableHead>
           <TableRow className={classes.detailsRow}>
             {detailsColumns.map((name, index) => (
-              <TableCell align="center" key={index}>
+              <TableCell align="center" key={index} variant="head">
                 {name}
               </TableCell>
             ))}
