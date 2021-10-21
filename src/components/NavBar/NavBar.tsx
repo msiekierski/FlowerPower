@@ -45,6 +45,9 @@ const useStyles = (props: StyleProps) =>
         backgroundColor: alpha(theme.palette.common.white, 0.25),
       },
       width: '50%',
+      [theme.breakpoints.down(450)]: {
+        maxWidth: props.isSearchFocused ? 'inherit' : '50%',
+      },
       border: '2.5px solid',
       transition: theme.transitions.create(['all'], {
         duration: theme.transitions.duration.enteringScreen,
@@ -113,7 +116,7 @@ const useStyles = (props: StyleProps) =>
         display: 'none',
       },
       navigation: {
-        justifyContent: 'space-around',
+        justifyContent: 'space-between',
       },
       logo: {
         display: 'none',
@@ -145,6 +148,13 @@ const useStyles = (props: StyleProps) =>
         margin: 0,
       },
     },
+    appBar: {
+      [theme.breakpoints.down(500)]: {
+        '& .MuiToolbar-root': {
+          padding: '0 5px',
+        },
+      },
+    },
   }));
 
 const NavBar = () => {
@@ -168,10 +178,10 @@ const NavBar = () => {
 
   return (
     <>
-      <AppBar elevation={0} ref={navRef}>
+      <AppBar elevation={0} ref={navRef} className={classes.appBar}>
         <Toolbar className={classes.navigation}>
           <Link to="/" className={classes.logo}>
-            <Logo />
+            <Logo style={{ maxWidth: '30vw' }} />
           </Link>
           <div className={classes.search}>
             <div className={classes.searchIcon}>

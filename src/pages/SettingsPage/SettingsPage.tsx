@@ -20,10 +20,16 @@ const useStyles = makeStyles((theme) => ({
   mainContainer: {
     display: 'flex',
     columnGap: '7%',
+    [theme.breakpoints.down(theme.breakpoints.values.md)]: {
+      flexDirection: 'column',
+    },
   },
   menuContainer: {
     width: '300px',
     marginTop: theme.spacing(10),
+    [theme.breakpoints.down(theme.breakpoints.values.md)]: {
+      marginTop: theme.spacing(3),
+    },
   },
   contentContainer: {
     width: '100%',
