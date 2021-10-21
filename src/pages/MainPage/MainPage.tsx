@@ -1,26 +1,47 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Typography } from '@material-ui/core';
 import Carousel from 'react-material-ui-carousel';
 import FlowerShopPreviewCard, {
   FlowerShopPreviewCardProps,
 } from '../../components/FlowerShopPreviewCard/FlowerShopPreviewCard';
 import Menu from '../../components/Menu/Menu';
 import CarouselItem from './CarouselItem/CarouselItem';
+import { BsArrowRightSquare, BsArrowLeftSquare } from 'react-icons/bs';
+import CustomCarousel from '../../components/CustomCarousel/CustomCarousel';
 
 const useStyles = makeStyles((theme) => ({
   carouselContainer: {
     marginTop: '3%',
   },
   flowerShopsContainer: {
-    marginTop: '2.5%',
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gridRowGap: '1rem',
-    gridColumnGap: '1rem',
+    display: 'flex',
+    overflowX: 'auto',
   },
   [theme.breakpoints.down(theme.breakpoints.values.md)]: {
     flowerShopsContainer: {
-      gridTemplateColumns: '1fr',
+      display: 'flex',
+      overflowX: 'auto',
+      '&::-webkit-scrollbar': {
+        display: 'none',
+      },
+      '-ms-overflow-style': 'none' /* IE and Edge */,
+      'scrollbar-width': 'none' /* Firefox */,
     },
+  },
+  promotedStores: {
+    marginTop: '20px',
+    position: 'relative',
+  },
+  leftScrollIcon: {
+    fontSize: '3rem',
+    zIndex: 1000,
+    position: 'absolute',
+    left: '5%',
+    top: '50%',
+    opacity: '0.5',
+  },
+  rightScrollIcon: {
+    position: 'absolute',
+    right: '5%',
   },
 }));
 
@@ -56,6 +77,54 @@ const kwiaciarnie: Array<FlowerShopPreviewCardProps> = [
       'https://www.kreator-kwiatow.pl/sklep/blog/wp-content/uploads/2017/10/IMG_20171005_143816_HDR-1024x768.jpg',
     hasShipping: true,
   },
+  {
+    name: 'Kwiaciarnia5',
+    address: 'randomowyAdres',
+    rating: 4.0,
+    imagePath:
+      'https://www.kreator-kwiatow.pl/sklep/blog/wp-content/uploads/2017/10/IMG_20171005_143816_HDR-1024x768.jpg',
+    hasShipping: true,
+  },
+  {
+    name: 'Kwiaciarnia6',
+    address: 'randomowyAdres',
+    rating: 4.0,
+    imagePath:
+      'https://www.kreator-kwiatow.pl/sklep/blog/wp-content/uploads/2017/10/IMG_20171005_143816_HDR-1024x768.jpg',
+    hasShipping: true,
+  },
+  {
+    name: 'Kwiaciarnia7',
+    address: 'randomowyAdres',
+    rating: 4.0,
+    imagePath:
+      'https://www.kreator-kwiatow.pl/sklep/blog/wp-content/uploads/2017/10/IMG_20171005_143816_HDR-1024x768.jpg',
+    hasShipping: true,
+  },
+  {
+    name: 'Kwiaciarnia8',
+    address: 'randomowyAdres',
+    rating: 4.0,
+    imagePath:
+      'https://www.kreator-kwiatow.pl/sklep/blog/wp-content/uploads/2017/10/IMG_20171005_143816_HDR-1024x768.jpg',
+    hasShipping: true,
+  },
+  {
+    name: 'Kwiaciarnia9',
+    address: 'randomowyAdres',
+    rating: 4.0,
+    imagePath:
+      'https://www.kreator-kwiatow.pl/sklep/blog/wp-content/uploads/2017/10/IMG_20171005_143816_HDR-1024x768.jpg',
+    hasShipping: true,
+  },
+  {
+    name: 'Kwiaciarnia10',
+    address: 'randomowyAdres',
+    rating: 4.0,
+    imagePath:
+      'https://www.kreator-kwiatow.pl/sklep/blog/wp-content/uploads/2017/10/IMG_20171005_143816_HDR-1024x768.jpg',
+    hasShipping: true,
+  },
 ];
 
 const MainPage = () => {
@@ -73,10 +142,19 @@ const MainPage = () => {
           ))}
         </Carousel>
       </div>
-      <div className={classes.flowerShopsContainer}>
-        {kwiaciarnie.map((kwiaciarnia, index) => {
-          return <FlowerShopPreviewCard key={index} {...kwiaciarnia} />;
-        })}
+      <div className={classes.promotedStores}>
+        <Typography
+          variant="h5"
+          noWrap
+          style={{ fontWeight: 'bold', textDecoration: 'underline' }}
+        >
+          Recommended Florists'
+        </Typography>
+        <CustomCarousel
+          carouselComponents={kwiaciarnie.map((store, index) => (
+            <FlowerShopPreviewCard key={index} {...store} />
+          ))}
+        />
       </div>
     </>
   );

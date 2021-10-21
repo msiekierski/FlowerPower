@@ -10,15 +10,25 @@ import Rating from '@material-ui/lab/Rating';
 import LocalShippingTwoToneIcon from '@material-ui/icons/LocalShippingTwoTone';
 
 const useStyle = makeStyles((theme) => ({
+  card: {
+    minWidth: '220px',
+  },
   container: {
     minHeight: '17vh',
     height: '50%',
     display: 'flex',
     columnGap: '5%',
     flex: 1,
+    padding: '5px',
+    flexDirection: 'column',
+    minWidth: '100%',
+    rowGap: '10%',
+    justifyContent: 'center',
+    alignItems: 'left',
   },
   shopImage: {
     minWidth: '100px',
+    minHeight: '100px',
     width: '100%',
     order: 1,
     backgroundRepeat: 'no-repeat',
@@ -26,12 +36,13 @@ const useStyle = makeStyles((theme) => ({
     borderRadius: 4,
   },
   details: {
-    marginLeft: '1rem',
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
     order: 2,
     justifyContent: 'space-between',
+    margin: 0,
+    marginTop: '5px',
   },
   address: {
     marginBottom: '1rem',
@@ -56,6 +67,10 @@ const useStyle = makeStyles((theme) => ({
     fontSize: '1.75em',
     position: 'relative',
   },
+  rating: {
+    display: 'flex',
+    columnGap: '1px',
+  },
 }));
 
 export type FlowerShopPreviewCardProps = {
@@ -66,7 +81,7 @@ export type FlowerShopPreviewCardProps = {
   hasShipping: boolean;
 };
 
-const FlowerShopPreviewCard = ({
+const FlowerShopPreviewCard: React.FC<FlowerShopPreviewCardProps> = ({
   name,
   address,
   rating,
@@ -75,7 +90,7 @@ const FlowerShopPreviewCard = ({
 }: FlowerShopPreviewCardProps) => {
   const classes = useStyle();
   return (
-    <Card>
+    <Card className={classes.card}>
       <CardActionArea>
         <CardContent>
           <div className={classes.container}>
@@ -86,7 +101,10 @@ const FlowerShopPreviewCard = ({
             <div className={classes.details}>
               <div>
                 <Typography variant="h6">{name}</Typography>
-                <Rating value={rating} readOnly precision={0.5} />
+                <div className={classes.rating}>
+                  <Rating value={rating} readOnly precision={0.5} />
+                  <Typography>(500)</Typography>
+                </div>
               </div>
               <span className={classes.address}>{address}</span>
             </div>
