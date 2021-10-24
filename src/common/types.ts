@@ -47,3 +47,38 @@ export type CartTotals = {
   amount: number;
 };
 
+export type Review = {
+  author: string;
+  text: string;
+  rating: number;
+  date: string;
+};
+
+export enum ProductCategory {
+  FLOWER = 'Flowers',
+  BUNCH = 'Bunch',
+  FLOWERS_IN_VASE = 'Flowers in vase',
+  FLOWERS_IN_BOX = 'Flowers in box',
+  POT = 'Pot',
+  SEED = 'Seed',
+  CARD = 'Card',
+  ORNAMENT = 'Ornament',
+}
+
+export type FlowerShopProduct = {
+  imageUrl: string;
+  productId: string;
+  price: number;
+  description: string;
+  category: ProductCategory;
+};
+
+export type FlowerShop = {
+  name: string;
+  street: string;
+  city: string;
+  phone: string;
+  hasDelivery: boolean;
+  reviews: Array<Review>;
+  products: Array<FlowerShopProduct>;
+};

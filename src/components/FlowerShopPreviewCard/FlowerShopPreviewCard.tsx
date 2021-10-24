@@ -8,6 +8,7 @@ import {
 import React from 'react';
 import Rating from '@material-ui/lab/Rating';
 import LocalShippingTwoToneIcon from '@material-ui/icons/LocalShippingTwoTone';
+import { Link } from 'react-router-dom';
 
 const useStyle = makeStyles((theme) => ({
   card: {
@@ -91,41 +92,43 @@ const FlowerShopPreviewCard: React.FC<FlowerShopPreviewCardProps> = ({
   const classes = useStyle();
   return (
     <Card className={classes.card}>
-      <CardActionArea>
-        <CardContent>
-          <div className={classes.container}>
-            <div
-              className={classes.shopImage}
-              style={{ backgroundImage: `url(${imagePath})` }}
-            ></div>
-            <div className={classes.details}>
-              <div>
-                <Typography variant="h6">{name}</Typography>
-                <div className={classes.rating}>
-                  <Rating value={rating} readOnly precision={0.5} />
-                  <Typography>(500)</Typography>
+      <Link to={`/store/${name}`}>
+        <CardActionArea>
+          <CardContent>
+            <div className={classes.container}>
+              <div
+                className={classes.shopImage}
+                style={{ backgroundImage: `url(${imagePath})` }}
+              ></div>
+              <div className={classes.details}>
+                <div>
+                  <Typography variant="h6">{name}</Typography>
+                  <div className={classes.rating}>
+                    <Rating value={rating} readOnly precision={0.5} />
+                    <Typography>(500)</Typography>
+                  </div>
                 </div>
+                <span className={classes.address}>{address}</span>
               </div>
-              <span className={classes.address}>{address}</span>
-            </div>
-            <span
-              className={
-                hasShipping
-                  ? classes.shippingIcon
-                  : classes.shippingIconDisabled
-              }
-            >
-              <LocalShippingTwoToneIcon
+              <span
                 className={
                   hasShipping
                     ? classes.shippingIcon
                     : classes.shippingIconDisabled
                 }
-              />
-            </span>
-          </div>
-        </CardContent>
-      </CardActionArea>
+              >
+                <LocalShippingTwoToneIcon
+                  className={
+                    hasShipping
+                      ? classes.shippingIcon
+                      : classes.shippingIconDisabled
+                  }
+                />
+              </span>
+            </div>
+          </CardContent>
+        </CardActionArea>
+      </Link>
     </Card>
   );
 };

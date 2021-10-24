@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import CartPage from '../../pages/CartPage/CartPage';
 import ErrorPage from '../../pages/ErrorPage/ErrorPage';
+import FlowerShopPage from '../../pages/FlowerShopPage/FlowerShopPage';
 import LoginPage from '../../pages/LoginPage/LoginPage';
 import MainPage from '../../pages/MainPage/MainPage';
 import RegisterPage from '../../pages/RegisterPage.tsx/RegisterPage';
@@ -32,6 +33,9 @@ const ContentSwitch = () => {
       <PrivateRoute isAuth={!isAuth} redirectPath={'/'} path="/register">
         <RegisterPage />
       </PrivateRoute>
+      <Route path="/store/:shopName">
+        <FlowerShopPage />
+      </Route>
       <Route path="*">
         <ErrorPage />
       </Route>
