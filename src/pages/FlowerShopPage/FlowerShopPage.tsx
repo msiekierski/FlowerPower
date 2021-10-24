@@ -24,7 +24,7 @@ type FlowerShopPageParams = {
   shopName: string;
 };
 
-const enum FetchStatus {
+enum FetchStatus {
   LOADING = 'loading',
   FETCH_SUCCESS = 'fetch_success',
   FETCH_FAILED = 'fetch_failed',

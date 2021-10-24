@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '50%',
     backgroundColor: 'green',
     position: 'relative',
-    border: '1px solid white',
+    border: '3px solid white',
   },
   image: {
     position: 'absolute',
