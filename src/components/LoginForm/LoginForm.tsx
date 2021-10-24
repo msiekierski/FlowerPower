@@ -1,10 +1,11 @@
 import { Button, makeStyles, Typography } from '@material-ui/core';
 import { Field, Form, Formik } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
 import CustomInputField from './CustomInputField';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 import { Alert } from '@material-ui/lab';
+import ResetPasswordDialog from '../ResetPasswordDialog/ResetPasswordDialog';
 
 const useStyles = makeStyles((theme) => ({
   loginContainer: {
@@ -53,9 +54,14 @@ const LoginForm: React.FC<Props> = ({
   errorMsg,
   isFetching,
 }) => {
+  const [isResetOpen, setIsResetOpen] = useState<boolean>(false);
   const classes = useStyles();
   return (
     <div className={classes.loginContainer}>
+      <ResetPasswordDialog
+        isOpen={isResetOpen}
+        handleClose={() => setIsResetOpen(false)}
+      />
       <Formik
         initialValues={{ email: '', password: '' }}
         onSubmit={(values) => {
@@ -97,7 +103,11 @@ const LoginForm: React.FC<Props> = ({
               component={CustomInputField}
             />
             <span style={{ margin: 'auto' }}>
-              <Typography style={{ color: 'blue' }} variant="h6">
+              <Typography
+                style={{ color: 'blue', cursor: 'pointer' }}
+                variant="h6"
+                onClick={() => setIsResetOpen(true)}
+              >
                 Forgotten your password?
               </Typography>
               <Link to="/register">
