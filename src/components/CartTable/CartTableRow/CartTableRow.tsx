@@ -91,6 +91,7 @@ const CartTableRow: React.FC<Props> = ({ cartProduct }) => {
       </TableCell>
       <TableCell>
         <ImCross
+          className={classes.actionText}
           style={{ color: 'rgba(204, 77, 3, 0.9)' }}
           size={25}
           onClick={() => removeItem(productId)}

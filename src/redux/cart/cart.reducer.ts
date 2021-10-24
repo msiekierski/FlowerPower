@@ -66,6 +66,25 @@ const reducer = (state: Cart = initialState, action: Action): Cart => {
   if (action.type === ActionType.CLEAR_CART) {
     return { ...state, items: [] };
   }
+  if (action.type === ActionType.ADD_ITEM) {
+    const { productId, storeName } = action.payload;
+    const itemIndex = state.items.findIndex(
+      (item) => item.productId === productId && item.storeName === storeName
+    );
+
+    if (itemIndex >= 0) {
+      return {
+        ...state,
+        items: state.items.map((item, index) => {
+          if (index === itemIndex)
+            return { ...item, quantity: item.quantity + 1 };
+          return item;
+        }),
+      };
+    }
+
+    return { ...state, items: [...state.items, action.payload] };
+  }
   return state;
 };
 

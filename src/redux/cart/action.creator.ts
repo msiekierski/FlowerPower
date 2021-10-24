@@ -1,4 +1,5 @@
 import { Dispatch } from 'react';
+import { CartProduct } from '../../common/types';
 import { ActionType } from './action.types';
 import { Action } from './cart.actions';
 
@@ -23,5 +24,11 @@ export const decreaseQuanitity = (itemId: string) => {
 export const clearCart = () => {
   return (dispatch: Dispatch<Action>) => {
     dispatch({ type: ActionType.CLEAR_CART });
+  };
+};
+
+export const addItem = (item: CartProduct) => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch({ type: ActionType.ADD_ITEM, payload: item });
   };
 };
