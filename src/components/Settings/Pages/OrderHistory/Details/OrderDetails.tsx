@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const detailsColumns: Array<String> = [
-  'Article Description',
+  'Article',
   'Color',
   'Unit Price',
   'Quantity',

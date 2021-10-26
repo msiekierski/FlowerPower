@@ -22,12 +22,14 @@
     "@types/redux": "^3.6.0",
     "@types/redux-thunk": "^2.1.0",
     "@types/yup": "^0.29.13",
+    "@wojtekmaj/react-daterange-picker": "^3.3.2",
     "formik": "^2.2.9",
     "formik-material-ui": "^4.0.0-alpha.1",
     "lodash": "^4.17.21",
     "material-ui-icons": "^1.0.0-beta.36",
     "react": "^17.0.2",
     "react-credit-cards": "^0.8.3",
+    "react-date-range": "^1.4.0",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
     "react-material-ui-carousel": "^2.3.1",
@@ -68,6 +70,8 @@
     ]
   },
   "devDependencies": {
+    "@types/date-fns": "^2.6.0",
+    "@types/react-date-range": "^1.4.1",
     "@types/react-router-dom": "^5.1.8",
     "@types/redux-persist": "^4.3.1",
     "redux-devtools-extension": "^2.13.9"
