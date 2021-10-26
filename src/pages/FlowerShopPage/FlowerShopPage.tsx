@@ -3,7 +3,7 @@ import { Rating } from '@material-ui/lab';
 import React, { useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import { useParams } from 'react-router';
-import { FlowerShop } from '../../common/types';
+import { FlowerShop, OpeningHours } from '../../common/types';
 import FlowerShopReviewCard from '../../components/FlowerShopReviewCard/FlowerShopReviewCard';
 import ShippingIcon from '../../utils/icons/ShippingIcon';
 import CardMedia from '@mui/material/CardMedia';
@@ -19,6 +19,8 @@ import ornaments from '../../resources/categoryIcons/ornaments.jpg';
 import ShopCategoryImage from '../../components/ShopCategory/ShopCategory';
 import { ShopCategory } from '../../utils/constants/ShopCategories';
 import FlowerShopItemCard from '../../components/FlowerShopItemCard/FlowerShopItemCard';
+import OpeningStatus from '../../components/OpeningStatus/OpeningStatus';
+
 
 type FlowerShopPageParams = {
   shopName: string;
@@ -109,6 +111,16 @@ const categories: Array<ShopCategory> = [
   { name: 'Ornaments', url: ornaments },
 ];
 
+const openingHours: Array<OpeningHours> = [
+  { from: '07:00', to: '15:00' },
+  { from: '09:00', to: '11:00' },
+  { from: '08:00', to: '16:00' },
+  { from: '08:00', to: '16:00' },
+  { from: '08:00', to: '16:00' },
+  { from: '08:00', to: '16:00' },
+  { from: '20:00', to: '05:00' },
+];
+
 const FlowerShopPage = () => {
   const { shopName } = useParams<FlowerShopPageParams>();
   const [status, setStatus] = useState<FetchStatus>(FetchStatus.LOADING);
@@ -129,6 +141,9 @@ const FlowerShopPage = () => {
             <Typography>{street}</Typography>
             <Typography>{city}</Typography>
             <Typography>{phone}</Typography>
+            <div style={{ marginTop: '20px'}}>
+              <OpeningStatus openingHours={openingHours} />
+            </div>
           </div>
           <div className={classes.reviewCard}>
             <Carousel animation="slide">
@@ -151,8 +166,8 @@ const FlowerShopPage = () => {
             <CardMedia
               height="100%"
               component="img"
-              image="https://lh3.googleusercontent.com/proxy/0b1Ikn7W4lGn3LNX4RbGg4h67JYxTugBNcdSib17vXwJ-JLuGUsHa6Ng73VPPPQGIHa6QnK9PuPxlGBmpFgeDVMzw6H1aJolRiF_NgKV20unuI3OgO7w3TlNu0ZlwyafrQ16Is6yuHQ58hDqV452xJ7hYR_pMXL0cD2IhlN80RaEAQeJSxg9RA"
-              alt="Paella dish"
+              image="https://www.kanlux.com/storage/realizacje/18703_1.jpg"
+              alt="shop1"
             />
           </Grid>
           <Grid item xs={6}>
@@ -160,7 +175,7 @@ const FlowerShopPage = () => {
               height="100%"
               component="img"
               image="https://www.portel.pl/newsimg/duze/p1035/dzien-kobiet-w-kwiaciarni-romantycznej-103581.jpg"
-              alt="Paella dish"
+              alt="shop2"
             />
           </Grid>
           <Grid item xs={3}>
@@ -168,7 +183,7 @@ const FlowerShopPage = () => {
               height="100%"
               component="img"
               image="https://kwiaciarnialubon.com.pl/wp-content/uploads/2020/03/start-1.jpg"
-              alt="Paella dish"
+              alt="shop3"
             />
           </Grid>
         </Grid>

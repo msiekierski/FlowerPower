@@ -82,3 +82,8 @@ export type FlowerShop = {
   reviews: Array<Review>;
   products: Array<FlowerShopProduct>;
 };
+
+export type OpeningHours = {
+  from: string;
+  to: string;
+};

@@ -27,9 +27,13 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '20px',
   },
   cartButtons: {
+    marginTop: theme.spacing(3),
     display: 'flex',
     justifyContent: 'space-between',
     alignItem: 'center',
+    '&>div:only-child': {
+      marginLeft: 'auto',
+    },
   },
   orderButton: {
     padding: '10px 5%',
@@ -56,22 +60,17 @@ const CartPage = () => {
 
   return (
     <>
-      <div className={classes.title}>
-        <Typography variant="h4" style={{ fontWeight: 'bold' }}>
-          Your Cart
-        </Typography>
-      </div>
       <div className={classes.cartButtons}>
-        <div className={classes.iconItem} onClick={() => history.goBack()}>
-          <IoIosReturnLeft style={{ fontSize: '2rem' }} />
-          <Typography className={classes.iconLabel}>RETURN</Typography>
-        </div>
         {cartItems.length > 0 && (
           <div className={classes.iconItem} onClick={() => clearCart()}>
             <Typography className={classes.iconLabel}>CLEAR CART</Typography>
             <FiTrash style={{ fontSize: '1.7rem' }} />
           </div>
         )}
+        <div className={classes.iconItem} onClick={() => history.goBack()}>
+          <IoIosReturnLeft style={{ fontSize: '2rem' }} />
+          <Typography className={classes.iconLabel}>RETURN</Typography>
+        </div>
       </div>
       {cartItems.length ? (
         <>
