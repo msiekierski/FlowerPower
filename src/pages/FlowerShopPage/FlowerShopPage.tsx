@@ -21,7 +21,6 @@ import { ShopCategory } from '../../utils/constants/ShopCategories';
 import FlowerShopItemCard from '../../components/FlowerShopItemCard/FlowerShopItemCard';
 import OpeningStatus from '../../components/OpeningStatus/OpeningStatus';
 
-
 type FlowerShopPageParams = {
   shopName: string;
 };
@@ -49,11 +48,11 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
   },
   reviewCard: {
-    display: 'block',
-    maxWidth: '25vw',
-    width: '25vw',
-    height: 100,
+    margin: 'atuo',
+    width: 'auto',
+    height: '100px',
     paddingRight: '20px',
+    paddingBottom: '30px',
   },
   shopName: {
     display: 'flex',
@@ -141,17 +140,17 @@ const FlowerShopPage = () => {
             <Typography>{street}</Typography>
             <Typography>{city}</Typography>
             <Typography>{phone}</Typography>
-            <div style={{ marginTop: '20px'}}>
-              <OpeningStatus openingHours={openingHours} />
-            </div>
           </div>
-          <div className={classes.reviewCard}>
-            <Carousel animation="slide">
-              {shopData.reviews.map((review, index) => (
-                <FlowerShopReviewCard key={index} {...review} />
-              ))}
-            </Carousel>
+          <div style={{ marginTop: '16px' }}>
+            <OpeningStatus openingHours={openingHours} />
           </div>
+        </div>
+        <div className={classes.reviewCard}>
+          <Carousel animation="slide">
+            {shopData.reviews.map((review, index) => (
+              <FlowerShopReviewCard key={index} {...review} />
+            ))}
+          </Carousel>
         </div>
         <Grid
           container
