@@ -113,7 +113,7 @@ const categories: Array<ShopCategory> = [
 const openingHours: Array<OpeningHours> = [
   { from: '07:00', to: '15:00' },
   { from: '09:00', to: '11:00' },
-  { from: '08:00', to: '16:00' },
+  { from: '06:00', to: '16:00' },
   { from: '08:00', to: '16:00' },
   { from: '08:00', to: '16:00' },
   { from: '08:00', to: '16:00' },

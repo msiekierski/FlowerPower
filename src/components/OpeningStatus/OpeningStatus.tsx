@@ -37,16 +37,37 @@ const OpeningStatus: React.FC<Props> = ({ openingHours }) => {
 
   if (isOpen) {
     return (
+      <>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Typography style={{ color: 'green', fontWeight: 'bold' }}>
           Open&nbsp;
         </Typography>
         <Typography>| Closes at {openingHours[currentDay].to}</Typography>
-        <AiFillCaretDown
-          className={classes.icon}
-          onClick={() => setShowOpeningHours(true)}
-        />
+        {showOpeningHours ? (
+          <AiFillCaretUp
+            className={classes.icon}
+            onClick={() => setShowOpeningHours(false)}
+          />
+        ) : (
+          <AiFillCaretDown
+            className={classes.icon}
+            onClick={() => setShowOpeningHours(true)}
+          />
+        )}
       </div>
+      <Collapse in={showOpeningHours}>
+          {[0, 1, 2, 3, 4, 5, 6].map((day) => (
+            <div style={{ display: 'flex' }}>
+              <Typography key={day} align="left">
+                {dayOfWeekAsString(day)}:
+              </Typography>
+              <Typography style={{ marginLeft: 'auto' }}>
+                {openingHours[day].from} - {openingHours[day].to}
+              </Typography>
+            </div>
+          ))}
+        </Collapse>
+        </>
     );
   } else {
     const opening =
