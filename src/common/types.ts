@@ -87,3 +87,16 @@ export type OpeningHours = {
   from: string;
   to: string;
 };
+
+export type ProductSearch = {
+  name: string;
+  category: string;
+  subcategory: string;
+  id: string;
+};
+
+export type ShopSearch = {
+  name: string;
+  address: string;
+  id: string;
+};

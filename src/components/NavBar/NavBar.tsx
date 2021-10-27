@@ -24,6 +24,7 @@ import { Link } from 'react-router-dom';
 import { PERSONAL_DATA } from '../../utils/constants/SettingsMenus';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root-reducer';
+import SearchBar from './SearchBar/SearchBar';
 
 type StyleProps = {
   isSearchFocused: boolean;
@@ -37,46 +38,12 @@ const useStyles = (props: StyleProps) =>
       justifyContent: 'space-between',
       alignItems: 'center',
     },
-    search: {
-      position: 'relative',
-      borderRadius: theme.shape.borderRadius,
-      backgroundColor: alpha(theme.palette.common.white, 0.15),
-      '&:hover': {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
-      },
-      width: '50%',
-      [theme.breakpoints.down(450)]: {
-        maxWidth: props.isSearchFocused ? 'inherit' : '50%',
-      },
-      border: '2.5px solid',
-      transition: theme.transitions.create(['all'], {
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-    },
-    searchIcon: {
-      height: '100%',
-      position: 'absolute',
-      pointerEvents: 'none',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      right: '1em',
-    },
     iconsPanel: {
       display: 'flex',
       alignItems: 'end',
       justifyContent: 'end',
       fontSize: '2.5rem',
       gap: '30%',
-    },
-    inputRoot: {
-      color: 'inherit',
-    },
-
-    inputInput: {
-      padding: theme.spacing(1, 0, 1, 1),
-      paddingRight: `calc(1em + ${theme.spacing(4)}px)`,
-      width: '100%',
     },
     logo: {},
     menuIcon: {
@@ -183,22 +150,10 @@ const NavBar = () => {
           <Link to="/" className={classes.logo}>
             <Logo style={{ maxWidth: '30vw' }} />
           </Link>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search..."
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-                focused: classes.focusedSearch,
-              }}
-              onFocus={() => setIsSearchFocused(true)}
-              onBlur={() => setIsSearchFocused(false)}
-              fullWidth
-            />
-          </div>
+          <SearchBar
+            isSearchFocused={isSearchFocused}
+            setIsSearchFocused={setIsSearchFocused}
+          />
           <div className={classes.iconsPanel}>
             <Link to={'/settings/' + PERSONAL_DATA}>
               <Badge invisible>
