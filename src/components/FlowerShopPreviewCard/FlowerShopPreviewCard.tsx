@@ -9,6 +9,7 @@ import React from 'react';
 import Rating from '@material-ui/lab/Rating';
 import LocalShippingTwoToneIcon from '@material-ui/icons/LocalShippingTwoTone';
 import { Link } from 'react-router-dom';
+import { stringToUrl } from '../../utils/functions/stringToUrlValue';
 
 const useStyle = makeStyles((theme) => ({
   card: {
@@ -64,6 +65,7 @@ const useStyle = makeStyles((theme) => ({
     },
   },
   shippingIcon: {
+    margin: 'auto',
     order: 3,
     fontSize: '1.75em',
     position: 'relative',
@@ -78,6 +80,7 @@ export type FlowerShopPreviewCardProps = {
   name: string;
   address: string;
   rating: number;
+  reviewCount: number;
   imagePath: string;
   hasShipping: boolean;
 };
@@ -88,11 +91,13 @@ const FlowerShopPreviewCard: React.FC<FlowerShopPreviewCardProps> = ({
   rating,
   imagePath,
   hasShipping,
+  reviewCount,
 }: FlowerShopPreviewCardProps) => {
   const classes = useStyle();
+  const addressSplit = address.split(',');
   return (
     <Card className={classes.card}>
-      <Link to={`/store/${name}`}>
+      <Link to={`/store/${stringToUrl(name)}/${stringToUrl(addressSplit[0])}`}>
         <CardActionArea>
           <CardContent>
             <div className={classes.container}>
@@ -102,13 +107,18 @@ const FlowerShopPreviewCard: React.FC<FlowerShopPreviewCardProps> = ({
               ></div>
               <div className={classes.details}>
                 <div>
-                  <Typography variant="h6">{name}</Typography>
+                  <Typography variant="h6" noWrap>
+                    {name}
+                  </Typography>
                   <div className={classes.rating}>
                     <Rating value={rating} readOnly precision={0.5} />
-                    <Typography>(500)</Typography>
+                    <Typography>({reviewCount})</Typography>
                   </div>
                 </div>
-                <span className={classes.address}>{address}</span>
+                <span className={classes.address} style={{ marginTop: '10px' }}>
+                  <Typography noWrap>{addressSplit[0]}</Typography>
+                  <Typography noWrap>{addressSplit[1]}</Typography>
+                </span>
               </div>
               <span
                 className={

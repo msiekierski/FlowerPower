@@ -19,8 +19,13 @@ interface ClearLoginData {
   type: ActionType.CLEAR_LOGIN_DATA;
 }
 
+interface StartFetching {
+  type: ActionType.START_FETCHING;
+}
+
 export type Action =
   | LogInUserActionSuccessful
   | LogOutUserAction
   | LogInUserError
-  | ClearLoginData;
+  | ClearLoginData
+  | StartFetching;

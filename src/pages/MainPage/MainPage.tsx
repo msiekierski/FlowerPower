@@ -7,6 +7,11 @@ import Menu from '../../components/Menu/Menu';
 import CarouselItem from './CarouselItem/CarouselItem';
 import { BsArrowRightSquare, BsArrowLeftSquare } from 'react-icons/bs';
 import CustomCarousel from '../../components/CustomCarousel/CustomCarousel';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import apiShopListToState from '../../utils/objectMapping/apiShopListToState';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/root-reducer';
 
 const useStyles = makeStyles((theme) => ({
   carouselContainer: {
@@ -45,90 +50,35 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const kwiaciarnie: Array<FlowerShopPreviewCardProps> = [
-  {
-    name: 'Kwiaciarnia1',
-    address: 'randomowyAdres',
-    rating: 5.5,
-    imagePath:
-      'https://www.portel.pl/newsimg/duze/p1035/dzien-kobiet-w-kwiaciarni-romantycznej-103581.jpg',
-    hasShipping: true,
-  },
-  {
-    name: 'Kwiaciarnia2',
-    address: 'randomowyAdres',
-    rating: 4.5,
-    imagePath:
-      'http://kwiaty-lotos.pl/wp-content/uploads/kwiaciarnia-lotos-witryna.jpg',
-    hasShipping: false,
-  },
-  {
-    name: 'Kwiaciarnia3',
-    address: 'randomowyAdres',
-    rating: 2.0,
-    imagePath: 'https://tylkotorun.pl/wp-content/uploads/2020/07/plaza1.jpg',
-    hasShipping: true,
-  },
-  {
-    name: 'Kwiaciarnia4',
-    address: 'randomowyAdres',
-    rating: 4.0,
-    imagePath:
-      'https://www.kreator-kwiatow.pl/sklep/blog/wp-content/uploads/2017/10/IMG_20171005_143816_HDR-1024x768.jpg',
-    hasShipping: true,
-  },
-  {
-    name: 'Kwiaciarnia5',
-    address: 'randomowyAdres',
-    rating: 4.0,
-    imagePath:
-      'https://www.kreator-kwiatow.pl/sklep/blog/wp-content/uploads/2017/10/IMG_20171005_143816_HDR-1024x768.jpg',
-    hasShipping: true,
-  },
-  {
-    name: 'Kwiaciarnia6',
-    address: 'randomowyAdres',
-    rating: 4.0,
-    imagePath:
-      'https://www.kreator-kwiatow.pl/sklep/blog/wp-content/uploads/2017/10/IMG_20171005_143816_HDR-1024x768.jpg',
-    hasShipping: true,
-  },
-  {
-    name: 'Kwiaciarnia7',
-    address: 'randomowyAdres',
-    rating: 4.0,
-    imagePath:
-      'https://www.kreator-kwiatow.pl/sklep/blog/wp-content/uploads/2017/10/IMG_20171005_143816_HDR-1024x768.jpg',
-    hasShipping: true,
-  },
-  {
-    name: 'Kwiaciarnia8',
-    address: 'randomowyAdres',
-    rating: 4.0,
-    imagePath:
-      'https://www.kreator-kwiatow.pl/sklep/blog/wp-content/uploads/2017/10/IMG_20171005_143816_HDR-1024x768.jpg',
-    hasShipping: true,
-  },
-  {
-    name: 'Kwiaciarnia9',
-    address: 'randomowyAdres',
-    rating: 4.0,
-    imagePath:
-      'https://www.kreator-kwiatow.pl/sklep/blog/wp-content/uploads/2017/10/IMG_20171005_143816_HDR-1024x768.jpg',
-    hasShipping: true,
-  },
-  {
-    name: 'Kwiaciarnia10',
-    address: 'randomowyAdres',
-    rating: 4.0,
-    imagePath:
-      'https://www.kreator-kwiatow.pl/sklep/blog/wp-content/uploads/2017/10/IMG_20171005_143816_HDR-1024x768.jpg',
-    hasShipping: true,
-  },
-];
-
 const MainPage = () => {
   const classes = useStyles();
+
+  const [recommendedShops, setRecomenndedShops] = useState<
+    Array<FlowerShopPreviewCardProps>
+  >([]);
+
+  const user = useSelector((state: RootState) => state.user.user);
+
+  useEffect(() => {
+    fetchShops();
+  }, []);
+
+  const fetchShops = async () => {
+    let city = 'Wroclaw';
+    if (user !== null && user.city !== null) {
+      city = user.city!;
+    }
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8080/flowerPower/customer/get/shopList`,
+        { params: { city: city } }
+      );
+      setRecomenndedShops(data.map((data: any) => apiShopListToState(data)));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <>
       <Menu />
@@ -151,7 +101,7 @@ const MainPage = () => {
           Recommended Florists'
         </Typography>
         <CustomCarousel
-          carouselComponents={kwiaciarnie.map((store, index) => (
+          carouselComponents={recommendedShops.map((store, index) => (
             <FlowerShopPreviewCard key={index} {...store} />
           ))}
         />

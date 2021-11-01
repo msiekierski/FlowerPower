@@ -10,6 +10,8 @@ import {
   Typography,
 } from '@material-ui/core';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../redux/root-reducer';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -45,12 +47,14 @@ const PersonalData = () => {
   const classes = useStyles();
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
+  const user = useSelector((state: RootState) => state.user.user);
+
   const rows: Array<PersonalDataRow> = [
-    { title: 'Name', value: 'Jan' },
-    { title: 'Surname', value: 'Kowalski' },
-    { title: 'Street', value: 'Rynek 15/5' },
-    { title: 'City', value: 'Wrocław' },
-    { title: 'Zip Code', value: '50-324' },
+    { title: 'Name', value: user?.name },
+    { title: 'Surname', value: user?.surname },
+    { title: 'Street', value: user?.street },
+    { title: 'City', value: user?.city },
+    { title: 'Zip Code', value: user?.zipCode },
   ];
 
   return (

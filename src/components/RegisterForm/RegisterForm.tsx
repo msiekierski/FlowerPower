@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   Collapse,
   FormControl,
   FormControlLabel,
@@ -7,13 +8,17 @@ import {
   makeStyles,
   Radio,
   RadioGroup,
+  Typography,
 } from '@material-ui/core';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CustomInputField from '../LoginForm/CustomInputField';
 import * as Yup from 'yup';
 import { CheckboxWithLabel } from 'formik-material-ui';
 import { string } from 'yup';
+import { ApiCallState, Roles } from '../../common/types';
+import axios from 'axios';
+import { Alert } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
   registerContainer: {
@@ -31,6 +36,11 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  errorMessage: {
+    backgroundColor: 'rgba(255, 0, 0, 0.3)',
+    border: '2px solid red',
+    color: 'inherit',
+  },
 }));
 
 interface Values {
@@ -41,46 +51,73 @@ interface Values {
   accepted: boolean;
 }
 
-const RegisterForm = () => {
-  const [formType, setFormType] = useState('natural');
+let validateSchema = Yup.object().shape({
+  formType: Yup.string(),
+  email: Yup.string().email('Invalid email').required('Required'),
+  password: Yup.string().min(5, 'Min. 5 characters'),
+  passwordRepeat: Yup.string().oneOf(
+    [Yup.ref('password'), null],
+    'Passwords do not match'
+  ),
+  nip: Yup.string(),
+  accepted: Yup.bool()
+    .oneOf([true], 'You must accept terms in order to register')
+    .required('You must accept terms in order to register'),
+});
 
-  const validateSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Required'),
-    password: Yup.string().min(5, 'Min. 5 characters'),
-    passwordRepeat: Yup.string().oneOf(
-      [Yup.ref('password'), null],
-      'Passwords do not match'
-    ),
-    nip: Yup.string().when(formType, {
-      is: 'legal',
-      then: string().required('Required'),
-      otherwise: string(),
-    }),
-    accepted: Yup.bool()
-      .oneOf([true], 'You must accept terms in order to register')
-      .required('You must accept terms in order to register'),
-  });
+const registerUrl =
+  process.env.REACT_APP_API_ADDRESS + '/flowerPower/register/postCredential';
+
+type Props = {
+  apiStatus: ApiCallState;
+  setApiStatus: (status: ApiCallState) => void;
+};
+
+const RegisterForm:React.FC<Props> = ({apiStatus, setApiStatus}) => {
+  const [formType, setFormType] = useState('natural');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  if (formType === 'legal') {
+    validateSchema = Yup.object().shape({
+      formType: Yup.string(),
+      email: Yup.string().email('Invalid email').required('Required'),
+      password: Yup.string().min(5, 'Min. 5 characters'),
+      passwordRepeat: Yup.string().oneOf(
+        [Yup.ref('password'), null],
+        'Passwords do not match'
+      ),
+      nip: Yup.string()
+        .required('Required')
+        .length(10, 'NIP must have 10 digits'),
+      accepted: Yup.bool()
+        .oneOf([true], 'You must accept terms in order to register')
+        .required('You must accept terms in order to register'),
+    });
+  }
+
+  const submitForm = async (values: Values) => {
+    const { email, password, nip } = values;
+    const requestBody = {
+      email,
+      password,
+      nip,
+      role: formType === 'natural' ? Roles.CLIENT : Roles.OWNER,
+    };
+    try {
+      setApiStatus(ApiCallState.FETCH_BEGIN);
+      const { data } = await axios.post(registerUrl, requestBody);
+      setErrorMsg('');
+      setApiStatus(ApiCallState.FETCH_SUCCESS);
+    } catch (e) {
+      setApiStatus(ApiCallState.FETCH_ERROR);
+      setErrorMsg(e.response.data);
+    }
+  };
 
   const classes = useStyles();
   return (
     <div className={classes.registerContainer}>
       <FormControl>
-        <RadioGroup
-          row
-          value={formType}
-          onChange={(e) => setFormType(e.target.value)}
-        >
-          <FormControlLabel
-            value="natural"
-            control={<Radio />}
-            label="Natural person"
-          />
-          <FormControlLabel
-            value="legal"
-            control={<Radio />}
-            label="Legal person"
-          />
-        </RadioGroup>
         <Formik
           initialValues={{
             email: '',
@@ -90,12 +127,39 @@ const RegisterForm = () => {
             nip: '',
           }}
           onSubmit={(values) => {
-            console.log(values);
+            submitForm(values);
           }}
           validationSchema={validateSchema}
         >
           {({ errors, touched }) => (
             <Form>
+              <RadioGroup
+                row
+                value={formType}
+                onChange={(e) => setFormType(e.target.value)}
+              >
+                <FormControlLabel
+                  name="formType"
+                  value="natural"
+                  control={<Radio />}
+                  label="Natural person"
+                />
+                <FormControlLabel
+                  name="formType"
+                  value="legal"
+                  control={<Radio />}
+                  label="Legal person"
+                />
+              </RadioGroup>
+              {errorMsg.length > 0 && (
+                <Alert
+                  severity="error"
+                  variant="filled"
+                  className={classes.errorMessage}
+                >
+                  <Typography>{errorMsg}</Typography>
+                </Alert>
+              )}
               <Field
                 name="email"
                 label="E-mail"
@@ -148,6 +212,9 @@ const RegisterForm = () => {
                   color="secondary"
                 >
                   Register
+                  {apiStatus === ApiCallState.FETCH_BEGIN && (
+                    <CircularProgress />
+                  )}
                 </Button>
               </div>
             </Form>

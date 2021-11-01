@@ -2,6 +2,12 @@ import { ActionType } from './action.types';
 import { User } from './user.reducer';
 import { Dispatch } from 'redux';
 import { Action } from './user.actions';
+import axios from 'axios';
+
+const loginApiUrl =
+  process.env.REACT_APP_API_ADDRESS + 'flowerPower/login/check';
+const getShipmentApiUrl = (userId: string) =>
+  `${process.env.REACT_APP_API_ADDRESS}/flowerPower/customer/get/clientInfoForOrder/${userId}`;
 
 export const logInUser = (user: User) => {
   return async (dispatch: Dispatch<Action>) => {
@@ -14,15 +20,22 @@ export const logInUser = (user: User) => {
       return errorMessage;
     }
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      if (user?.password !== 'user') {
-        throw new Error('Incorrect email or password');
-      }
+      dispatch({ type: ActionType.START_FETCHING });
+      const { data } = await axios.post(loginApiUrl, {
+        email: user?.email,
+        password: user?.password,
+      });
+      user!.id = data;
+      const response = await axios.get(getShipmentApiUrl(user?.id!));
+      user!.name = response.data.name;
+      user!.surname = response.data.surname;
+      user!.zipCode = response.data.zip;
+      user!.street = response.data.address;
+      user!.city = response.data.city;
+
       return onSuccess(user);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        return onError(error.message);
-      }
+    } catch (e) {
+      return onError(e.response.data);
     }
   };
 };

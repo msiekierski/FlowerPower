@@ -2,6 +2,7 @@ import { ActionType } from './action.types';
 import { Action } from './user.actions';
 
 export type User = {
+  id?: string;
   email: string;
   password: string;
   name?: string;
@@ -37,7 +38,10 @@ const reducer = (
     return { ...state, error: action.payload, isLoading: false };
   }
   if (action.type === ActionType.CLEAR_LOGIN_DATA) {
-    return {...state, error: ''}
+    return { ...state, error: '', isLoading: false };
+  }
+  if (action.type === ActionType.START_FETCHING) {
+    return { ...state, isLoading: true };
   }
   return state;
 };

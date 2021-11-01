@@ -5,7 +5,9 @@ import ErrorPage from '../../pages/ErrorPage/ErrorPage';
 import FlowerShopPage from '../../pages/FlowerShopPage/FlowerShopPage';
 import LoginPage from '../../pages/LoginPage/LoginPage';
 import MainPage from '../../pages/MainPage/MainPage';
+import ProductPage from '../../pages/ProductPage/ProductPage';
 import RegisterPage from '../../pages/RegisterPage.tsx/RegisterPage';
+import SearchItemPage from '../../pages/SearchItemPage/SearchItemPage';
 import SettingsPage from '../../pages/SettingsPage/SettingsPage';
 import { useAuth } from '../../utils/customHooks/useAuth';
 import PrivateRoute from './PrivateRoute/PrivateRoute';
@@ -33,8 +35,14 @@ const ContentSwitch = () => {
       <PrivateRoute isAuth={!isAuth} redirectPath={'/'} path="/register">
         <RegisterPage />
       </PrivateRoute>
-      <Route path="/store/:shopName">
+      <Route path="/store/:shopName/:shopAddress">
         <FlowerShopPage />
+      </Route>
+      <Route path="/item/:id">
+        <ProductPage />
+      </Route>
+      <Route path="/search/item/:itemName">
+        <SearchItemPage />
       </Route>
       <Route path="*">
         <ErrorPage />

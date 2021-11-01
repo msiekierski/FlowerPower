@@ -4,6 +4,7 @@ import { Rating } from '@material-ui/lab';
 import React from 'react';
 import { Box } from '@mui/system';
 import { Card, Grid } from '@mui/material';
+import TimeAgo from 'react-timeago'
 
 type Props = {
   text: string;
@@ -47,11 +48,11 @@ const FlowerShopReviewCard: React.FC<Props> = ({
             <Rating value={rating} readOnly precision={0.5} />
           </div>
           <Typography variant="h6" component="div" align="center">
-            {truncateText(text)}
+            {text}
           </Typography>
 
           <Typography color="text.secondary" align="center">
-            {author}, {date}
+            {author}, {<TimeAgo date={date} />}
           </Typography>
         </CardContent>
       </Card>

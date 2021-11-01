@@ -1,9 +1,16 @@
-import { Container, Grid, makeStyles, Typography } from '@material-ui/core';
+import {
+  Backdrop,
+  CircularProgress,
+  Container,
+  Grid,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
-import { useParams } from 'react-router';
-import { FlowerShop, OpeningHours } from '../../common/types';
+import { Redirect, useParams } from 'react-router';
+import { ApiCallState, FlowerShop, OpeningHours } from '../../common/types';
 import FlowerShopReviewCard from '../../components/FlowerShopReviewCard/FlowerShopReviewCard';
 import ShippingIcon from '../../utils/icons/ShippingIcon';
 import CardMedia from '@mui/material/CardMedia';
@@ -20,9 +27,15 @@ import ShopCategoryImage from '../../components/ShopCategory/ShopCategory';
 import { ShopCategory } from '../../utils/constants/ShopCategories';
 import FlowerShopItemCard from '../../components/FlowerShopItemCard/FlowerShopItemCard';
 import OpeningStatus from '../../components/OpeningStatus/OpeningStatus';
+import { urlToString } from '../../utils/functions/urlToString';
+import axios from 'axios';
+import apiFlowerShopProductToState from '../../utils/objectMapping/apiFlowerShopProductToState';
+import apiShopPageToState from '../../utils/objectMapping/apiShopPageToState';
+import ErrorPage from '../ErrorPage/ErrorPage';
 
 type FlowerShopPageParams = {
   shopName: string;
+  shopAddress: string;
 };
 
 enum FetchStatus {
@@ -75,29 +88,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const shopData: FlowerShop = {
-  name: 'Flower Shop 1',
-  street: 'Rynek 15',
-  city: '50-210 Wroclaw',
-  phone: '503-210-230',
-  hasDelivery: true,
-  reviews: [
-    {
-      text: 'An ideal place for workshops and divine flower arrangements',
-      rating: 4.5,
-      author: 'Anonymous',
-      date: '2 days ago',
-    },
-    {
-      text: 'Nice shop',
-      rating: 5,
-      author: 'Anonymous',
-      date: '5 days ago',
-    },
-  ],
-  products: [],
-};
-
 const categories: Array<ShopCategory> = [
   { name: 'Flowers', url: flowers },
   { name: 'Bunches', url: bunches },
@@ -110,22 +100,55 @@ const categories: Array<ShopCategory> = [
   { name: 'Ornaments', url: ornaments },
 ];
 
-const openingHours: Array<OpeningHours> = [
-  { from: '07:00', to: '15:00' },
-  { from: '09:00', to: '11:00' },
-  { from: '06:00', to: '16:00' },
-  { from: '08:00', to: '16:00' },
-  { from: '08:00', to: '16:00' },
-  { from: '08:00', to: '16:00' },
-  { from: '20:00', to: '05:00' },
-];
+const getUrl = (name: string, address: string) => {
+  return `${process.env.REACT_APP_API_ADDRESS}/flowerPower/customer/shop/${name}/${address}`;
+};
 
 const FlowerShopPage = () => {
-  const { shopName } = useParams<FlowerShopPageParams>();
-  const [status, setStatus] = useState<FetchStatus>(FetchStatus.LOADING);
+  const { shopName, shopAddress } = useParams<FlowerShopPageParams>();
+  const [status, setStatus] = useState<ApiCallState>(ApiCallState.IDLE);
   const classes = useStyles();
-  const { name, street, city, hasDelivery, phone } = shopData;
+  const [data, setData] = useState<FlowerShop>({
+    name: '',
+    street: '',
+    city: '',
+    hasDelivery: false,
+    phone: '',
+    reviews: [],
+    products: [],
+    openingHours: [],
+  });
+  const { name, street, city, hasDelivery, phone, reviews, openingHours } =
+    data;
+  useEffect(() => {
+    fetchData();
+  }, []);
 
+  const fetchData = async () => {
+    try {
+      setStatus(ApiCallState.FETCH_BEGIN);
+      const response = await axios.get(
+        getUrl(urlToString(shopName), urlToString(shopAddress))
+      );
+      console.log(response.data);
+      setData(apiShopPageToState(response.data));
+      setStatus(ApiCallState.FETCH_SUCCESS);
+    } catch (e) {
+      console.log(e);
+      setStatus(ApiCallState.FETCH_ERROR);
+    }
+  };
+
+  if (status === ApiCallState.IDLE || status === ApiCallState.FETCH_BEGIN) {
+    return (
+      <Backdrop open={true}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    );
+  }
+  if (status === ApiCallState.FETCH_ERROR) {
+    return <ErrorPage />;
+  }
   return (
     <>
       <Container>
@@ -145,13 +168,16 @@ const FlowerShopPage = () => {
             <OpeningStatus openingHours={openingHours} />
           </div>
         </div>
-        <div className={classes.reviewCard}>
-          <Carousel animation="slide">
-            {shopData.reviews.map((review, index) => (
-              <FlowerShopReviewCard key={index} {...review} />
-            ))}
-          </Carousel>
-        </div>
+        {reviews.length > 0 && (
+          <div className={classes.reviewCard}>
+            <Carousel animation="slide">
+              {reviews.map((review, index) => (
+                <FlowerShopReviewCard key={index} {...review} />
+              ))}
+            </Carousel>
+          </div>
+        )}
+
         <Grid
           container
           style={{

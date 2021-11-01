@@ -1,15 +1,12 @@
-import {
-  makeStyles,
-  MenuList,
-  Paper,
-  Popper,
-} from '@material-ui/core';
+import { makeStyles, MenuList, Paper, Popper } from '@material-ui/core';
 import { Divider, ListItem, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { ProductSearch, ShopSearch } from '../../../common/types';
 import { BsArrowRight } from 'react-icons/bs';
 import { BsFlower1 } from 'react-icons/bs';
 import { AiTwotoneShop } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
+import { stringToUrl } from '../../../utils/functions/stringToUrlValue';
 
 type ListData = {
   products: Array<ProductSearch>;
@@ -121,39 +118,47 @@ const SearchList: React.FC<Props> = ({ inputText, searchRef, isFocused }) => {
   return (
     <Popper
       open={isListHovered || isFocused}
-      anchorEl={searchRef}
       placement="bottom"
       className={classes.popper}
+      anchorEl={searchRef}
       onMouseEnter={() => setIsListHovered(true)}
       onMouseLeave={() => setIsListHovered(false)}
     >
       <Paper>
         <MenuList>
           {data.products.map((product, index) => (
-            <ListItem onClick={() => setIsListHovered(false)}>
-              <span style={{ display: 'flex', alignItems: 'center' }}>
-                <BsFlower1 style={{ marginRight: '5px' }} />
-                <Typography>{product.name}&nbsp;</Typography>
-                <Typography style={{ color: '#c3c3c3' }}>
-                  in category {product.category}&nbsp;
-                </Typography>
-                <BsArrowRight style={{ color: '#c3c3c3' }} />
-                <Typography style={{ color: '#c3c3c3' }}>
-                  &nbsp;{product.subcategory}
-                </Typography>
-              </span>
+            <ListItem onClick={() => setIsListHovered(false)} key={index}>
+              <Link to={`/search/item/${product.name}}`}>
+                <span style={{ display: 'flex', alignItems: 'center' }}>
+                  <BsFlower1 style={{ marginRight: '5px' }} />
+                  <Typography>{product.name}&nbsp;</Typography>
+                  <Typography style={{ color: '#c3c3c3' }}>
+                    in category {product.category}&nbsp;
+                  </Typography>
+                  <BsArrowRight style={{ color: '#c3c3c3' }} />
+                  <Typography style={{ color: '#c3c3c3' }}>
+                    &nbsp;{product.subcategory}
+                  </Typography>
+                </span>
+              </Link>
             </ListItem>
           ))}
           <Divider />
           {data.shops.map((shop, index) => (
-            <ListItem onClick={() => setIsListHovered(false)}>
-              <span style={{ display: 'flex', alignItems: 'center' }}>
-                <AiTwotoneShop style={{ marginRight: '5px' }} />
-                <Typography>{shop.name}&nbsp;</Typography>
-                <Typography style={{ color: '#c3c3c3' }}>
-                  ({shop.address})
-                </Typography>
-              </span>
+            <ListItem onClick={() => setIsListHovered(false)} key={index}>
+              <Link
+                to={`/store/${stringToUrl(shop.name)}/${stringToUrl(
+                  shop.address
+                )}`}
+              >
+                <span style={{ display: 'flex', alignItems: 'center' }}>
+                  <AiTwotoneShop style={{ marginRight: '5px' }} />
+                  <Typography>{shop.name}&nbsp;</Typography>
+                  <Typography style={{ color: '#c3c3c3' }}>
+                    ({shop.address})
+                  </Typography>
+                </span>
+              </Link>
             </ListItem>
           ))}
         </MenuList>

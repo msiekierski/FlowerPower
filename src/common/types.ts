@@ -70,7 +70,8 @@ export type FlowerShopProduct = {
   productId: string;
   price: number;
   description: string;
-  category: ProductCategory;
+  category: string;
+  subcategory?: string;
 };
 
 export type FlowerShop = {
@@ -79,6 +80,7 @@ export type FlowerShop = {
   city: string;
   phone: string;
   hasDelivery: boolean;
+  openingHours: Array<OpeningHours | null>;
   reviews: Array<Review>;
   products: Array<FlowerShopProduct>;
 };
@@ -100,3 +102,25 @@ export type ShopSearch = {
   address: string;
   id: string;
 };
+
+export enum ApiCallState {
+  FETCH_BEGIN = 'fetch_begin',
+  FETCH_ERROR = 'fetch_error',
+  FETCH_SUCCESS = 'fetch_success',
+  IDLE = 'idle',
+}
+
+export enum Roles {
+  CLIENT = 'Client',
+  EMPLOYEE = 'Employee',
+  OWNER = 'Owner',
+  ADMIN = 'Admin',
+}
+
+export type SearchItem = {
+  id: string;
+  imageUrl: string;
+  category: string;
+  subcategory: string;
+
+}

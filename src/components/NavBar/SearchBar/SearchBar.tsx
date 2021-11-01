@@ -2,6 +2,7 @@ import { alpha, InputBase, makeStyles } from '@material-ui/core';
 import React, { useState, useRef, useEffect } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import SearchList from './SearchList';
+import { useHistory } from 'react-router';
 
 type StyleProps = {
   isSearchFocused: boolean;
@@ -79,25 +80,33 @@ const SearchBar: React.FC<Props> = ({
   const [input, setInput] = useState<string>('');
   const classes = useStyles({ isSearchFocused })();
   const searchBarRef = useRef<HTMLDivElement>(null);
+  const history = useHistory();
+
+  const onSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    history.push(`/search/item/${input}`);
+  };
 
   return (
     <>
       <div className={classes.search} ref={searchBarRef}>
-        <div className={classes.searchIcon}>
-          <SearchIcon />
-        </div>
-        <InputBase
-          placeholder="Search..."
-          classes={{
-            root: classes.inputRoot,
-            input: classes.inputInput,
-            focused: classes.focusedSearch,
-          }}
-          onFocus={() => setIsSearchFocused(true)}
-          onBlur={() => setIsSearchFocused(false)}
-          fullWidth
-          onChange={(e) => setInput(e.target.value)}
-        />
+        <form onSubmit={onSearchSubmit}>
+          <div className={classes.searchIcon}>
+            <SearchIcon />
+          </div>
+          <InputBase
+            placeholder="Search..."
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput,
+              focused: classes.focusedSearch,
+            }}
+            onFocus={() => setIsSearchFocused(true)}
+            onBlur={() => setIsSearchFocused(false)}
+            fullWidth
+            onChange={(e) => setInput(e.target.value)}
+          />
+        </form>
       </div>
       <SearchList
         inputText={input}

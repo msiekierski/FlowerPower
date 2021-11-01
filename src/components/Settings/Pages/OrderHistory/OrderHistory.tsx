@@ -184,7 +184,7 @@ const OrderHistory = () => {
           <TextField {...params} label="Filter by order number" />
         )}
         isOptionEqualToValue={(option, value) =>
-          value.orderNumber == option.orderNumber
+          value.orderNumber === option.orderNumber
         }
       />
       <Autocomplete

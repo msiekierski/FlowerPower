@@ -3,4 +3,5 @@ export enum ActionType {
   LOGIN_ERROR = "login_error",
   LOGOUT = 'logout',
   CLEAR_LOGIN_DATA = 'clear_login_data',
+  START_FETCHING = 'START_FETCHING',
 }
