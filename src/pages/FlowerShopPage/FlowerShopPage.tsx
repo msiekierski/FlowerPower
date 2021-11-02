@@ -32,6 +32,7 @@ import axios from 'axios';
 import apiFlowerShopProductToState from '../../utils/objectMapping/apiFlowerShopProductToState';
 import apiShopPageToState from '../../utils/objectMapping/apiShopPageToState';
 import ErrorPage from '../ErrorPage/ErrorPage';
+import * as _ from 'lodash';
 
 type FlowerShopPageParams = {
   shopName: string;
@@ -130,7 +131,9 @@ const FlowerShopPage = () => {
       const response = await axios.get(
         getUrl(urlToString(shopName), urlToString(shopAddress))
       );
-      console.log(response.data);
+      let { products } = response.data;
+      console.log(products);
+      // console.log(_.groupBy(products, 'name'));
       setData(apiShopPageToState(response.data));
       setStatus(ApiCallState.FETCH_SUCCESS);
     } catch (e) {
@@ -141,7 +144,7 @@ const FlowerShopPage = () => {
 
   if (status === ApiCallState.IDLE || status === ApiCallState.FETCH_BEGIN) {
     return (
-      <Backdrop open={true}>
+      <Backdrop open={true} style={{ backgroundColor: '#fff' }}>
         <CircularProgress color="inherit" />
       </Backdrop>
     );
