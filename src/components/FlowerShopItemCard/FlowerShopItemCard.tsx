@@ -10,7 +10,11 @@ import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../redux/cart';
 import AddCartItemDialog from '../AddCartItemDialog/AddCartItemDialog';
-import { FlowerShopProduct, ProductCategory } from '../../common/types';
+import {
+  CartProduct,
+  FlowerShopProduct,
+  ProductCategory,
+} from '../../common/types';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import Carousel from 'react-material-ui-carousel';
 
@@ -39,16 +43,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const item = {
-  productId: '4123213',
-  productImageUrl:
-    'https://www.ikea.com/nl/en/images/products/smycka-artificial-flower-rose-red__0636963_pe698124_s5.jpg',
-  itemDescription: 'description',
-  storeName: 'Shop 1',
-  itemPrice: 7.99,
-  quantity: 1,
-};
-
 const flowerShopProduct: FlowerShopProduct = {
   imageUrl:
     'https://www.ikea.com/nl/en/images/products/smycka-artificial-flower-rose-red__0636963_pe698124_s5.jpg',
@@ -68,6 +62,7 @@ const FlowerShopItemCard: React.FC<Props> = ({ shopItems }) => {
   const dispatch = useDispatch();
   const { addItem } = bindActionCreators(actionCreators, dispatch);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [selectedItemId, setSelectedItemId] = useState<number>(0);
 
   const getDetails = (item: FlowerShopProduct) => {
     if (item.subcategory === 'Flowers') {
@@ -77,21 +72,38 @@ const FlowerShopItemCard: React.FC<Props> = ({ shopItems }) => {
     }
   };
 
-  const handleAddClick = () => {
-    addItem(item);
+  const handleAddClick = (itemId: number) => {
+    let storeName = 'unknown';
+    if (shopItems[itemId].storeName !== undefined) {
+      storeName = shopItems[itemId].storeName!;
+    }
+    const cartProduct: CartProduct = {
+      productId: shopItems[itemId].productId,
+      productImageUrl: shopItems[itemId].imageUrl,
+      itemDescription:
+        shopItems[itemId].description + `${getDetails(shopItems[itemId])}`,
+      storeName: storeName,
+      itemPrice: shopItems[itemId].price,
+      quantity: 1,
+    };
+    addItem(cartProduct);
     setIsDialogOpen(true);
   };
 
   return (
     <>
       <div className={classes.mainContainer}>
-        <Carousel indicators={false} autoPlay={false}>
+        <Carousel
+          indicators={false}
+          autoPlay={false}
+          onChange={(now?: number, previous?: number) => setSelectedItemId(now!)}
+        >
           {shopItems.map((item, index) => (
             <>
               <AddCartItemDialog
                 isOpen={isDialogOpen}
                 onClose={() => setIsDialogOpen(false)}
-                product={flowerShopProduct}
+                product={shopItems[selectedItemId]}
               />
 
               <CardActionArea className={classes.item}>
@@ -108,13 +120,16 @@ const FlowerShopItemCard: React.FC<Props> = ({ shopItems }) => {
                   {item.price} PLN
                 </Typography>
               </CardActionArea>
+              <div
+                className={classes.addIcon}
+                onClick={() => handleAddClick(index)}
+              >
+                <ShoppingBasketOutlinedIcon />
+                <Typography style={{ fontWeight: 'bold' }}>Add</Typography>
+              </div>
             </>
           ))}
         </Carousel>
-        <div className={classes.addIcon} onClick={() => handleAddClick()}>
-          <ShoppingBasketOutlinedIcon />
-          <Typography style={{ fontWeight: 'bold' }}>Add</Typography>
-        </div>
       </div>
     </>
   );

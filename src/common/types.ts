@@ -69,6 +69,7 @@ export type FlowerShopProduct = {
   imageUrl: string;
   productId: string;
   price: number;
+  storeName?: string;
   description: string;
   color?: string;
   size?: string;

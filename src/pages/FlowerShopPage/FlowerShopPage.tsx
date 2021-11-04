@@ -177,7 +177,14 @@ const FlowerShopPage = () => {
       const response = await axios.get(
         getUrl(urlToString(shopName), urlToString(shopAddress))
       );
-      setData(apiShopPageToState(response.data));
+      const mapped = apiShopPageToState(response.data);
+      setData({
+        ...mapped,
+        products: mapped.products.map((product) => {
+          product.storeName = urlToString(shopName);
+          return product;
+        }),
+      });
       setStatus(ApiCallState.FETCH_SUCCESS);
     } catch (e) {
       console.log(e);

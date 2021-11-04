@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AddCartItemDialog: React.FC<Props> = ({ isOpen, onClose, product }) => {
-  const { imageUrl, description } = product;
+  const { imageUrl, description, price, size, color } = product;
   const classes = useStyles();
   const history = useHistory();
   return (
@@ -47,7 +47,7 @@ const AddCartItemDialog: React.FC<Props> = ({ isOpen, onClose, product }) => {
           >
             <AiOutlineCheck style={{ color: 'green' }} />
             <Typography variant="h6">
-              Item has been added to the cart.
+              {description} has been added to the cart.
             </Typography>
           </div>
 
@@ -58,11 +58,25 @@ const AddCartItemDialog: React.FC<Props> = ({ isOpen, onClose, product }) => {
         <CardMedia
           component="img"
           image={imageUrl}
+          alt="Product image"
           style={{ width: 'auto', maxHeight: '200px', margin: 'auto' }}
         />
 
         <Typography align="center" style={{ marginTop: '20px' }}>
           {description}
+        </Typography>
+        {size && (
+          <Typography align="center" style={{ marginTop: '5px' }}>
+            Size: {size}
+          </Typography>
+        )}
+        {color && (
+          <Typography align="center" style={{ marginTop: '5px' }}>
+            Color: {color}
+          </Typography>
+        )}
+        <Typography align="center" style={{ marginTop: '5px' }}>
+          Price: {price}
         </Typography>
       </DialogContent>
 
