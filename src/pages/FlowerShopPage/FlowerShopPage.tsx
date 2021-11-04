@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
 
 const categories: Array<ShopCategory> = [
   { name: 'Flowers', url: flowers, apiSubstitute: 'Flower' },
-  { name: 'Pots', url: pots, apiSubstitute: 'Flowerpot' },
+  { name: 'Flowerpots', url: pots, apiSubstitute: 'Flowerpot' },
   { name: 'Seeds', url: seeds, apiSubstitute: 'Seed' },
   { name: 'Cards', url: cards, apiSubstitute: 'Card' },
   { name: 'Ornaments', url: ornaments, apiSubstitute: 'Ornament' },
