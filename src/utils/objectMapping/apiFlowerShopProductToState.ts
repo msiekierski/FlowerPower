@@ -8,6 +8,8 @@ export default function apiFlowerShopProductToState(object: any) {
     category: object.category,
     subcategory: object.subCategory,
     description: object.name,
+    color: object.color,
+    size: object.sizes,
   };
   return result;
 }

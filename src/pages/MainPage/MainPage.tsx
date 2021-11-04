@@ -73,6 +73,7 @@ const MainPage = () => {
         `http://localhost:8080/flowerPower/customer/get/shopList`,
         { params: { city: city } }
       );
+      console.log(data);
       setRecomenndedShops(data.map((data: any) => apiShopListToState(data)));
     } catch (e) {
       console.log(e);
@@ -92,10 +93,7 @@ const MainPage = () => {
       <div className={classes.carouselContainer}>
         <Carousel animation="slide">
           {carouselLinks.map((item, i) => (
-            <CarouselItem
-              key={i}
-              imageSource={item}
-            />
+            <CarouselItem key={i} imageSource={item} />
           ))}
         </Carousel>
       </div>

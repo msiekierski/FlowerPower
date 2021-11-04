@@ -11,6 +11,8 @@ import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../redux/cart';
 import AddCartItemDialog from '../AddCartItemDialog/AddCartItemDialog';
 import { FlowerShopProduct, ProductCategory } from '../../common/types';
+import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+import Carousel from 'react-material-ui-carousel';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -56,12 +58,24 @@ const flowerShopProduct: FlowerShopProduct = {
   category: ProductCategory.BUNCH,
 };
 
-const FlowerShopItemCard = () => {
+type Props = {
+  shopItems: Array<FlowerShopProduct>;
+};
+
+const FlowerShopItemCard: React.FC<Props> = ({ shopItems }) => {
   const classes = useStyles();
 
   const dispatch = useDispatch();
   const { addItem } = bindActionCreators(actionCreators, dispatch);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+
+  const getDetails = (item: FlowerShopProduct) => {
+    if (item.subcategory === 'Flowers') {
+      return `(${item.color})`;
+    } else if (item.subcategory === 'Bunches') {
+      return `(${item.size})`;
+    }
+  };
 
   const handleAddClick = () => {
     addItem(item);
@@ -70,22 +84,33 @@ const FlowerShopItemCard = () => {
 
   return (
     <>
-      <AddCartItemDialog
-        isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
-        product={flowerShopProduct}
-      />
       <div className={classes.mainContainer}>
-        <CardActionArea className={classes.item}>
-          <CardMedia
-            component="img"
-            image="https://www.ikea.com/nl/en/images/products/smycka-artificial-flower-rose-red__0636963_pe698124_s5.jpg"
-            alt="alt"
-            
-          />
-          <Typography style={{ fontWeight: 'bold' }}>Red rose</Typography>
-          <Typography style={{ color: 'green' }}>7,99</Typography>
-        </CardActionArea>
+        <Carousel indicators={false} autoPlay={false}>
+          {shopItems.map((item, index) => (
+            <>
+              <AddCartItemDialog
+                isOpen={isDialogOpen}
+                onClose={() => setIsDialogOpen(false)}
+                product={flowerShopProduct}
+              />
+
+              <CardActionArea className={classes.item}>
+                <CardMedia
+                  component="img"
+                  image="https://www.ikea.com/nl/en/images/products/smycka-artificial-flower-rose-red__0636963_pe698124_s5.jpg"
+                  alt="alt"
+                />
+                <Typography style={{ fontWeight: 'bold' }} align="center">
+                  {item.description}
+                </Typography>
+                <Typography align="center"> {getDetails(item)}</Typography>
+                <Typography style={{ color: 'green' }}>
+                  {item.price} PLN
+                </Typography>
+              </CardActionArea>
+            </>
+          ))}
+        </Carousel>
         <div className={classes.addIcon} onClick={() => handleAddClick()}>
           <ShoppingBasketOutlinedIcon />
           <Typography style={{ fontWeight: 'bold' }}>Add</Typography>

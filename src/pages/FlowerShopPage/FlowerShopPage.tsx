@@ -33,17 +33,13 @@ import apiFlowerShopProductToState from '../../utils/objectMapping/apiFlowerShop
 import apiShopPageToState from '../../utils/objectMapping/apiShopPageToState';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import * as _ from 'lodash';
+import usePagination from '../../utils/customHooks/usePagination';
+import { Pagination } from '@mui/material';
 
 type FlowerShopPageParams = {
   shopName: string;
   shopAddress: string;
 };
-
-enum FetchStatus {
-  LOADING = 'loading',
-  FETCH_SUCCESS = 'fetch_success',
-  FETCH_FAILED = 'fetch_failed',
-}
 
 const useStyles = makeStyles((theme) => ({
   headerContainer: {
@@ -87,42 +83,92 @@ const useStyles = makeStyles((theme) => ({
     rowGap: '10px',
     flexWrap: 'wrap',
   },
+  items: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'center',
+    rowGap: '20px',
+    columnGap: '10px',
+  },
+  pagination: {
+    margin: 'auto',
+    width: 'auto',
+  },
 }));
 
 const categories: Array<ShopCategory> = [
-  { name: 'Flowers', url: flowers },
-  { name: 'Bunches', url: bunches },
-  { name: 'Flowers in a vase', url: vase },
-  { name: 'Flowers in a box', url: box },
-  { name: 'Flowers in the basket', url: basket },
-  { name: 'Pots', url: pots },
-  { name: 'Seeds', url: seeds },
-  { name: 'Cards', url: cards },
-  { name: 'Ornaments', url: ornaments },
+  { name: 'Flowers', url: flowers, apiSubstitute: 'Flower' },
+  { name: 'Pots', url: pots, apiSubstitute: 'Flowerpot' },
+  { name: 'Seeds', url: seeds, apiSubstitute: 'Seed' },
+  { name: 'Cards', url: cards, apiSubstitute: 'Card' },
+  { name: 'Ornaments', url: ornaments, apiSubstitute: 'Ornament' },
 ];
 
 const getUrl = (name: string, address: string) => {
   return `${process.env.REACT_APP_API_ADDRESS}/flowerPower/customer/shop/${name}/${address}`;
 };
 
+const initData: FlowerShop = {
+  name: '',
+  street: '',
+  city: '',
+  hasDelivery: false,
+  phone: '',
+  reviews: [],
+  products: [],
+  openingHours: [],
+};
+
 const FlowerShopPage = () => {
   const { shopName, shopAddress } = useParams<FlowerShopPageParams>();
   const [status, setStatus] = useState<ApiCallState>(ApiCallState.IDLE);
   const classes = useStyles();
-  const [data, setData] = useState<FlowerShop>({
-    name: '',
-    street: '',
-    city: '',
-    hasDelivery: false,
-    phone: '',
-    reviews: [],
-    products: [],
-    openingHours: [],
-  });
-  const { name, street, city, hasDelivery, phone, reviews, openingHours } =
-    data;
+  const [data, setData] = useState<FlowerShop>(initData);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const {
+    name,
+    street,
+    city,
+    hasDelivery,
+    phone,
+    reviews,
+    openingHours,
+    products,
+  } = data;
+
+  const [activeCategory, setActiveCategory] = useState<string>('');
+
+  const groupFilteredProducts = () => {
+    if (activeCategory.length > 0) {
+      return _.groupBy(
+        products.filter(
+          (product) => product.category === activeCategory.slice(0, -1)
+        ),
+        'description'
+      );
+    } else {
+      return _.groupBy(products, 'description');
+    }
+  };
+
+  const grouped = groupFilteredProducts();
+
+  const availableCategories = Array.from(
+    new Set(products.map((product) => product.category))
+  );
+
+  const ITEMS_PER_PAGE = 12;
+  const itemData = Object.keys(grouped);
+  const _itemData = usePagination(itemData, ITEMS_PER_PAGE);
+  const count = Math.ceil(itemData.length / ITEMS_PER_PAGE);
+
   useEffect(() => {
     fetchData();
+    return () => {
+      setData(initData);
+      setStatus(ApiCallState.IDLE);
+    };
   }, []);
 
   const fetchData = async () => {
@@ -131,15 +177,17 @@ const FlowerShopPage = () => {
       const response = await axios.get(
         getUrl(urlToString(shopName), urlToString(shopAddress))
       );
-      let { products } = response.data;
-      console.log(products);
-      // console.log(_.groupBy(products, 'name'));
       setData(apiShopPageToState(response.data));
       setStatus(ApiCallState.FETCH_SUCCESS);
     } catch (e) {
       console.log(e);
       setStatus(ApiCallState.FETCH_ERROR);
     }
+  };
+
+  const handlePageChange = (e: React.ChangeEvent<unknown>, p: number) => {
+    setCurrentPage(p);
+    _itemData.jump(p);
   };
 
   if (status === ApiCallState.IDLE || status === ApiCallState.FETCH_BEGIN) {
@@ -216,13 +264,66 @@ const FlowerShopPage = () => {
           </Grid>
         </Grid>
         <div className={classes.categories}>
-          {categories.map((category, index) => (
-            <ShopCategoryImage key={index} {...category} />
-          ))}
+          {categories
+            .filter((category) =>
+              availableCategories.includes(category.apiSubstitute)
+            )
+            .map((category, index) => (
+              <ShopCategoryImage
+                key={index}
+                {...category}
+                isActive={category.name === activeCategory}
+                onClick={() => {
+                  activeCategory === category.name
+                    ? setActiveCategory('')
+                    : setActiveCategory(category.name);
+                }}
+              />
+            ))}
         </div>
-        <div>
-          <FlowerShopItemCard />
+
+        <Pagination
+          count={count}
+          size="large"
+          page={currentPage}
+          variant="outlined"
+          shape="rounded"
+          onChange={handlePageChange}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: '20px',
+          }}
+        />
+
+        <div className={classes.items}>
+          {_itemData.currentData().length > 0 ? (
+            _itemData.currentData().map((name) => (
+              <FlowerShopItemCard
+                key={name}
+                shopItems={grouped[name].map((item) => {
+                  item.description = name;
+                  return item;
+                })}
+              />
+            ))
+          ) : (
+            <Typography align="center">No items to be displayed</Typography>
+          )}
         </div>
+        <Pagination
+          count={count}
+          size="large"
+          page={currentPage}
+          variant="outlined"
+          shape="rounded"
+          onChange={handlePageChange}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: '20px',
+          }}
+        />
       </Container>
     </>
   );

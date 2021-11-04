@@ -70,6 +70,8 @@ export type FlowerShopProduct = {
   productId: string;
   price: number;
   description: string;
+  color?: string;
+  size?: string;
   category: string;
   subcategory?: string;
 };
@@ -122,5 +124,4 @@ export type SearchItem = {
   imageUrl: string;
   category: string;
   subcategory: string;
-
-}
+};
