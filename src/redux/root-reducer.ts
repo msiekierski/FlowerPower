@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage';
 import persistReducer from 'redux-persist/es/persistReducer';
 import { createWhitelistFilter } from 'redux-persist-transform-filter';
 import cartReducer from './cart/cart.reducer';
+import shopReducer from './shop/shop.reducer';
 
 const rootPersistConfig = {
   key: 'root',
@@ -14,9 +15,16 @@ const rootPersistConfig = {
   ],
 };
 
+const shopPersistConfig = {
+  key: 'shop',
+  storage,
+  whitelist: [],
+};
+
 const rootReducer = combineReducers({
   user: userReducer,
   cart: cartReducer,
+  shop: persistReducer(shopPersistConfig, shopReducer),
 });
 
 export const pReducer = persistReducer(rootPersistConfig, rootReducer);

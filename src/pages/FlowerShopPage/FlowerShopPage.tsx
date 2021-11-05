@@ -35,6 +35,10 @@ import ErrorPage from '../ErrorPage/ErrorPage';
 import * as _ from 'lodash';
 import usePagination from '../../utils/customHooks/usePagination';
 import { Pagination } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreator } from '../../redux/shop';
+import { RootState } from '../../redux/root-reducer';
 
 type FlowerShopPageParams = {
   shopName: string;
@@ -105,27 +109,17 @@ const categories: Array<ShopCategory> = [
   { name: 'Ornaments', url: ornaments, apiSubstitute: 'Ornament' },
 ];
 
-const getUrl = (name: string, address: string) => {
-  return `${process.env.REACT_APP_API_ADDRESS}/flowerPower/customer/shop/${name}/${address}`;
-};
-
-const initData: FlowerShop = {
-  name: '',
-  street: '',
-  city: '',
-  hasDelivery: false,
-  phone: '',
-  reviews: [],
-  products: [],
-  openingHours: [],
-};
-
 const FlowerShopPage = () => {
   const { shopName, shopAddress } = useParams<FlowerShopPageParams>();
-  const [status, setStatus] = useState<ApiCallState>(ApiCallState.IDLE);
-  const classes = useStyles();
-  const [data, setData] = useState<FlowerShop>(initData);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  ///
+  const dispatch = useDispatch();
+  const { fetchShopData, setActiveCategory, setPagination } =
+    bindActionCreators(actionCreator, dispatch);
+  const { activeCategory, fetchStatus, shop } = useSelector(
+    (root: RootState) => root.shop
+  );
+  console.log(shop);
   const {
     name,
     street,
@@ -135,9 +129,9 @@ const FlowerShopPage = () => {
     reviews,
     openingHours,
     products,
-  } = data;
+  } = shop.data;
 
-  const [activeCategory, setActiveCategory] = useState<string>('');
+  const classes = useStyles();
 
   const groupFilteredProducts = () => {
     if (activeCategory.length > 0) {
@@ -154,57 +148,35 @@ const FlowerShopPage = () => {
 
   const grouped = groupFilteredProducts();
 
-  const availableCategories = Array.from(
-    new Set(products.map((product) => product.category))
-  );
-
   const ITEMS_PER_PAGE = 12;
   const itemData = Object.keys(grouped);
   const _itemData = usePagination(itemData, ITEMS_PER_PAGE);
   const count = Math.ceil(itemData.length / ITEMS_PER_PAGE);
 
+  const availableCategories = Array.from(
+    new Set(products.map((product) => product.category))
+  );
+
   useEffect(() => {
-    fetchData();
-    return () => {
-      setData(initData);
-      setStatus(ApiCallState.IDLE);
-    };
+    fetchShopData(urlToString(shopName), urlToString(shopAddress));
   }, []);
 
-  const fetchData = async () => {
-    try {
-      setStatus(ApiCallState.FETCH_BEGIN);
-      const response = await axios.get(
-        getUrl(urlToString(shopName), urlToString(shopAddress))
-      );
-      const mapped = apiShopPageToState(response.data);
-      setData({
-        ...mapped,
-        products: mapped.products.map((product) => {
-          product.storeName = urlToString(shopName);
-          return product;
-        }),
-      });
-      setStatus(ApiCallState.FETCH_SUCCESS);
-    } catch (e) {
-      console.log(e);
-      setStatus(ApiCallState.FETCH_ERROR);
-    }
-  };
-
   const handlePageChange = (e: React.ChangeEvent<unknown>, p: number) => {
-    setCurrentPage(p);
+    setPagination(p);
     _itemData.jump(p);
   };
 
-  if (status === ApiCallState.IDLE || status === ApiCallState.FETCH_BEGIN) {
+  if (
+    fetchStatus === ApiCallState.IDLE ||
+    fetchStatus === ApiCallState.FETCH_BEGIN
+  ) {
     return (
       <Backdrop open={true} style={{ backgroundColor: '#fff' }}>
         <CircularProgress color="inherit" />
       </Backdrop>
     );
   }
-  if (status === ApiCallState.FETCH_ERROR) {
+  if (fetchStatus === ApiCallState.FETCH_ERROR) {
     return <ErrorPage />;
   }
   return (
@@ -284,6 +256,7 @@ const FlowerShopPage = () => {
                   activeCategory === category.name
                     ? setActiveCategory('')
                     : setActiveCategory(category.name);
+                  _itemData.jump(1);
                 }}
               />
             ))}
@@ -292,7 +265,7 @@ const FlowerShopPage = () => {
         <Pagination
           count={count}
           size="large"
-          page={currentPage}
+          page={shop.pagination}
           variant="outlined"
           shape="rounded"
           onChange={handlePageChange}
@@ -321,7 +294,7 @@ const FlowerShopPage = () => {
         <Pagination
           count={count}
           size="large"
-          page={currentPage}
+          page={shop.pagination}
           variant="outlined"
           shape="rounded"
           onChange={handlePageChange}
