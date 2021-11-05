@@ -80,6 +80,7 @@ export type FlowerShopPreviewCardProps = {
   name: string;
   address: string;
   zipCode: string;
+  city: string;
   rating: number;
   reviewCount: number;
   imagePath: string;
@@ -93,6 +94,7 @@ const FlowerShopPreviewCard: React.FC<FlowerShopPreviewCardProps> = ({
   zipCode,
   imagePath,
   hasShipping,
+  city,
   reviewCount,
 }: FlowerShopPreviewCardProps) => {
   const classes = useStyle();
@@ -118,7 +120,9 @@ const FlowerShopPreviewCard: React.FC<FlowerShopPreviewCardProps> = ({
                 </div>
                 <span className={classes.address} style={{ marginTop: '10px' }}>
                   <Typography noWrap>{address}</Typography>
-                  <Typography noWrap>{zipCode}</Typography>
+                  <Typography noWrap>
+                    {zipCode} {city}
+                  </Typography>
                 </span>
               </div>
               <span
