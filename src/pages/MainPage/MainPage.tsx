@@ -70,7 +70,7 @@ const MainPage = () => {
     }
     try {
       const { data } = await axios.get(
-        `http://localhost:8080/flowerPower/customer/get/shopList`,
+        `${process.env.REACT_APP_API_ADDRESS}flowerPower/customer/get/shopList`,
         { params: { city: city } }
       );
       console.log(data);
