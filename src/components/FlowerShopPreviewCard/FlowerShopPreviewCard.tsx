@@ -79,6 +79,7 @@ const useStyle = makeStyles((theme) => ({
 export type FlowerShopPreviewCardProps = {
   name: string;
   address: string;
+  zipCode: string;
   rating: number;
   reviewCount: number;
   imagePath: string;
@@ -89,15 +90,15 @@ const FlowerShopPreviewCard: React.FC<FlowerShopPreviewCardProps> = ({
   name,
   address,
   rating,
+  zipCode,
   imagePath,
   hasShipping,
   reviewCount,
 }: FlowerShopPreviewCardProps) => {
   const classes = useStyle();
-  const addressSplit = address.split(',');
   return (
     <Card className={classes.card}>
-      <Link to={`/store/${stringToUrl(name)}/${stringToUrl(addressSplit[0])}`}>
+      <Link to={`/store/${stringToUrl(name)}/${stringToUrl(address)}`}>
         <CardActionArea>
           <CardContent>
             <div className={classes.container}>
@@ -116,8 +117,8 @@ const FlowerShopPreviewCard: React.FC<FlowerShopPreviewCardProps> = ({
                   </div>
                 </div>
                 <span className={classes.address} style={{ marginTop: '10px' }}>
-                  <Typography noWrap>{addressSplit[0]}</Typography>
-                  <Typography noWrap>{addressSplit[1]}</Typography>
+                  <Typography noWrap>{address}</Typography>
+                  <Typography noWrap>{zipCode}</Typography>
                 </span>
               </div>
               <span
