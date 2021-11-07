@@ -54,6 +54,7 @@ const flowerShopProduct: FlowerShopProduct = {
 
 type Props = {
   shopItems: Array<FlowerShopProduct>;
+  
 };
 
 const FlowerShopItemCard: React.FC<Props> = ({ shopItems }) => {

@@ -126,3 +126,12 @@ export type SearchItem = {
   category: string;
   subcategory: string;
 };
+
+export type SearchResultItem = {
+  name: string;
+  itemId: string;
+  minPrice: number;
+  imageUrl: string;
+  color? : string;
+  discount?: number;
+}

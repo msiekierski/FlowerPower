@@ -84,7 +84,8 @@ const SearchBar: React.FC<Props> = ({
 
   const onSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    history.push(`/search/item/${input}`);
+    history.push(`/search/?phrase=${input}`);
+    setIsSearchFocused(false);
   };
 
   return (
