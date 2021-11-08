@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import CartPage from '../../pages/CartPage/CartPage';
+import ComparePricesPage from '../../pages/ComparePricesPage/ComparePricesPage';
 import ErrorPage from '../../pages/ErrorPage/ErrorPage';
 import FlowerShopPage from '../../pages/FlowerShopPage/FlowerShopPage';
 import LoginPage from '../../pages/LoginPage/LoginPage';
@@ -39,13 +40,16 @@ const ContentSwitch = () => {
       <Route exact path="/search/item/:itemName">
         <SearchItemPage />
       </Route>
+      <Route exact path="/compare/item/:itemId">
+        <ComparePricesPage />
+      </Route>
       <Route path="/search/">
         <SearchResultPage />
       </Route>
       <Route exact path="/store/:shopName/:shopAddress">
         <FlowerShopPage />
       </Route>
-      <Route exact path="/item/:id">
+      <Route exact path="/store/:shopName/:shopAddress/item/:id">
         <ProductPage />
       </Route>
 

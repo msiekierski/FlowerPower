@@ -6,6 +6,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import React from 'react';
+import { useHistory } from 'react-router';
 import { SearchResultItem } from '../../common/types';
 
 const useStyles = makeStyles((theme) => ({
@@ -32,6 +33,7 @@ type Props = {
 
 const SearchResultProduct: React.FC<Props> = ({ item }) => {
   const classes = useStyles();
+  const history = useHistory();
   const { name, itemId, minPrice, imageUrl } = item;
   return (
     <div className={classes.mainContainer}>
@@ -40,9 +42,14 @@ const SearchResultProduct: React.FC<Props> = ({ item }) => {
         <Typography style={{ fontWeight: 'bold' }} align="center">
           {name}
         </Typography>
-        <Typography style={{ color: 'green' }}>{item.minPrice}+ PLN</Typography>
+        <Typography style={{ color: 'green' }}>{minPrice}+ PLN</Typography>
       </CardActionArea>
-      <Button variant='contained'>Compare Prices</Button>
+      <Button
+        variant="contained"
+        onClick={() => history.push(`/compare/item/${itemId}`)}
+      >
+        Compare Prices
+      </Button>
     </div>
   );
 };

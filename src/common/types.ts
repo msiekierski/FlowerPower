@@ -132,6 +132,17 @@ export type SearchResultItem = {
   itemId: string;
   minPrice: number;
   imageUrl: string;
-  color? : string;
+  color?: string;
   discount?: number;
-}
+};
+
+export type ComparisonItem = {
+  shopName: string;
+  shopImageUrl: string;
+  itemImageUrl: string;
+  rating: number;
+  reviewCount: number;
+  price: number;
+  shopAddress: string;
+  productName: string;
+};
