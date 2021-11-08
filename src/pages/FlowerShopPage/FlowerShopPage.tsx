@@ -7,7 +7,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import { Redirect, useParams } from 'react-router';
 import { ApiCallState, FlowerShop, OpeningHours } from '../../common/types';
@@ -132,6 +132,7 @@ const FlowerShopPage = () => {
   } = shop.data;
 
   const classes = useStyles();
+  const productsDivRef = useRef<HTMLDivElement | null>(null);
 
   const groupFilteredProducts = () => {
     if (activeCategory.length > 0) {
@@ -148,7 +149,7 @@ const FlowerShopPage = () => {
 
   const grouped = groupFilteredProducts();
 
-  const ITEMS_PER_PAGE = 12;
+  const ITEMS_PER_PAGE = 16;
   const itemData = Object.keys(grouped);
   const _itemData = usePagination(itemData, ITEMS_PER_PAGE);
   const count = Math.ceil(itemData.length / ITEMS_PER_PAGE);
@@ -181,130 +182,128 @@ const FlowerShopPage = () => {
   }
   return (
     <>
-      <Container>
-        <div className={classes.headerContainer}>
-          <div className={classes.shopInfo}>
-            <div className={classes.shopName}>
-              <Typography variant="h5" style={{ fontWeight: 'bold' }}>
-                {name}
-              </Typography>
-              <ShippingIcon available={hasDelivery} />
-            </div>
-            <Typography>{street}</Typography>
-            <Typography>{city}</Typography>
-            <Typography>{phone}</Typography>
+      <div className={classes.headerContainer}>
+        <div className={classes.shopInfo}>
+          <div className={classes.shopName}>
+            <Typography variant="h5" style={{ fontWeight: 'bold' }}>
+              {name}
+            </Typography>
+            <ShippingIcon available={hasDelivery} />
           </div>
-          <div style={{ marginTop: '16px' }}>
-            <OpeningStatus openingHours={openingHours} />
-          </div>
+          <Typography>{street}</Typography>
+          <Typography>{city}</Typography>
+          <Typography>{phone}</Typography>
         </div>
-        {reviews.length > 0 && (
-          <div className={classes.reviewCard}>
-            <Carousel animation="slide">
-              {reviews.map((review, index) => (
-                <FlowerShopReviewCard key={index} {...review} />
-              ))}
-            </Carousel>
-          </div>
-        )}
-
-        <Grid
-          container
-          style={{
-            height: '30vh',
-            marginTop: '60px',
-            overflow: 'hidden',
-            borderRadius: '5px',
-          }}
-        >
-          <Grid item xs={3}>
-            <CardMedia
-              height="100%"
-              component="img"
-              image="https://www.kanlux.com/storage/realizacje/18703_1.jpg"
-              alt="shop1"
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <CardMedia
-              height="100%"
-              component="img"
-              image="https://www.portel.pl/newsimg/duze/p1035/dzien-kobiet-w-kwiaciarni-romantycznej-103581.jpg"
-              alt="shop2"
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <CardMedia
-              height="100%"
-              component="img"
-              image="https://kwiaciarnialubon.com.pl/wp-content/uploads/2020/03/start-1.jpg"
-              alt="shop3"
-            />
-          </Grid>
-        </Grid>
-        <div className={classes.categories}>
-          {categories
-            .filter((category) =>
-              availableCategories.includes(category.apiSubstitute)
-            )
-            .map((category, index) => (
-              <ShopCategoryImage
-                key={index}
-                {...category}
-                isActive={category.name === activeCategory}
-                onClick={() => {
-                  activeCategory === category.name
-                    ? setActiveCategory('')
-                    : setActiveCategory(category.name);
-                  _itemData.jump(1);
-                }}
-              />
+        <div style={{ marginTop: '16px' }}>
+          <OpeningStatus openingHours={openingHours} />
+        </div>
+      </div>
+      {reviews.length > 0 && (
+        <div className={classes.reviewCard}>
+          <Carousel animation="slide">
+            {reviews.map((review, index) => (
+              <FlowerShopReviewCard key={index} {...review} />
             ))}
+          </Carousel>
         </div>
+      )}
 
-        <Pagination
-          count={count}
-          size="large"
-          page={shop.pagination}
-          variant="outlined"
-          shape="rounded"
-          onChange={handlePageChange}
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            marginBottom: '20px',
-          }}
-        />
+      <Grid
+        container
+        style={{
+          height: '30vh',
+          marginTop: '60px',
+          overflow: 'hidden',
+          borderRadius: '5px',
+        }}
+      >
+        <Grid item xs={3}>
+          <CardMedia
+            height="100%"
+            component="img"
+            image="https://www.kanlux.com/storage/realizacje/18703_1.jpg"
+            alt="shop1"
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <CardMedia
+            height="100%"
+            component="img"
+            image="https://www.portel.pl/newsimg/duze/p1035/dzien-kobiet-w-kwiaciarni-romantycznej-103581.jpg"
+            alt="shop2"
+          />
+        </Grid>
+        <Grid item xs={3}>
+          <CardMedia
+            height="100%"
+            component="img"
+            image="https://kwiaciarnialubon.com.pl/wp-content/uploads/2020/03/start-1.jpg"
+            alt="shop3"
+          />
+        </Grid>
+      </Grid>
+      <div className={classes.categories} ref={productsDivRef}>
+        {categories
+          .filter((category) =>
+            availableCategories.includes(category.apiSubstitute)
+          )
+          .map((category, index) => (
+            <ShopCategoryImage
+              key={index}
+              {...category}
+              isActive={category.name === activeCategory}
+              onClick={() => {
+                activeCategory === category.name
+                  ? setActiveCategory('')
+                  : setActiveCategory(category.name);
+                _itemData.jump(1);
+              }}
+            />
+          ))}
+      </div>
 
-        <div className={classes.items}>
-          {_itemData.currentData().length > 0 ? (
-            _itemData.currentData().map((name) => (
-              <FlowerShopItemCard
-                key={name}
-                shopItems={grouped[name].map((item) => {
-                  item.description = name;
-                  return item;
-                })}
-              />
-            ))
-          ) : (
-            <Typography align="center">No items to be displayed</Typography>
-          )}
-        </div>
-        <Pagination
-          count={count}
-          size="large"
-          page={shop.pagination}
-          variant="outlined"
-          shape="rounded"
-          onChange={handlePageChange}
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            marginTop: '20px',
-          }}
-        />
-      </Container>
+      <Pagination
+        count={count}
+        size="large"
+        page={shop.pagination}
+        variant="outlined"
+        shape="rounded"
+        onChange={handlePageChange}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          marginBottom: '20px',
+        }}
+      />
+
+      <div className={classes.items}>
+        {_itemData.currentData().length > 0 ? (
+          _itemData.currentData().map((name) => (
+            <FlowerShopItemCard
+              key={name}
+              shopItems={grouped[name].map((item) => {
+                item.description = name;
+                return item;
+              })}
+            />
+          ))
+        ) : (
+          <Typography align="center">No items to be displayed</Typography>
+        )}
+      </div>
+      <Pagination
+        count={count}
+        size="large"
+        page={shop.pagination}
+        variant="outlined"
+        shape="rounded"
+        onChange={handlePageChange}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          marginTop: '20px',
+        }}
+      />
     </>
   );
 };

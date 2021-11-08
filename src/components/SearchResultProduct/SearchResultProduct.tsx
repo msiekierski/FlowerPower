@@ -42,10 +42,13 @@ const SearchResultProduct: React.FC<Props> = ({ item }) => {
         <Typography style={{ fontWeight: 'bold' }} align="center">
           {name}
         </Typography>
-        <Typography style={{ color: 'green' }}>{minPrice}+ PLN</Typography>
+        <Typography align="center" style={{ color: 'green' }}>
+          starts from <b>{minPrice} PLN</b>
+        </Typography>
       </CardActionArea>
       <Button
         variant="contained"
+        color="secondary"
         onClick={() => history.push(`/compare/item/${itemId}`)}
       >
         Compare Prices
