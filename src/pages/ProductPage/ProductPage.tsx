@@ -23,7 +23,7 @@ import {
 import ErrorPage from '../ErrorPage/ErrorPage';
 import axios from 'axios';
 import { urlToString } from '../../utils/functions/urlToString';
-import apiFlowerShopProductToState from '../../utils/objectMapping/apiFlowerShopProductToState';
+import apiFlowerShopProductPageToState from '../../utils/objectMapping/apiFlowerShopProductPageToState';
 import { FcCheckmark } from 'react-icons/fc';
 import { TabPanel } from '@material-ui/lab';
 import { FormControl, FormHelperText } from '@mui/material';
@@ -198,7 +198,7 @@ const ProductPage = () => {
         )
       );
       const mappedData = data.productsModel.map((obj: any) =>
-        apiFlowerShopProductToState(obj)
+        apiFlowerShopProductPageToState(obj)
       );
       const sizes = Array.from(
         new Set(
