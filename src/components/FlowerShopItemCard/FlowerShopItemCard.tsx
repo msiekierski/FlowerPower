@@ -114,7 +114,7 @@ const FlowerShopItemCard: React.FC<Props> = ({ shopItems }) => {
               >
                 <CardMedia
                   component="img"
-                  image="https://www.ikea.com/nl/en/images/products/smycka-artificial-flower-rose-red__0636963_pe698124_s5.jpg"
+                  src={item.imageUrl}
                   alt="alt"
                   style={{
                     objectFit: 'contain',

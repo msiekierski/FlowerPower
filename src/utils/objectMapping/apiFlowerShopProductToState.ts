@@ -2,7 +2,7 @@ import { FlowerShopProduct } from '../../common/types';
 
 export default function apiFlowerShopProductToState(object: any) {
   const result: FlowerShopProduct = {
-    imageUrl: object.url,
+    imageUrl: object.image,
     productId: object.productId,
     price: object.price,
     category: object.category,
