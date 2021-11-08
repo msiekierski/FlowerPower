@@ -30,8 +30,9 @@ const useStyles = makeStyles((theme) => ({
     flex: '1 1 35%',
     display: 'flex',
     flexDirection: 'row',
+    maxHeight: '100%',
   },
-  image: { maxWidth: '50%', maxHeight: '100%', borderRadius: '5px' },
+  image: { maxWidth: '50%', maxHeight: '127.38px', borderRadius: '5px' },
   productInfo: {
     flex: '1 1 35%',
     display: 'flex',
