@@ -49,7 +49,7 @@ const ContentSwitch = () => {
       <Route exact path="/store/:shopName/:shopAddress">
         <FlowerShopPage />
       </Route>
-      <Route exact path="/store/:shopName/:shopAddress/item/:id">
+      <Route exact path="/store/:shopName/:shopAddress/item/:itemName">
         <ProductPage />
       </Route>
 

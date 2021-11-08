@@ -223,13 +223,13 @@ const NavBar = () => {
             <div className={classes.mobileMenuSplit}>
               <div>
                 <Typography variant="h5">Categories</Typography>
-                {categories.slice(0, 6).map((category, index) => {
+                {categories.slice(0, 5).map((category, index) => {
                   return <MenuItem key={index}>{category}</MenuItem>;
                 })}
               </div>
               <div>
                 <Typography variant="h5">Tools</Typography>
-                {categories.slice(6).map((category, index) => {
+                {categories.slice(5).map((category, index) => {
                   return <MenuItem key={index}>{category}</MenuItem>;
                 })}
               </div>

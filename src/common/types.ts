@@ -75,6 +75,8 @@ export type FlowerShopProduct = {
   size?: string;
   category: string;
   subcategory?: string;
+  longDescription?: string;
+  composition?:string;
 };
 
 export type FlowerShop = {

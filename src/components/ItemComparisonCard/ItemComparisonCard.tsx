@@ -85,7 +85,7 @@ const ItemComparisonCard: React.FC<Props> = ({ item }) => {
         history.push(
           `/store/${stringToUrl(shopName)}/${stringToUrl(
             shopAddress
-          )}/item/${itemId}`
+          )}/item/${stringToUrl(productName)}`
         )
       }
     >
@@ -123,8 +123,8 @@ const ItemComparisonCard: React.FC<Props> = ({ item }) => {
             </Typography>
           </div>
           <div className={classes.actionButton}>
-            <Button variant="contained" color="secondary">
-              Go to the&nbsp;product
+            <Button variant="outlined" style={{ border: '2px solid green' }}>
+              <b>Go to the&nbsp;product</b>
             </Button>
           </div>
         </div>

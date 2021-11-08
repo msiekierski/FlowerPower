@@ -145,19 +145,37 @@ const SearchResultPage = () => {
   return (
     <div className={classes.mainContainer}>
       <div className={classes.filters}>filters</div>
+
       <div className={classes.searchResult}>
-        <Typography variant="h4">Products</Typography>
-        <div className={classes.items}>
-          {itemResult.map((item) => (
-            <SearchResultProduct item={item} key={item.itemId} />
-          ))}
-        </div>
-        <Typography variant="h4">Stores</Typography>
-        <div className={classes.shops}>
-          {storeResult.map((store, index) => (
-            <FlowerShopPreviewCard {...store} key={index} fullWidth={true} />
-          ))}
-        </div>
+        {itemResult.length > 0 && (
+          <>
+            <Typography variant="h4">Products</Typography>
+            <div className={classes.items}>
+              {itemResult.map((item) => (
+                <SearchResultProduct item={item} key={item.itemId} />
+              ))}
+            </div>
+          </>
+        )}
+        {storeResult.length > 0 && (
+          <>
+            <Typography
+              variant="h4"
+              style={{ marginTop: '30px', marginBottom: '10px' }}
+            >
+              Stores
+            </Typography>
+            <div className={classes.shops}>
+              {storeResult.map((store, index) => (
+                <FlowerShopPreviewCard
+                  {...store}
+                  key={index}
+                  fullWidth={true}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

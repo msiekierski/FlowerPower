@@ -17,6 +17,8 @@ import {
 } from '../../common/types';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import Carousel from 'react-material-ui-carousel';
+import { useHistory, useLocation } from 'react-router';
+import { stringToUrl } from '../../utils/functions/stringToUrlValue';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -43,18 +45,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const flowerShopProduct: FlowerShopProduct = {
-  imageUrl:
-    'https://www.ikea.com/nl/en/images/products/smycka-artificial-flower-rose-red__0636963_pe698124_s5.jpg',
-  productId: '4123213',
-  price: 7.99,
-  description: 'description',
-  category: ProductCategory.BUNCH,
-};
-
 type Props = {
   shopItems: Array<FlowerShopProduct>;
-  
 };
 
 const FlowerShopItemCard: React.FC<Props> = ({ shopItems }) => {
@@ -64,6 +56,9 @@ const FlowerShopItemCard: React.FC<Props> = ({ shopItems }) => {
   const { addItem } = bindActionCreators(actionCreators, dispatch);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [selectedItemId, setSelectedItemId] = useState<number>(0);
+
+  const history = useHistory();
+  const location = useLocation();
 
   const getDetails = (item: FlowerShopProduct) => {
     if (item.subcategory === 'Flowers') {
@@ -97,21 +92,35 @@ const FlowerShopItemCard: React.FC<Props> = ({ shopItems }) => {
         <Carousel
           indicators={false}
           autoPlay={false}
-          onChange={(now?: number, previous?: number) => setSelectedItemId(now!)}
+          onChange={(now?: number, previous?: number) =>
+            setSelectedItemId(now!)
+          }
         >
           {shopItems.map((item, index) => (
-            <>
+            <div key={index}>
               <AddCartItemDialog
                 isOpen={isDialogOpen}
                 onClose={() => setIsDialogOpen(false)}
                 product={shopItems[selectedItemId]}
               />
 
-              <CardActionArea className={classes.item}>
+              <CardActionArea
+                className={classes.item}
+                onClick={() =>
+                  history.push(
+                    `${location.pathname}/item/${stringToUrl(item.description)}`
+                  )
+                }
+              >
                 <CardMedia
                   component="img"
                   image="https://www.ikea.com/nl/en/images/products/smycka-artificial-flower-rose-red__0636963_pe698124_s5.jpg"
                   alt="alt"
+                  style={{
+                    objectFit: 'contain',
+                    maxHeight: '100%',
+                    maxWidth: '100%',
+                  }}
                 />
                 <Typography style={{ fontWeight: 'bold' }} align="center">
                   {item.description}
@@ -128,7 +137,7 @@ const FlowerShopItemCard: React.FC<Props> = ({ shopItems }) => {
                 <ShoppingBasketOutlinedIcon />
                 <Typography style={{ fontWeight: 'bold' }}>Add</Typography>
               </div>
-            </>
+            </div>
           ))}
         </Carousel>
       </div>

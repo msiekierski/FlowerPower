@@ -47,8 +47,8 @@ const SearchResultProduct: React.FC<Props> = ({ item }) => {
         </Typography>
       </CardActionArea>
       <Button
-        variant="contained"
-        color="secondary"
+        variant="outlined"
+        style={{ border: '2px solid green' }}
         onClick={() => history.push(`/compare/item/${itemId}`)}
       >
         Compare Prices

@@ -132,7 +132,6 @@ const FlowerShopPage = () => {
   } = shop.data;
 
   const classes = useStyles();
-  const productsDivRef = useRef<HTMLDivElement | null>(null);
 
   const groupFilteredProducts = () => {
     if (activeCategory.length > 0) {
@@ -242,7 +241,7 @@ const FlowerShopPage = () => {
           />
         </Grid>
       </Grid>
-      <div className={classes.categories} ref={productsDivRef}>
+      <div className={classes.categories}>
         {categories
           .filter((category) =>
             availableCategories.includes(category.apiSubstitute)

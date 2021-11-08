@@ -10,6 +10,8 @@ export default function apiFlowerShopProductToState(object: any) {
     description: object.name,
     color: object.color,
     size: object.sizes,
+    longDescription: object.description,
+    composition: object.composition,
   };
   return result;
 }
