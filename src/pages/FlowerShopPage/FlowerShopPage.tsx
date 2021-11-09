@@ -148,7 +148,7 @@ const FlowerShopPage = () => {
 
   const grouped = groupFilteredProducts();
 
-  const ITEMS_PER_PAGE = 16;
+  const ITEMS_PER_PAGE = 12;
   const itemData = Object.keys(grouped);
   const _itemData = usePagination(itemData, ITEMS_PER_PAGE);
   const count = Math.ceil(itemData.length / ITEMS_PER_PAGE);

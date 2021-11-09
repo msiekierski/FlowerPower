@@ -23,18 +23,21 @@ import { stringToUrl } from '../../utils/functions/stringToUrlValue';
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'column',
     rowGap: '10px',
+    height: '400px',
+    width: '200px',
   },
   item: {
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'column',
-    maxWidth: '150px',
-    maxHeight: '300px',
+    height: '340px',
+    gap: '10px',
+    width: '100%',
   },
   addIcon: {
     display: 'flex',
@@ -42,6 +45,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     columnGap: '5px',
     cursor: 'pointer',
+    marginTop: '20px',
+    width: '200px',
   },
 }));
 
@@ -88,59 +93,56 @@ const FlowerShopItemCard: React.FC<Props> = ({ shopItems }) => {
 
   return (
     <>
-      <div className={classes.mainContainer}>
-        <Carousel
-          indicators={false}
-          autoPlay={false}
-          onChange={(now?: number, previous?: number) =>
-            setSelectedItemId(now!)
-          }
-        >
-          {shopItems.map((item, index) => (
-            <div key={index}>
-              <AddCartItemDialog
-                isOpen={isDialogOpen}
-                onClose={() => setIsDialogOpen(false)}
-                product={shopItems[selectedItemId]}
-              />
+      <AddCartItemDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        product={shopItems[selectedItemId]}
+      />
 
-              <CardActionArea
-                className={classes.item}
-                onClick={() =>
-                  history.push(
-                    `${location.pathname}/item/${stringToUrl(item.description)}`
-                  )
-                }
-              >
-                <CardMedia
-                  component="img"
-                  src={item.imageUrl}
-                  alt="alt"
-                  style={{
-                    objectFit: 'contain',
-                    maxHeight: '100%',
-                    maxWidth: '100%',
-                  }}
-                />
-                <Typography style={{ fontWeight: 'bold' }} align="center">
-                  {item.description}
-                </Typography>
-                <Typography align="center"> {getDetails(item)}</Typography>
-                <Typography style={{ color: 'green' }}>
-                  {item.price} PLN
-                </Typography>
-              </CardActionArea>
-              <div
-                className={classes.addIcon}
-                onClick={() => handleAddClick(index)}
-              >
-                <ShoppingBasketOutlinedIcon />
-                <Typography style={{ fontWeight: 'bold' }}>Add</Typography>
-              </div>
+      <Carousel
+        indicators={false}
+        autoPlay={false}
+        onChange={(now?: number, previous?: number) => setSelectedItemId(now!)}
+        className={classes.mainContainer}
+      >
+        {shopItems.map((item, index) => (
+          <>
+            <CardActionArea
+              className={classes.item}
+              onClick={() =>
+                history.push(
+                  `${location.pathname}/item/${stringToUrl(item.description)}`
+                )
+              }
+            >
+              <CardMedia
+                component="img"
+                src={item.imageUrl}
+                alt="alt"
+                style={{
+                  objectFit: 'fill',
+                  height: '200px',
+                  width: '200px',
+                }}
+              />
+              <Typography style={{ fontWeight: 'bold' }} align="center">
+                {item.description}
+              </Typography>
+              <Typography align="center"> {getDetails(item)}</Typography>
+              <Typography style={{ color: 'green' }}>
+                {item.price} PLN
+              </Typography>
+            </CardActionArea>
+            <div
+              className={classes.addIcon}
+              onClick={() => handleAddClick(index)}
+            >
+              <ShoppingBasketOutlinedIcon />
+              <Typography style={{ fontWeight: 'bold' }}>Add</Typography>
             </div>
-          ))}
-        </Carousel>
-      </div>
+          </>
+        ))}
+      </Carousel>
     </>
   );
 };
