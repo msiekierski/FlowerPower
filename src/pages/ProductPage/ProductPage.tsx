@@ -115,16 +115,15 @@ const ProductPage = () => {
   const [tabValue, setTabValue] = useState<number>(0);
   const [showDialog, setShowDialog] = useState<boolean>(false);
   const classes = useStyles();
-
+  console.log(items);
   const dispatch = useDispatch();
   const { addItem } = bindActionCreators(actionCreators, dispatch);
 
   useEffect(() => {
     const index = items.findIndex((item) => {
       const color =
-        item.color !== null && item.color !== undefined ? item.color : '';
-      const size =
-        item.size !== null && item.size !== undefined ? item.size : '';
+        item.color != null && item.color != undefined ? item.color : '';
+      const size = item.size != null && item.size != undefined ? item.size : '';
       return (
         color.toLowerCase() === selectedOptions.color.toLowerCase() &&
         size.toLowerCase() === selectedOptions.size.toLowerCase()
@@ -142,12 +141,6 @@ const ProductPage = () => {
   const handleColorButtonClick = (color: string) => {
     if (selectedOptions.color !== color) {
       setSelectedOptions({ ...selectedOptions, color });
-      setSelectedItemIndex(
-        Math.max(
-          0,
-          items.findIndex((item) => item.color === color)
-        )
-      );
     }
   };
 
@@ -184,6 +177,7 @@ const ProductPage = () => {
       itemPrice: items[selectedItemIndex].price,
       quantity: 1,
     };
+    console.log(cartProduct);
     addItem(cartProduct);
     setShowDialog(true);
   };
@@ -197,6 +191,7 @@ const ProductPage = () => {
           urlToString(itemName)
         )
       );
+      console.log(data);
       const mappedData = data.productsModel.map((obj: any) =>
         apiFlowerShopProductPageToState(obj)
       );

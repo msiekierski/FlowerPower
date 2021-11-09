@@ -16,7 +16,7 @@ const cartColumns: Array<string> = ['PRODUCT', 'PRICE', 'QTY', 'TOTAL'];
 
 const CartTable = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
-  console.log(cartItems);
+
 
   return (
     <TableContainer>

@@ -73,10 +73,8 @@ const MainPage = () => {
         `${process.env.REACT_APP_API_ADDRESS}flowerPower/customer/get/shopList`,
         { params: { city: city } }
       );
-      console.log(data);
       setRecomenndedShops(data.map((data: any) => apiShopListToState(data)));
     } catch (e) {
-      console.log(e);
     }
   };
 

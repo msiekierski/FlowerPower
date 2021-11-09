@@ -34,7 +34,7 @@ import apiShopPageToState from '../../utils/objectMapping/apiShopPageToState';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import * as _ from 'lodash';
 import usePagination from '../../utils/customHooks/usePagination';
-import { Pagination } from '@mui/material';
+import { Pagination, TextField } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreator } from '../../redux/shop';
@@ -119,7 +119,6 @@ const FlowerShopPage = () => {
   const { activeCategory, fetchStatus, shop } = useSelector(
     (root: RootState) => root.shop
   );
-  console.log(shop);
   const {
     name,
     street,
@@ -275,7 +274,6 @@ const FlowerShopPage = () => {
           marginBottom: '20px',
         }}
       />
-
       <div className={classes.items}>
         {_itemData.currentData().length > 0 ? (
           _itemData.currentData().map((name) => (

@@ -42,112 +42,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const itemResult: Array<SearchResultItem> = [
-  {
-    name: 'Red rose',
-    itemId: '3213213',
-    minPrice: 3.49,
-    imageUrl:
-      'https://www.florca.com/downloads/layoutentitylinkvalue/337/8d6884dc9a6f4a1/Red%20eagle.jpg',
-  },
-  {
-    name: 'Red rose',
-    itemId: '3213213',
-    minPrice: 3.49,
-    imageUrl:
-      'https://www.florca.com/downloads/layoutentitylinkvalue/337/8d6884dc9a6f4a1/Red%20eagle.jpg',
-  },
-  {
-    name: 'Red rose',
-    itemId: '3213213',
-    minPrice: 3.49,
-    imageUrl:
-      'https://www.florca.com/downloads/layoutentitylinkvalue/337/8d6884dc9a6f4a1/Red%20eagle.jpg',
-  },
-  {
-    name: 'Red rose',
-    itemId: '3213213',
-    minPrice: 3.49,
-    imageUrl:
-      'https://www.florca.com/downloads/layoutentitylinkvalue/337/8d6884dc9a6f4a1/Red%20eagle.jpg',
-  },
-  {
-    name: 'Red rose',
-    itemId: '3213213',
-    minPrice: 3.49,
-    imageUrl:
-      'https://www.florca.com/downloads/layoutentitylinkvalue/337/8d6884dc9a6f4a1/Red%20eagle.jpg',
-  },
-  {
-    name: 'Red rose',
-    itemId: '3213213',
-    minPrice: 3.49,
-    imageUrl:
-      'https://www.florca.com/downloads/layoutentitylinkvalue/337/8d6884dc9a6f4a1/Red%20eagle.jpg',
-  },
-  {
-    name: 'Red rose',
-    itemId: '3213213',
-    minPrice: 3.49,
-    imageUrl:
-      'https://www.florca.com/downloads/layoutentitylinkvalue/337/8d6884dc9a6f4a1/Red%20eagle.jpg',
-  },
-  {
-    name: 'Red rose',
-    itemId: '3213213',
-    minPrice: 3.49,
-    imageUrl:
-      'https://www.florca.com/downloads/layoutentitylinkvalue/337/8d6884dc9a6f4a1/Red%20eagle.jpg',
-  },
-];
-
-const storeResult: Array<FlowerShopPreviewCardProps> = [
-  {
-    name: 'Flower Talk',
-    address: 'Poroninska 8',
-    zipCode: '50-001',
-    city: 'Wroclaw',
-    rating: 4.5,
-    reviewCount: 100,
-    imagePath:
-      'https://lh3.googleusercontent.com/proxy/rQlsBovpItMQQDpq9SdAvKgwDVj3S-GVk6Jk0FxcqRi5BLY-TXp2WxMX-HPS1dRpPMpPfI4lneV52Ncu9TuQdaAQ4vpXz9sq6Oe4lfQclMnRP4eveeIiH0PI',
-    hasShipping: true,
-  },
-  {
-    name: 'Super Sklerp 123',
-    address: 'Rynek 15',
-    zipCode: '50-001',
-    city: 'Wroclaw',
-    rating: 4.5,
-    reviewCount: 100,
-    imagePath:
-      'https://lh3.googleusercontent.com/proxy/rQlsBovpItMQQDpq9SdAvKgwDVj3S-GVk6Jk0FxcqRi5BLY-TXp2WxMX-HPS1dRpPMpPfI4lneV52Ncu9TuQdaAQ4vpXz9sq6Oe4lfQclMnRP4eveeIiH0PI',
-    hasShipping: true,
-  },
-  {
-    name: 'Super Sklerp 123',
-    address: 'Rynek 15',
-    zipCode: '50-001',
-    city: 'Wroclaw',
-    rating: 4.5,
-    reviewCount: 100,
-    imagePath:
-      'https://lh3.googleusercontent.com/proxy/rQlsBovpItMQQDpq9SdAvKgwDVj3S-GVk6Jk0FxcqRi5BLY-TXp2WxMX-HPS1dRpPMpPfI4lneV52Ncu9TuQdaAQ4vpXz9sq6Oe4lfQclMnRP4eveeIiH0PI',
-    hasShipping: false,
-  },
-  {
-    name: 'Super Sklerp 123',
-    address: 'Rynek 15',
-    zipCode: '50-001',
-    city: 'Wroclaw',
-    rating: 4.5,
-    reviewCount: 100,
-    imagePath:
-      'https://lh3.googleusercontent.com/proxy/rQlsBovpItMQQDpq9SdAvKgwDVj3S-GVk6Jk0FxcqRi5BLY-TXp2WxMX-HPS1dRpPMpPfI4lneV52Ncu9TuQdaAQ4vpXz9sq6Oe4lfQclMnRP4eveeIiH0PI',
-    hasShipping: true,
-  },
-];
-
 type PageResult = {
   products: Array<SearchResultItem>;
   shops: Array<FlowerShopPreviewCardProps>;
@@ -165,9 +59,14 @@ const SearchResultPage = () => {
   const [data, setData] = useState<PageResult>({ products: [], shops: [] });
 
   useEffect(() => {
-    fetchData();
-  }, [query.get('phrase')]);
-  const fetchData = async () => {
+    if (query.get('phrase')) {
+      fetchDataPhrase();
+    } else if (query.get('item')) {
+      fetchDataItem();
+    }
+  }, [query.get('phrase'), query.get('item')]);
+
+  const fetchDataPhrase = async () => {
     try {
       setFetchStatus(ApiCallState.FETCH_BEGIN);
       const { data } = await axios.get(getApiUrl(query.get('phrase')!), {
@@ -178,6 +77,24 @@ const SearchResultPage = () => {
           apiSearchPhraseProductToState(obj)
         ),
         shops: data.shops.map((obj: any) => apiShopListToState(obj)),
+      });
+      setFetchStatus(ApiCallState.FETCH_SUCCESS);
+    } catch (e) {
+      setFetchStatus(ApiCallState.FETCH_ERROR);
+    }
+  };
+
+  const fetchDataItem = async () => {
+    try {
+      setFetchStatus(ApiCallState.FETCH_BEGIN);
+      const { data } = await axios.get(getApiUrl(query.get('item')!), {
+        params: { city: 'Wroclaw' },
+      });
+      setData({
+        products: data.products.map((obj: any) =>
+          apiSearchPhraseProductToState(obj)
+        ),
+        shops: [],
       });
       setFetchStatus(ApiCallState.FETCH_SUCCESS);
     } catch (e) {

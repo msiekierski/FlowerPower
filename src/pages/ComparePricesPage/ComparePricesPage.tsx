@@ -46,7 +46,6 @@ const ComparePricesPage = () => {
   const fetchData = async () => {
     try {
       setFetchStatus(ApiCallState.FETCH_BEGIN);
-      console.log(itemId);
       const { data } = await axios.get(apiUrl, {
         params: { productId: itemId, city: 'wroclaw' },
       });
