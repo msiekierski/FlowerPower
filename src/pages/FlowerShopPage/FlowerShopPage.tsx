@@ -191,7 +191,7 @@ const FlowerShopPage = () => {
           </div>
           <Typography>{street}</Typography>
           <Typography>{city}</Typography>
-          <Typography>+48{phone} 📞🦜 </Typography>
+          <Typography>+48{phone}</Typography>
         </div>
         <div style={{ marginTop: '16px' }}>
           <OpeningStatus openingHours={openingHours} />
