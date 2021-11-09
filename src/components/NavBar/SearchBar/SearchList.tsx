@@ -1,12 +1,15 @@
 import { makeStyles, MenuList, Paper, Popper } from '@material-ui/core';
 import { Divider, ListItem, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { ProductSearch, ShopSearch } from '../../../common/types';
+import React, { useEffect, useRef, useState } from 'react';
+import { ApiCallState, ProductSearch, ShopSearch } from '../../../common/types';
 import { BsArrowRight } from 'react-icons/bs';
 import { BsFlower1 } from 'react-icons/bs';
 import { AiTwotoneShop } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { stringToUrl } from '../../../utils/functions/stringToUrlValue';
+import axios from 'axios';
+import apiProductSearchToState from '../../../utils/objectMapping/apiProductSearchToState';
+import apiShopSearchToState from '../../../utils/objectMapping/apiShopSearchToState';
 
 type ListData = {
   products: Array<ProductSearch>;
@@ -102,10 +105,16 @@ type StyleProps = {
   width: number;
 };
 
+const getApiUrl = (name: string) =>
+  `${process.env.REACT_APP_API_ADDRESS}/flowerPower/customer/search/${name}`;
+
 const SearchList: React.FC<Props> = ({ inputText, searchRef, isFocused }) => {
   const [data, setData] = useState<ListData>(initData);
   const [isListHovered, setIsListHovered] = useState<boolean>(false);
   const [width, setWidth] = useState(0);
+  const [apiState, setApiState] = useState<ApiCallState>(ApiCallState.IDLE);
+
+  const inputTextRef = useRef(inputText);
 
   const classes = useStyles({ width })();
 
@@ -115,9 +124,45 @@ const SearchList: React.FC<Props> = ({ inputText, searchRef, isFocused }) => {
     }
   }, [isFocused]);
 
+  useEffect(() => {
+    inputTextRef.current = inputText;
+    if (inputText.length > 0) {
+      fetchData(inputText);
+    } else {
+      setData({ products: [], shops: [] });
+    }
+  }, [inputText]);
+
+  const fetchData = async (text: string) => {
+    try {
+      setApiState(ApiCallState.FETCH_BEGIN);
+      const { data } = await axios.get(getApiUrl(text), {
+        params: { city: 'Wroclaw' },
+      });
+      if (text === inputTextRef.current) {
+        setData({
+          products: data.products.map((obj: any) =>
+            apiProductSearchToState(obj)
+          ),
+          shops: data.shops.map((obj: any) => apiShopSearchToState(obj)),
+        });
+        setApiState(ApiCallState.FETCH_SUCCESS);
+      }
+    } catch (e) {
+      setData({
+        products: [],
+        shops: [],
+      });
+      setApiState(ApiCallState.FETCH_ERROR);
+    }
+  };
+
   return (
     <Popper
-      open={isListHovered || isFocused}
+      open={
+        isListHovered ||
+        (isFocused && (data.shops.length > 0 || data.products.length > 0))
+      }
       placement="bottom"
       className={classes.popper}
       anchorEl={searchRef}
@@ -129,9 +174,15 @@ const SearchList: React.FC<Props> = ({ inputText, searchRef, isFocused }) => {
           {data.products.map((product, index) => (
             <ListItem onClick={() => setIsListHovered(false)} key={index}>
               <Link to={`/search/item/${product.name}}`}>
-                <span style={{ display: 'flex', alignItems: 'center' }}>
+                <span
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    overflow: 'hidden',
+                  }}
+                >
                   <BsFlower1 style={{ marginRight: '5px' }} />
-                  <Typography>{product.name}&nbsp;</Typography>
+                  <Typography noWrap>{product.name}&nbsp;</Typography>
                   <Typography style={{ color: '#c3c3c3' }}>
                     in category {product.category}&nbsp;
                   </Typography>
@@ -143,7 +194,7 @@ const SearchList: React.FC<Props> = ({ inputText, searchRef, isFocused }) => {
               </Link>
             </ListItem>
           ))}
-          <Divider />
+          {data.products.length > 0 && data.shops.length > 0 && <Divider />}
           {data.shops.map((shop, index) => (
             <ListItem onClick={() => setIsListHovered(false)} key={index}>
               <Link

@@ -105,7 +105,7 @@ export type ProductSearch = {
 export type ShopSearch = {
   name: string;
   address: string;
-  id: string;
+  id?: string;
 };
 
 export enum ApiCallState {
