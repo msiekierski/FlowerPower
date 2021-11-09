@@ -18,9 +18,8 @@ const useStyles = makeStyles((theme) => ({
   },
   articleDescription: {
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'start',
     alignItems: 'center',
-    margin: 'auto',
     columnGap: '10px',
     '& img': {
       width: '100%',
@@ -55,7 +54,7 @@ const CartTableRow: React.FC<Props> = ({ cartProduct }) => {
 
   return (
     <TableRow>
-      <TableCell>
+      <TableCell align="left">
         <div className={classes.articleDescription}>
           <img src={productImageUrl} alt="cart item" />
           <div>
