@@ -113,6 +113,7 @@ const ItemComparisonCard: React.FC<Props> = ({ item }) => {
               component="img"
               image={itemImageUrl}
               className={classes.image}
+              style={{ objectFit: 'contain' }}
             />
             <Typography style={{ fontWeight: 'bold' }}>
               {productName}

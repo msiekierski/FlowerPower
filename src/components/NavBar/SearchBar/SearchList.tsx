@@ -139,7 +139,9 @@ const SearchList: React.FC<Props> = ({ inputText, searchRef, isFocused }) => {
       const { data } = await axios.get(getApiUrl(text), {
         params: { city: 'Wroclaw' },
       });
+
       if (text === inputTextRef.current) {
+        console.log(data);
         setData({
           products: data.products.map((obj: any) =>
             apiProductSearchToState(obj)
