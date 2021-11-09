@@ -85,6 +85,7 @@ export type FlowerShop = {
   city: string;
   phone: string;
   hasDelivery: boolean;
+  images: Array<string>;
   openingHours: Array<OpeningHours | null>;
   reviews: Array<Review>;
   products: Array<FlowerShopProduct>;

@@ -22,6 +22,7 @@ const initData: ShopState = {
       reviews: [],
       products: [],
       openingHours: [],
+      images: [],
     },
     pagination: 1,
   },

@@ -9,6 +9,11 @@ export default function apiShopPageToState(object: any) {
     street: object.address,
     city: object.city + ' ' + object.zip,
     phone: object.phone,
+    images: [
+      object.imagesArr.image1,
+      object.imagesArr.image2,
+      object.imagesArr.image3,
+    ],
     hasDelivery: object.hasShipment,
     reviews: object.comments.map((comment: any) => apiReviewToState(comment)),
     products: object.products.map((product: any) =>

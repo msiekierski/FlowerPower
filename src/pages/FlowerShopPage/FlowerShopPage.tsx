@@ -129,6 +129,7 @@ const FlowerShopPage = () => {
     reviews,
     openingHours,
     products,
+    images,
   } = shop.data;
 
   const classes = useStyles();
@@ -191,7 +192,7 @@ const FlowerShopPage = () => {
           </div>
           <Typography>{street}</Typography>
           <Typography>{city}</Typography>
-          <Typography>{phone}</Typography>
+          <Typography>+48{phone} 📞🦜 </Typography>
         </div>
         <div style={{ marginTop: '16px' }}>
           <OpeningStatus openingHours={openingHours} />
@@ -220,7 +221,7 @@ const FlowerShopPage = () => {
           <CardMedia
             height="100%"
             component="img"
-            image="https://www.kanlux.com/storage/realizacje/18703_1.jpg"
+            src={images[0]}
             alt="shop1"
           />
         </Grid>
@@ -228,7 +229,7 @@ const FlowerShopPage = () => {
           <CardMedia
             height="100%"
             component="img"
-            image="https://www.portel.pl/newsimg/duze/p1035/dzien-kobiet-w-kwiaciarni-romantycznej-103581.jpg"
+            src={images[1]}
             alt="shop2"
           />
         </Grid>
@@ -236,7 +237,7 @@ const FlowerShopPage = () => {
           <CardMedia
             height="100%"
             component="img"
-            image="https://kwiaciarnialubon.com.pl/wp-content/uploads/2020/03/start-1.jpg"
+            src={images[2]}
             alt="shop3"
           />
         </Grid>

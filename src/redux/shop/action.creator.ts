@@ -21,7 +21,7 @@ export const fetchShopData = (shopName: string, shopStreet: string) => {
     try {
       const response = await axios.get(getUrl(shopName, shopStreet));
       const mapped = apiShopPageToState(response.data);
-
+      console.log(response.data);
       return onSuccess({
         ...mapped,
         products: mapped.products.map((product) => {
