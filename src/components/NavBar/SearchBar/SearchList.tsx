@@ -10,6 +10,7 @@ import { stringToUrl } from '../../../utils/functions/stringToUrlValue';
 import axios from 'axios';
 import apiProductSearchToState from '../../../utils/objectMapping/apiProductSearchToState';
 import apiShopSearchToState from '../../../utils/objectMapping/apiShopSearchToState';
+import * as _ from 'lodash';
 
 type ListData = {
   products: Array<ProductSearch>;
@@ -115,7 +116,8 @@ const SearchList: React.FC<Props> = ({ inputText, searchRef, isFocused }) => {
   const [apiState, setApiState] = useState<ApiCallState>(ApiCallState.IDLE);
 
   const inputTextRef = useRef(inputText);
-
+  const groupedItems = _.groupBy(data.products, 'name');
+  console.log(groupedItems);
   const classes = useStyles({ width })();
 
   useEffect(() => {
@@ -173,9 +175,9 @@ const SearchList: React.FC<Props> = ({ inputText, searchRef, isFocused }) => {
     >
       <Paper>
         <MenuList>
-          {data.products.map((product, index) => (
+          {Object.keys(groupedItems).map((product, index) => (
             <ListItem onClick={() => setIsListHovered(false)} key={index}>
-              <Link to={`/search/item/${product.name}}`}>
+              <Link to={`/search/item/${product}}`}>
                 <span
                   style={{
                     display: 'flex',
@@ -184,13 +186,13 @@ const SearchList: React.FC<Props> = ({ inputText, searchRef, isFocused }) => {
                   }}
                 >
                   <BsFlower1 style={{ marginRight: '5px' }} />
-                  <Typography noWrap>{product.name}&nbsp;</Typography>
+                  <Typography noWrap>{groupedItems[product][0].name}&nbsp;</Typography>
                   <Typography style={{ color: '#c3c3c3' }}>
-                    in category {product.category}&nbsp;
+                    in category {groupedItems[product][0].category}&nbsp;
                   </Typography>
                   <BsArrowRight style={{ color: '#c3c3c3' }} />
                   <Typography style={{ color: '#c3c3c3' }}>
-                    &nbsp;{product.subcategory}
+                    &nbsp;{groupedItems[product][0].subcategory}
                   </Typography>
                 </span>
               </Link>
