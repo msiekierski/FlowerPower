@@ -2,6 +2,7 @@ import {
   Card,
   CardActionArea,
   CardContent,
+  CardMedia,
   makeStyles,
   Typography,
 } from '@material-ui/core';
@@ -33,11 +34,10 @@ const useStyle = (props: StyleProps) =>
       minWidth: '100px',
       minHeight: '100px',
       order: 1,
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: 'cover',
+      objectFit: 'cover',
       borderRadius: 4,
       width: '100%',
-      height: 'auto',
+      height: '140px',
     },
     details: {
       display: 'flex',
@@ -113,10 +113,11 @@ const FlowerShopPreviewCard: React.FC<FlowerShopPreviewCardProps> = ({
         <CardActionArea>
           <CardContent>
             <div className={classes.container}>
-              <div
+              <CardMedia
+                component="img"
+                src={imagePath}
                 className={classes.shopImage}
-                style={{ backgroundImage: `url(${imagePath})` }}
-              ></div>
+              />
               <div className={classes.details}>
                 <div>
                   <Typography variant="h6" noWrap>
