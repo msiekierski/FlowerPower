@@ -31,6 +31,7 @@ import AddCartItemDialog from '../../components/AddCartItemDialog/AddCartItemDia
 import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../redux/cart';
+import { isUndefined } from 'lodash';
 
 type ParamsProps = {
   itemName: string;
@@ -112,36 +113,36 @@ const ProductPage = () => {
     color: '',
     size: '',
   });
+
   const [tabValue, setTabValue] = useState<number>(0);
   const [showDialog, setShowDialog] = useState<boolean>(false);
   const classes = useStyles();
-  console.log(items);
   const dispatch = useDispatch();
   const { addItem } = bindActionCreators(actionCreators, dispatch);
-
-  useEffect(() => {
-    const index = items.findIndex((item) => {
-      const color =
-        item.color != null && item.color != undefined ? item.color : '';
-      const size = item.size != null && item.size != undefined ? item.size : '';
-      return (
-        color.toLowerCase() === selectedOptions.color.toLowerCase() &&
-        size.toLowerCase() === selectedOptions.size.toLowerCase()
-      );
-    });
-    if (selectedItemIndex > 0) {
-      setSelectedItemIndex(index);
-    }
-  }, [selectedOptions]);
 
   useEffect(() => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    let filtered = items.filter((item) => item.color === selectedOptions.color);
+    if (uniqueSizes.length > 0 && uniqueSizes[0] !== null) {
+      filtered = filtered.filter((item) => item.size === selectedOptions.size);
+    }
+    if (filtered.length > 0) {
+      setSelectedItemIndex(
+        items.findIndex((item) => item.productId === filtered[0].productId)
+      );
+    }
+  }, [selectedOptions]);
+
   const handleColorButtonClick = (color: string) => {
     if (selectedOptions.color !== color) {
       setSelectedOptions({ ...selectedOptions, color });
     }
+    const possibleSizes = Array.from(
+      new Set(items.filter((item) => item.color === color).map((i) => i.size))
+    );
   };
 
   const handleTabChange = (event: object, value: any) => {
@@ -177,7 +178,6 @@ const ProductPage = () => {
       itemPrice: items[selectedItemIndex].price,
       quantity: 1,
     };
-    console.log(cartProduct);
     addItem(cartProduct);
     setShowDialog(true);
   };
@@ -191,7 +191,6 @@ const ProductPage = () => {
           urlToString(itemName)
         )
       );
-      console.log(data);
       const mappedData = data.productsModel.map((obj: any) =>
         apiFlowerShopProductPageToState(obj)
       );
@@ -264,7 +263,15 @@ const ProductPage = () => {
                   style={{ border: `2px solid ${color!.toLocaleLowerCase()}` }}
                   variant="outlined"
                   onClick={() => handleColorButtonClick(color!)}
-                  endIcon={selectedOptions.color === color! && <FcCheckmark />}
+                  endIcon={
+                    <FcCheckmark
+                      style={{
+                        visibility: `${
+                          selectedOptions.color === color ? 'visible' : 'hidden'
+                        }`,
+                      }}
+                    />
+                  }
                 >
                   <Typography>{color}</Typography>
                 </Button>
