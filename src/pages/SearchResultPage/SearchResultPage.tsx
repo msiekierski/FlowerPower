@@ -124,7 +124,7 @@ const SearchResultPage = () => {
         {filterData().length > 0 && (
           <>
             <Typography variant="h4">
-              Products({fetchData.products.length})
+              Products({filterData().length})
             </Typography>
             <div className={classes.items}>
               {filterData().map((item) => (
