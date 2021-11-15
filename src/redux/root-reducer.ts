@@ -14,12 +14,7 @@ const rootPersistConfig = {
     createWhitelistFilter('user', ['user']),
     createWhitelistFilter('cart', ['items']),
   ],
-};
-
-const shopPersistConfig = {
-  key: 'shop',
-  storage,
-  whitelist: [],
+  blacklist: ['shop', 'search'],
 };
 
 const searchPersistConfig = {
@@ -31,7 +26,7 @@ const searchPersistConfig = {
 const rootReducer = combineReducers({
   user: userReducer,
   cart: cartReducer,
-  shop: persistReducer(shopPersistConfig, shopReducer),
+  shop: shopReducer,
   search: persistReducer(searchPersistConfig, searchReducer),
 });
 
