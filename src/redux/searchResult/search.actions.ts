@@ -19,8 +19,20 @@ interface ChangeCategoryValue {
   payload: { category: string; subcategory: string; newValue: boolean };
 }
 
+interface AddFilterColor {
+  type: ActionType.ADD_FILTER_COLOR;
+  payload: string;
+}
+
+interface RemoveFilterColor {
+  type: ActionType.REMOVE_FILTER_COLOR;
+  payload: string;
+}
+
 export type Action =
   | BeginFetch
   | FetchSuccess
   | FetchError
-  | ChangeCategoryValue;
+  | ChangeCategoryValue
+  | AddFilterColor
+  | RemoveFilterColor;

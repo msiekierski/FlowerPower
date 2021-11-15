@@ -65,7 +65,7 @@ const SearchResultPage = () => {
   const { isLoading, isError, fetchData, filters } = useSelector(
     (root: RootState) => root.search
   );
-  const { categoryFilters } = filters;
+  const { categoryFilters, colorFilters } = filters;
   const { fetchSearchDataByPhrase, fetchSearchDataByItem } = bindActionCreators(
     actionCreators,
     dispatch
@@ -90,16 +90,21 @@ const SearchResultPage = () => {
         }
       });
     });
-    console.log('products!');
-    console.log(products);
     return products.filter((product) =>
       activeSubcategories.includes(product.subcategory)
     );
   };
 
+  const filterByColors = (
+    products: Array<SearchResultItem>
+  ): Array<SearchResultItem> => {
+    return products.filter((product) => colorFilters.includes(product.color!));
+  };
+
   const filterData = (): Array<SearchResultItem> => {
     let currentData = fetchData.products;
     currentData = filterByCategory(currentData);
+    currentData = filterByColors(currentData);
     return currentData;
   };
 

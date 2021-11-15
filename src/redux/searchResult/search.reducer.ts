@@ -9,6 +9,7 @@ export type SearchPage = {
   isError: boolean;
   filters: {
     categoryFilters: any;
+    colorFilters: Array<string>;
   };
 };
 
@@ -21,6 +22,7 @@ const initState: SearchPage = {
   isError: false,
   filters: {
     categoryFilters: {},
+    colorFilters: [],
   },
 };
 
@@ -32,7 +34,10 @@ const reducer = (state: SearchPage = initState, action: Action): SearchPage => {
     const categories = Array.from(
       new Set(action.payload.products.map((product) => product.category))
     );
-    const init = generateInitValue(categories, action.payload.products);
+    const colors = Array.from(
+      new Set(action.payload.products.map((product) => product.color!))
+    );
+    const init = generateInitValueCategory(categories, action.payload.products);
     return {
       ...state,
       isLoading: false,
@@ -40,6 +45,7 @@ const reducer = (state: SearchPage = initState, action: Action): SearchPage => {
       fetchData: action.payload,
       filters: {
         categoryFilters: init,
+        colorFilters: colors,
       },
     };
   }
@@ -55,10 +61,30 @@ const reducer = (state: SearchPage = initState, action: Action): SearchPage => {
       filters: { ...state.filters, categoryFilters: newCategoryFilters },
     };
   }
+  if (action.type === ActionType.ADD_FILTER_COLOR) {
+    return {
+      ...state,
+      filters: {
+        ...state.filters,
+        colorFilters: [...state.filters.colorFilters, action.payload],
+      },
+    };
+  }
+  if (action.type === ActionType.REMOVE_FILTER_COLOR) {
+    return {
+      ...state,
+      filters: {
+        ...state.filters,
+        colorFilters: state.filters.colorFilters.filter(
+          (color) => color !== action.payload
+        ),
+      },
+    };
+  }
   return state;
 };
 
-const generateInitValue = (
+const generateInitValueCategory = (
   categories: Array<string>,
   products: Array<SearchResultItem>
 ) => {

@@ -71,3 +71,15 @@ export const changeCategoryFilter = (
     });
   };
 };
+
+export const removeFilterColor = (color: string) => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch({ type: ActionType.REMOVE_FILTER_COLOR, payload: color });
+  };
+};
+
+export const addFilterColor = (color: string) => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch({ type: ActionType.ADD_FILTER_COLOR, payload: color });
+  };
+};

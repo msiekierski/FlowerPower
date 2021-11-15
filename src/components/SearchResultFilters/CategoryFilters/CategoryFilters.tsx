@@ -1,4 +1,4 @@
-import { FormControlLabel } from '@material-ui/core';
+import { FormControlLabel, Typography, makeStyles } from '@material-ui/core';
 import { Checkbox } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
@@ -6,11 +6,20 @@ import { RootState } from '../../../redux/root-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../redux/searchResult';
+import { BiPlus } from 'react-icons/bi';
 
 type Props = {
   name: string;
   subcategories: Array<string>;
 };
+
+const useStyles = makeStyles((theme) => ({
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+}));
 
 const CategoryFilters: React.FC<Props> = ({ name, subcategories }) => {
   const { fetchData, filters } = useSelector(
@@ -29,6 +38,7 @@ const CategoryFilters: React.FC<Props> = ({ name, subcategories }) => {
     }
     return false;
   };
+  const classes = useStyles();
 
   return (
     <div>
