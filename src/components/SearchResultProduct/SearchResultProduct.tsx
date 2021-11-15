@@ -35,7 +35,7 @@ type Props = {
 const SearchResultProduct: React.FC<Props> = ({ item }) => {
   const classes = useStyles();
   const history = useHistory();
-  const { name, itemId, minPrice, imageUrl } = item;
+  const { name, itemId, minPrice, imageUrl, maxPrice, color, size } = item;
   return (
     <div className={classes.mainContainer}>
       <CardActionArea
@@ -48,11 +48,23 @@ const SearchResultProduct: React.FC<Props> = ({ item }) => {
           alt="alt"
           style={{ width: '100%', height: '150px', objectFit: 'fill' }}
         />
-        <Typography style={{ fontWeight: 'bold' }} align="center">
-          {name}
-        </Typography>
+        <div>
+          {color! !== 'mix' && (
+            <Typography style={{ fontWeight: 'bold' }} align="center">
+              {color!.charAt(0).toUpperCase() + color!.slice(1)}
+            </Typography>
+          )}
+          <Typography style={{ fontWeight: 'bold' }} align="center">
+            {name}
+          </Typography>
+          {size && (
+            <Typography style={{ fontWeight: 'bold' }} align="center">
+              ({size!})
+            </Typography>
+          )}
+        </div>
         <Typography align="center" style={{ color: 'green' }}>
-          starts from <b>{minPrice}&nbsp;PLN</b>
+          from&nbsp;{minPrice}PLN to&nbsp;{maxPrice}PLN
         </Typography>
       </CardActionArea>
       <Button

@@ -3,26 +3,36 @@ import {
   CircularProgress,
   makeStyles,
   Typography,
+  Divider,
 } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
-import { ApiCallState, SearchResultItem } from '../../common/types';
+import { useEffect } from 'react';
+import { SearchResultItem } from '../../common/types';
 import FlowerShopPreviewCard, {
   FlowerShopPreviewCardProps,
 } from '../../components/FlowerShopPreviewCard/FlowerShopPreviewCard';
 import SearchResultProduct from '../../components/SearchResultProduct/SearchResultProduct';
 import useQuery from '../../utils/customHooks/useQuery';
-import axios from 'axios';
-import apiSearchPhraseProductToState from '../../utils/objectMapping/apiSearchPhraseProductToState';
-import apiShopListToState from '../../utils/objectMapping/apiShopListToState';
 import ErrorPage from '../ErrorPage/ErrorPage';
+import SearchResultFilters from '../../components/SearchResultFilters/SearchResultFilters';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/root-reducer';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../redux/searchResult';
+import { callbackify } from 'util';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
     display: 'flex',
     marginTop: theme.spacing(3),
+    position: 'absolute',
+    gap: '20px',
+    left: 0,
+    marginLeft: '16px',
+    width: 'calc(100% - 16px - 20px)',
   },
   filters: {
     flex: '1 1 30%',
+    height: 'auto',
   },
   searchResult: {
     flex: '1 1 70%',
@@ -42,104 +52,97 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-type PageResult = {
+export type PageResult = {
   products: Array<SearchResultItem>;
   shops: Array<FlowerShopPreviewCardProps>;
 };
 
-const getApiUrl = (name: string) =>
-  `${process.env.REACT_APP_API_ADDRESS}/flowerPower/customer/search/${name}`;
-
 const SearchResultPage = () => {
   let query = useQuery();
   const classes = useStyles();
-  const [fetchStatus, setFetchStatus] = useState<ApiCallState>(
-    ApiCallState.IDLE
+
+  const dispatch = useDispatch();
+  const { isLoading, isError, fetchData, filters } = useSelector(
+    (root: RootState) => root.search
   );
-  const [data, setData] = useState<PageResult>({ products: [], shops: [] });
+  const { categoryFilters } = filters;
+  const { fetchSearchDataByPhrase, fetchSearchDataByItem } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
 
   useEffect(() => {
     if (query.get('phrase')) {
-      fetchDataPhrase();
+      fetchSearchDataByPhrase(query.get('phrase')!);
     } else if (query.get('item')) {
-      fetchDataItem();
+      fetchSearchDataByItem(query.get('item')!);
     }
   }, [query.get('phrase'), query.get('item')]);
 
-  const fetchDataPhrase = async () => {
-    try {
-      setFetchStatus(ApiCallState.FETCH_BEGIN);
-      const { data } = await axios.get(getApiUrl(query.get('phrase')!), {
-        params: { city: 'Wroclaw' },
+  const filterByCategory = (
+    products: Array<SearchResultItem>
+  ): Array<SearchResultItem> => {
+    let activeSubcategories: Array<string> = [];
+    Object.keys(categoryFilters).forEach((category) => {
+      Object.keys(categoryFilters[category]).forEach((subcategory) => {
+        if (categoryFilters[category][subcategory] === true) {
+          activeSubcategories = [...activeSubcategories, subcategory];
+        }
       });
-      setData({
-        products: data.products.map((obj: any) =>
-          apiSearchPhraseProductToState(obj)
-        ),
-        shops: data.shops.map((obj: any) => apiShopListToState(obj)),
-      });
-      setFetchStatus(ApiCallState.FETCH_SUCCESS);
-    } catch (e) {
-      setFetchStatus(ApiCallState.FETCH_ERROR);
-    }
+    });
+    console.log('products!');
+    console.log(products);
+    return products.filter((product) =>
+      activeSubcategories.includes(product.subcategory)
+    );
   };
 
-  const fetchDataItem = async () => {
-    try {
-      setFetchStatus(ApiCallState.FETCH_BEGIN);
-      const { data } = await axios.get(getApiUrl(query.get('item')!), {
-        params: { city: 'Wroclaw' },
-      });
-      setData({
-        products: data.products.map((obj: any) =>
-          apiSearchPhraseProductToState(obj)
-        ),
-        shops: [],
-      });
-      setFetchStatus(ApiCallState.FETCH_SUCCESS);
-    } catch (e) {
-      setFetchStatus(ApiCallState.FETCH_ERROR);
-    }
+  const filterData = (): Array<SearchResultItem> => {
+    let currentData = fetchData.products;
+    currentData = filterByCategory(currentData);
+    return currentData;
   };
 
-  if (
-    fetchStatus === ApiCallState.IDLE ||
-    fetchStatus === ApiCallState.FETCH_BEGIN
-  ) {
+  if (isLoading) {
     return (
       <Backdrop open={true} style={{ backgroundColor: '#fff' }}>
         <CircularProgress color="inherit" />
       </Backdrop>
     );
   }
-  if (fetchStatus === ApiCallState.FETCH_ERROR) {
+  if (isError) {
     return <ErrorPage />;
   }
   return (
     <div className={classes.mainContainer}>
-      <div className={classes.filters}>filters</div>
+      <div className={classes.filters}>
+        <SearchResultFilters />
+        <Divider />
+      </div>
 
       <div className={classes.searchResult}>
-        {data.products.length > 0 && (
+        {filterData().length > 0 && (
           <>
-            <Typography variant="h4">Products</Typography>
+            <Typography variant="h4">
+              Products({fetchData.products.length})
+            </Typography>
             <div className={classes.items}>
-              {data.products.map((item) => (
+              {filterData().map((item) => (
                 <SearchResultProduct item={item} key={item.itemId} />
               ))}
             </div>
           </>
         )}
-        {data.shops.length > 0 && (
+        {fetchData.shops.length > 0 && (
           <>
             <Typography
               variant="h4"
               style={{ marginTop: '30px', marginBottom: '10px' }}
             >
-              Stores
+              Stores({fetchData.shops.length})
             </Typography>
             <div className={classes.shops}>
-              {data.shops.map((store, index) => (
+              {fetchData.shops.map((store, index) => (
                 <FlowerShopPreviewCard
                   {...store}
                   key={index}

@@ -6,6 +6,11 @@ export default function apiSearchPhraseProductToState(obj: any) {
     itemId: obj.productId,
     minPrice: obj.price,
     imageUrl: obj.image,
+    color: obj.color,
+    maxPrice: obj.maxPrice,
+    category: obj.category,
+    subcategory: obj.subCategory,
+    size: obj.sizes,
   };
   return result;
 }

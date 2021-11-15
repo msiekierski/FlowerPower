@@ -5,6 +5,7 @@ import persistReducer from 'redux-persist/es/persistReducer';
 import { createWhitelistFilter } from 'redux-persist-transform-filter';
 import cartReducer from './cart/cart.reducer';
 import shopReducer from './shop/shop.reducer';
+import searchReducer from './searchResult/search.reducer';
 
 const rootPersistConfig = {
   key: 'root',
@@ -21,10 +22,17 @@ const shopPersistConfig = {
   whitelist: [],
 };
 
+const searchPersistConfig = {
+  key: 'search',
+  storage,
+  whitelist: [],
+};
+
 const rootReducer = combineReducers({
   user: userReducer,
   cart: cartReducer,
   shop: persistReducer(shopPersistConfig, shopReducer),
+  search: persistReducer(searchPersistConfig, searchReducer),
 });
 
 export const pReducer = persistReducer(rootPersistConfig, rootReducer);

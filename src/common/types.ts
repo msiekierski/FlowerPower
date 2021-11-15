@@ -76,7 +76,7 @@ export type FlowerShopProduct = {
   category: string;
   subcategory?: string;
   longDescription?: string;
-  composition?:string;
+  composition?: string;
 };
 
 export type FlowerShop = {
@@ -134,9 +134,13 @@ export type SearchResultItem = {
   name: string;
   itemId: string;
   minPrice: number;
+  maxPrice: number;
   imageUrl: string;
   color?: string;
+  category: string;
+  subcategory: string;
   discount?: number;
+  size?: string;
 };
 
 export type ComparisonItem = {
