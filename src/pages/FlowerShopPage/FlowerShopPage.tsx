@@ -114,7 +114,7 @@ const FlowerShopPage = () => {
 
   ///
   const dispatch = useDispatch();
-  const { fetchShopData, setActiveCategory, setPagination } =
+  const { fetchShopData, setActiveCategory, setPagination, clearReducer } =
     bindActionCreators(actionCreator, dispatch);
   const { activeCategory, fetchStatus, shop } = useSelector(
     (root: RootState) => root.shop
@@ -159,6 +159,9 @@ const FlowerShopPage = () => {
 
   useEffect(() => {
     fetchShopData(urlToString(shopName), urlToString(shopAddress));
+    return () => {
+      clearReducer();
+    };
   }, []);
 
   const handlePageChange = (e: React.ChangeEvent<unknown>, p: number) => {

@@ -81,6 +81,9 @@ const reducer = (state: SearchPage = initState, action: Action): SearchPage => {
       },
     };
   }
+  if (action.type === ActionType.CLEAR) {
+    return initState;
+  }
   return state;
 };
 

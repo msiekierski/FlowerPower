@@ -109,3 +109,9 @@ export const addFilterColor = (color: string) => {
     dispatch({ type: ActionType.ADD_FILTER_COLOR, payload: color });
   };
 };
+
+export const clearReducer = () => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch({ type: ActionType.CLEAR });
+  };
+};

@@ -4,4 +4,5 @@ export enum ActionType {
   FETCH_ERROR = 'fetch_error',
   SET_ACTIVE_CATEGORY = 'set_active_category',
   SET_PAGINATION = 'set_pagination',
+  CLEAR = 'clear',
 }

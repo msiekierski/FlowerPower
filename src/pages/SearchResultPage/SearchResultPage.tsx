@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     borderRightColor: theme.palette.divider,
     height: 'auto',
   },
-  searchResult: {margin: '0 2.5vw'},
+  searchResult: { margin: '0 2.5vw' },
   items: {
     alignSelf: 'center',
     display: 'flex',
@@ -69,6 +69,7 @@ const SearchResultPage = () => {
     fetchSearchDataByPhrase,
     fetchSearchDataByItem,
     fetchSearchDataByCategory,
+    clearReducer,
   } = bindActionCreators(actionCreators, dispatch);
 
   useEffect(() => {
@@ -79,6 +80,9 @@ const SearchResultPage = () => {
     } else if (query.get('category')) {
       fetchSearchDataByCategory(query.get('category')!);
     }
+    return () => {
+      clearReducer();
+    };
   }, [query.get('phrase'), query.get('item')]);
 
   const filterByCategory = (

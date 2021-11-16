@@ -24,9 +24,14 @@ interface SetPagination {
   payload: number;
 }
 
+interface Clear {
+  type: ActionType.CLEAR;
+}
+
 export type Action =
   | BeginFetch
   | FetchSuccess
   | FetchError
   | SetActiveCategory
-  | SetPagination;
+  | SetPagination
+  | Clear;

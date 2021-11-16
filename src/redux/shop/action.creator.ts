@@ -45,3 +45,9 @@ export const setPagination = (page: number) => {
     dispatch({ type: ActionType.SET_PAGINATION, payload: page });
   };
 };
+
+export const clearReducer = () => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch({ type: ActionType.CLEAR });
+  };
+};

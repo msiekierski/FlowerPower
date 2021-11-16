@@ -29,10 +29,15 @@ interface RemoveFilterColor {
   payload: string;
 }
 
+interface Clear {
+    type: ActionType.CLEAR;
+}
+
 export type Action =
   | BeginFetch
   | FetchSuccess
   | FetchError
   | ChangeCategoryValue
   | AddFilterColor
-  | RemoveFilterColor;
+  | RemoveFilterColor
+  | Clear;

@@ -57,6 +57,9 @@ const reducer = (state: ShopState = initData, action: Action): ShopState => {
   if (action.type === ActionType.SET_PAGINATION) {
     return { ...state, shop: { ...state.shop, pagination: action.payload } };
   }
+  if (action.type === ActionType.CLEAR) {
+    return initData;
+  }
   return state;
 };
 
