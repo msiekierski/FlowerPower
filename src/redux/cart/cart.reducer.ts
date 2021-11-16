@@ -66,6 +66,18 @@ const reducer = (state: Cart = initialState, action: Action): Cart => {
 
     return { ...state, items: [...state.items, action.payload] };
   }
+  if (action.type === ActionType.SET_ARBITRARY_VALUE) {
+    return {
+      ...state,
+      items: state.items.map((item) => {
+        if (item.productId == action.payload.id) {
+          return { ...item, quantity: action.payload.value };
+        } else {
+          return item;
+        }
+      }),
+    };
+  }
   return state;
 };
 

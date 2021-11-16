@@ -9,6 +9,9 @@ import apiShopListToState from '../../utils/objectMapping/apiShopListToState';
 const getApiUrl = (name: string) =>
   `${process.env.REACT_APP_API_ADDRESS}/flowerPower/customer/search/${name}`;
 
+const getApiUrlCategory = (category: string) =>
+  `${process.env.REACT_APP_API_ADDRESS}/flowerPower/customer/categoryFilter/${category}`;
+
 export const fetchSearchDataByPhrase = (name: string) => {
   return async (dispatch: Dispatch<Action>) => {
     const onSuccess = (data: PageResult) => {
@@ -51,6 +54,29 @@ export const fetchSearchDataByItem = (name: string) => {
         products: data.products.map((obj: any) =>
           apiSearchPhraseProductToState(obj)
         ),
+        shops: [],
+      });
+    } catch (e) {
+      onError();
+    }
+  };
+};
+
+export const fetchSearchDataByCategory = (category: string) => {
+  return async (dispatch: Dispatch<Action>) => {
+    const onSuccess = (data: PageResult) => {
+      dispatch({ type: ActionType.FETCH_SUCCESS, payload: data });
+    };
+    const onError = () => {
+      dispatch({ type: ActionType.FETCH_ERORR });
+    };
+    dispatch({ type: ActionType.FETCH_BEGIN });
+    try {
+      const { data } = await axios.get(getApiUrlCategory(category), {
+        params: { city: 'Wroclaw' },
+      });
+      onSuccess({
+        products: data.map((obj: any) => apiSearchPhraseProductToState(obj)),
         shops: [],
       });
     } catch (e) {

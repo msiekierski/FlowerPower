@@ -32,3 +32,12 @@ export const addItem = (item: CartProduct) => {
     dispatch({ type: ActionType.ADD_ITEM, payload: item });
   };
 };
+
+export const setArbitraryValue = (itemId: string, value: number) => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch({
+      type: ActionType.SET_ARBITRARY_VALUE,
+      payload: { id: itemId, value },
+    });
+  };
+};

@@ -18,30 +18,29 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root-reducer';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../redux/searchResult';
-import { callbackify } from 'util';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
-    display: 'flex',
+    display: 'inline-grid',
+    gridTemplateColumns: '2fr 5fr',
     marginTop: theme.spacing(3),
     position: 'absolute',
-    gap: '20px',
-    left: 0,
-    marginLeft: '16px',
-    width: 'calc(100% - 16px - 20px)',
+    left: '16px',
+    justifyContent: 'space-between',
   },
   filters: {
-    flex: '1 1 30%',
+    paddingRight: '5vw',
+    borderRight: '1px solid',
+    borderRightColor: theme.palette.divider,
     height: 'auto',
   },
-  searchResult: {
-    flex: '1 1 70%',
-  },
+  searchResult: {margin: '0 2.5vw'},
   items: {
+    alignSelf: 'center',
     display: 'flex',
     flexWrap: 'wrap',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     rowGap: '20px',
     columnGap: '10px',
   },
@@ -66,16 +65,19 @@ const SearchResultPage = () => {
     (root: RootState) => root.search
   );
   const { categoryFilters, colorFilters } = filters;
-  const { fetchSearchDataByPhrase, fetchSearchDataByItem } = bindActionCreators(
-    actionCreators,
-    dispatch
-  );
+  const {
+    fetchSearchDataByPhrase,
+    fetchSearchDataByItem,
+    fetchSearchDataByCategory,
+  } = bindActionCreators(actionCreators, dispatch);
 
   useEffect(() => {
     if (query.get('phrase')) {
       fetchSearchDataByPhrase(query.get('phrase')!);
     } else if (query.get('item')) {
       fetchSearchDataByItem(query.get('item')!);
+    } else if (query.get('category')) {
+      fetchSearchDataByCategory(query.get('category')!);
     }
   }, [query.get('phrase'), query.get('item')]);
 

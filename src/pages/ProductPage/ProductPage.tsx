@@ -32,6 +32,7 @@ import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../redux/cart';
 import { isUndefined } from 'lodash';
+import useQuery from '../../utils/customHooks/useQuery';
 
 type ParamsProps = {
   itemName: string;
@@ -99,6 +100,7 @@ type SelectedOptions = {
 };
 
 const ProductPage = () => {
+  let query = useQuery();
   const { itemName, shopName, shopAddress } = useParams<ParamsProps>();
   const [fetchStatus, setFetchStatus] = useState<ApiCallState>(
     ApiCallState.IDLE
@@ -199,8 +201,23 @@ const ProductPage = () => {
           mappedData.map((item: any) => item.size !== undefined && item.size)
         )
       );
+      const colors = Array.from(
+        new Set(mappedData.map((item: any) => item.color!))
+      );
       setItems(mappedData);
-      setSelectedOptions({ ...selectedOptions, color: mappedData[0].color });
+      if (query.get('color')) {
+        if (colors.includes(query.get('color')!)) {
+          setSelectedOptions({
+            ...selectedOptions,
+            color: query.get('color')!,
+          });
+        } else {
+          setFetchStatus(ApiCallState.FETCH_ERROR);
+          return;
+        }
+      } else {
+        setSelectedOptions({ ...selectedOptions, color: mappedData[0].color });
+      }
       if (sizes.length > 0 && sizes[0] !== null) {
         setSelectedOptions({ ...selectedOptions, size: sizes[0] as string });
       }
@@ -255,28 +272,38 @@ const ProductPage = () => {
             {items[0].description}
           </Typography>
           <div>
-            <Typography variant="h4">Colors</Typography>
-            <div className={classes.pickers}>
-              {uniqueColors.map((color, index) => (
-                <Button
-                  key={index}
-                  style={{ border: `2px solid ${color!.toLocaleLowerCase()}` }}
-                  variant="outlined"
-                  onClick={() => handleColorButtonClick(color!)}
-                  endIcon={
-                    <FcCheckmark
+            {items[0].category !== 'card' && (
+              <>
+                <Typography variant="h4">Colors</Typography>
+                <div className={classes.pickers}>
+                  {uniqueColors.map((color, index) => (
+                    <Button
+                      key={index}
                       style={{
-                        visibility: `${
-                          selectedOptions.color === color ? 'visible' : 'hidden'
+                        border: `2px solid ${
+                          color! === 'white' ? 'black' : color!.toLowerCase()
                         }`,
                       }}
-                    />
-                  }
-                >
-                  <Typography>{color}</Typography>
-                </Button>
-              ))}
-            </div>
+                      variant="outlined"
+                      onClick={() => handleColorButtonClick(color!)}
+                      endIcon={
+                        <FcCheckmark
+                          style={{
+                            visibility: `${
+                              selectedOptions.color === color
+                                ? 'visible'
+                                : 'hidden'
+                            }`,
+                          }}
+                        />
+                      }
+                    >
+                      <Typography>{color}</Typography>
+                    </Button>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
           {uniqueSizes.length > 0 && uniqueSizes[0] !== null && (
             <div>

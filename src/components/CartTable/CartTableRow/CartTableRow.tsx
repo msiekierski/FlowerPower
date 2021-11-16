@@ -1,12 +1,13 @@
 import { TableCell, TableRow, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CartProduct } from '../../../common/types';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { ImCross } from 'react-icons/im';
 import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../redux/cart';
+import { TextField } from '@mui/material';
 
 type Props = {
   cartProduct: CartProduct;
@@ -49,8 +50,10 @@ const CartTableRow: React.FC<Props> = ({ cartProduct }) => {
   } = cartProduct;
 
   const dispatch = useDispatch();
-  const { removeItem, increaseQuantity, decreaseQuanitity } =
+  const { removeItem, increaseQuantity, decreaseQuanitity, setArbitraryValue } =
     bindActionCreators(actionCreators, dispatch);
+
+  useEffect(() => {});
 
   return (
     <TableRow>
@@ -74,7 +77,20 @@ const CartTableRow: React.FC<Props> = ({ cartProduct }) => {
           >
             <AiOutlineMinus size={25} style={{ padding: '10px' }} />
           </div>
-          <Typography variant="h4">{quantity}</Typography>
+          <TextField
+            type="tel"
+            style={{ width: '60px' }}
+            inputProps={{
+              style: { textAlign: 'center' },
+            }}
+            value={quantity}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              const value = +event.target.value;
+              if (!(Number.isNaN(value) || value <= 0 || value > 1000)) {
+                setArbitraryValue(productId, value);
+              }
+            }}
+          />
           <div
             className={classes.actionText}
             onClick={() => increaseQuantity(productId)}

@@ -16,6 +16,7 @@ const useStyle = (props: StyleProps) =>
   makeStyles((theme) => ({
     card: {
       minWidth: '220px',
+      
     },
     container: {
       minHeight: '17vh',
@@ -29,6 +30,7 @@ const useStyle = (props: StyleProps) =>
       rowGap: '10%',
       justifyContent: 'center',
       alignItems: 'left',
+      maxHeight: props.fullWidth ? '180px' : '250px',
     },
     shopImage: {
       minWidth: '100px',
@@ -37,7 +39,7 @@ const useStyle = (props: StyleProps) =>
       objectFit: 'cover',
       borderRadius: 4,
       width: '100%',
-      height: '140px',
+      height: 'auto',
     },
     details: {
       display: 'flex',
@@ -120,7 +122,7 @@ const FlowerShopPreviewCard: React.FC<FlowerShopPreviewCardProps> = ({
               />
               <div className={classes.details}>
                 <div>
-                  <Typography variant="h6" noWrap>
+                  <Typography variant="h6" noWrap={!fullWidth}>
                     {name}
                   </Typography>
                   <div className={classes.rating}>

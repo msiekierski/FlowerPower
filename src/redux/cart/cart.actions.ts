@@ -25,9 +25,15 @@ interface AddItem {
   payload: CartProduct;
 }
 
+interface ArbitraryValue {
+  type: ActionType.SET_ARBITRARY_VALUE;
+  payload: { id: string; value: number };
+}
+
 export type Action =
   | RemoveItem
   | IncreaseQuanitity
   | DecreaseQuanitity
   | ClearCart
-  | AddItem;
+  | AddItem
+  | ArbitraryValue;

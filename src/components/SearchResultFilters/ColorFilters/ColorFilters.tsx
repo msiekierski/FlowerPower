@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { RootState } from '../../../redux/root-reducer';
 import { actionCreators } from '../../../redux/searchResult';
-import { GrCheckmark } from 'react-icons/gr';
+import { IoMdCheckmark } from 'react-icons/io';
 
 type Props = {
   color: string;
@@ -37,8 +37,8 @@ const useStyles = (props: StyleProps) =>
     },
     icon: {
       position: 'relative',
-      left: '20%',
-      top: '12.3%',
+      left: '17.5%',
+      top: '16%',
       fontSize: '1.5rem',
     },
   }));
@@ -50,7 +50,6 @@ const ColorFilters: React.FC<Props> = ({ color }) => {
   );
   const isSelected = colorFilters.includes(color);
   const dispatch = useDispatch();
-  console.log(isSelected);
   const { addFilterColor, removeFilterColor } = bindActionCreators(
     actionCreators,
     dispatch
@@ -65,7 +64,11 @@ const ColorFilters: React.FC<Props> = ({ color }) => {
   return (
     <div className={classes.mainContainer} onClick={() => handleOnClickEvent()}>
       <div className={classes.circle}>
-        <div className={classes.icon}>{isSelected && <GrCheckmark />}</div>
+        <div className={classes.icon}>
+          {isSelected && (
+            <IoMdCheckmark color={`${color === 'black' ? '#fff' : '#000'}`} fontSize="1.75rem" />
+          )}
+        </div>
       </div>
       <Typography align="center">{color}</Typography>
     </div>

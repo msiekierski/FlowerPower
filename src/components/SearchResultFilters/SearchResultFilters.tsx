@@ -9,6 +9,9 @@ import { Collapse } from '@mui/material';
 import ColorFilters from './ColorFilters/ColorFilters';
 
 const useStyles = makeStyles((theme) => ({
+  filters: {
+    minWdith: '200px',
+  },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -19,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   colors: {
     display: 'flex',
     flexWrap: 'wrap',
-    columnGap: '40px',
+    columnGap: '20px',
     alignItems: 'center',
     justifyContent: 'space-around',
   },
@@ -41,46 +44,48 @@ const SearchResultFilters = () => {
 
   return (
     <>
-      <Typography variant="h5" align="left">
-        Filters
-      </Typography>
-      <Divider />
-      <div className={classes.content}>
-        <div
-          className={classes.header}
-          onClick={() => setAreCategoriesShown(!areCategoriesShown)}
-        >
-          <Typography variant="h6" align="left">
-            Categories
-          </Typography>
-          {areCategoriesShown ? <BiMinus /> : <BiPlus />}
-        </div>
-        <Collapse in={areCategoriesShown}>
-          {categories.map((category, index) => (
-            <CategoryFilters
-              key={index}
-              name={category}
-              subcategories={Object.keys(categoryFilters[category])}
-            />
-          ))}
-        </Collapse>
+      <div className={classes.filters}>
+        <Typography variant="h5" align="left" style={{ fontWeight: 'bold' }}>
+          Filters
+        </Typography>
         <Divider />
-        <div
-          className={classes.header}
-          onClick={() => setAreColorsShown(!areColorsShown)}
-        >
-          <Typography variant="h6" align="left">
-            Colors
-          </Typography>
-          {areColorsShown ? <BiMinus /> : <BiPlus />}
-        </div>
-        <Collapse in={areColorsShown}>
-          <div className={classes.colors}>
-            {colors.map((color, index) => (
-              <ColorFilters color={color} />
-            ))}
+        <div className={classes.content}>
+          <div
+            className={classes.header}
+            onClick={() => setAreCategoriesShown(!areCategoriesShown)}
+          >
+            <Typography variant="h6" align="left">
+              Categories
+            </Typography>
+            {areCategoriesShown ? <BiMinus /> : <BiPlus />}
           </div>
-        </Collapse>
+          <Collapse in={areCategoriesShown}>
+            {categories.map((category, index) => (
+              <CategoryFilters
+                key={index}
+                name={category}
+                subcategories={Object.keys(categoryFilters[category])}
+              />
+            ))}
+          </Collapse>
+          <Divider />
+          <div
+            className={classes.header}
+            onClick={() => setAreColorsShown(!areColorsShown)}
+          >
+            <Typography variant="h6" align="left">
+              Colors
+            </Typography>
+            {areColorsShown ? <BiMinus /> : <BiPlus />}
+          </div>
+          <Collapse in={areColorsShown}>
+            <div className={classes.colors}>
+              {colors.map((color, index) => (
+                <ColorFilters color={color} key={index} />
+              ))}
+            </div>
+          </Collapse>
+        </div>
       </div>
     </>
   );
