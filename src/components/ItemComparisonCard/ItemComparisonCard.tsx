@@ -74,6 +74,7 @@ const ItemComparisonCard: React.FC<Props> = ({ item }) => {
     price,
     productName,
     shopAddress,
+    color
   } = item;
   const classes = useStyles();
   const { itemId } = useParams<PageProps>();
@@ -86,7 +87,7 @@ const ItemComparisonCard: React.FC<Props> = ({ item }) => {
         history.push(
           `/store/${stringToUrl(shopName)}/${stringToUrl(
             shopAddress
-          )}/item/${stringToUrl(productName)}`
+          )}/item/${stringToUrl(productName)}/?color=${color}`
         )
       }
     >

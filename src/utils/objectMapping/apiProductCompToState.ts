@@ -10,6 +10,7 @@ export default function apiProductCompToState(object: any) {
     price: object.price,
     productName: object.productName,
     shopAddress: object.address,
+    color: object.color,
   };
   return result;
 }

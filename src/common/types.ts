@@ -152,4 +152,5 @@ export type ComparisonItem = {
   price: number;
   shopAddress: string;
   productName: string;
+  color: string;
 };
