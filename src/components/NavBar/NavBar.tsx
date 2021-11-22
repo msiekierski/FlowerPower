@@ -10,6 +10,10 @@ import {
   Typography,
   Grow,
   Badge,
+  TextField,
+  Collapse,
+  Paper,
+  ClickAwayListener,
 } from '@material-ui/core';
 import { ReactComponent as Logo } from '../../resources/icons/logo.svg';
 import SearchIcon from '@material-ui/icons/Search';
@@ -25,6 +29,8 @@ import { PERSONAL_DATA } from '../../utils/constants/SettingsMenus';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root-reducer';
 import SearchBar from './SearchBar/SearchBar';
+import LocationInput from './LocationInput/LocationInput';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 type StyleProps = {
   isSearchFocused: boolean;
@@ -40,8 +46,8 @@ const useStyles = (props: StyleProps) =>
     },
     iconsPanel: {
       display: 'flex',
-      alignItems: 'end',
-      justifyContent: 'end',
+      alignItems: 'center',
+      justifyContent: 'center',
       fontSize: '2.5rem',
       gap: '30%',
     },
@@ -77,6 +83,12 @@ const useStyles = (props: StyleProps) =>
         marginBottom: '10px',
       },
       margin: '2px 8px',
+    },
+    location: {
+      margin: 'auto',
+      position: 'absolute',
+      bottom: '-48px',
+      right: '100px',
     },
     [theme.breakpoints.down(theme.breakpoints.values.sm)]: {
       iconsPanel: {
@@ -129,9 +141,13 @@ const NavBar = () => {
   const [isSearchFocused, setIsSearchFocused] = useState<boolean>(false);
   const classes = useStyles({ isSearchFocused })();
   const navRef = useRef<HTMLDivElement | null>(null);
+  const locIconRef = useRef<HTMLDivElement | null>(null);
   const [width, height] = useWindowSize();
+  const [isLocationShown, setIsLocationShow] = useState<boolean>(false);
 
-  const { items } = useSelector((root: RootState) => root.cart);
+  const root = useSelector((root: RootState) => root);
+  const { items } = root.cart;
+  const { location } = root.user;
   const totalQuantity = items
     .map((item) => item.quantity)
     .reduce((acc, quantity) => acc + quantity, 0);
@@ -154,7 +170,17 @@ const NavBar = () => {
             isSearchFocused={isSearchFocused}
             setIsSearchFocused={setIsSearchFocused}
           />
+
           <div className={classes.iconsPanel}>
+            <Badge
+              badgeContent={location.city}
+              color="secondary"
+              onClick={() => setIsLocationShow(!isLocationShown)}
+              ref={locIconRef}
+            >
+              <LocationOnIcon fontSize="inherit" />
+            </Badge>
+
             <Link to={'/settings/' + PERSONAL_DATA}>
               <Badge invisible>
                 <PersonOutlineOutlinedIcon fontSize="inherit" />
@@ -172,6 +198,21 @@ const NavBar = () => {
             fontSize="large"
           />
         </Toolbar>
+        <Popper
+          open={isLocationShown}
+          anchorEl={locIconRef.current}
+          placement={'bottom'}
+          transition
+          style={{ zIndex: 30000 }}
+        >
+          {({ TransitionProps }) => (
+            <ClickAwayListener onClickAway={() => setIsLocationShow(false)}>
+              <Paper>
+                <LocationInput />
+              </Paper>
+            </ClickAwayListener>
+          )}
+        </Popper>
       </AppBar>
       <Toolbar />
       <Grow in={isMenuOpen}>

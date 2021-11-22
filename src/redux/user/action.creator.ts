@@ -3,6 +3,7 @@ import { User } from './user.reducer';
 import { Dispatch } from 'redux';
 import { Action } from './user.actions';
 import axios from 'axios';
+import { Location } from '../../common/types';
 
 const loginApiUrl =
   process.env.REACT_APP_API_ADDRESS + 'flowerPower/login/check';
@@ -51,5 +52,11 @@ export const logOutUser = () => {
 export const clearLoginData = () => {
   return (dispatch: Dispatch<Action>) => {
     dispatch({ type: ActionType.CLEAR_LOGIN_DATA });
+  };
+};
+
+export const setLocation = (location: Location) => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch({ type: ActionType.SET_LOCATION, payload: location });
   };
 };

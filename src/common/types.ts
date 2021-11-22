@@ -154,3 +154,10 @@ export type ComparisonItem = {
   productName: string;
   color: string;
 };
+
+export type Location = {
+  lat: number;
+  long: number;
+  city: string;
+  formattedAddress: string;
+};

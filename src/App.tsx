@@ -1,7 +1,10 @@
 import { Container, createTheme, ThemeProvider } from '@material-ui/core';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import ContentSwitch from './components/ContentSwitch/ContentSwitch';
 import NavBar from './components/NavBar/NavBar';
+import { RootState } from './redux/root-reducer';
 
 export const Theme = createTheme({
   shape: {
@@ -30,6 +33,8 @@ export const Theme = createTheme({
 });
 
 const App = () => {
+  const { location } = useSelector((root: RootState) => root.user);
+
   return (
     <Router>
       <ThemeProvider theme={Theme}>

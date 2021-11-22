@@ -1,3 +1,4 @@
+import { Location } from '../../common/types';
 import { ActionType } from './action.types';
 import { Action } from './user.actions';
 
@@ -16,12 +17,19 @@ export type Authentication = {
   isLoading: boolean;
   error: string;
   user: User;
+  location: Location;
 };
 
 const initialState: Authentication = {
   isLoading: false,
   error: '',
   user: null,
+  location: {
+    lat: 0,
+    long: 0,
+    city: 'Wrocław',
+    formattedAddress: '',
+  },
 };
 
 const reducer = (
@@ -32,7 +40,7 @@ const reducer = (
     return { ...state, user: action.payload };
   }
   if (action.type === ActionType.LOGOUT) {
-    return { isLoading: false, error: '', user: null };
+    return { ...state, isLoading: false, error: '', user: null };
   }
   if (action.type === ActionType.LOGIN_ERROR) {
     return { ...state, error: action.payload, isLoading: false };
@@ -42,6 +50,11 @@ const reducer = (
   }
   if (action.type === ActionType.START_FETCHING) {
     return { ...state, isLoading: true };
+  }
+  if (action.type === ActionType.SET_LOCATION) {
+    console.log('new state');
+    console.log({ ...state, location: action.payload });
+    return { ...state, location: action.payload };
   }
   return state;
 };

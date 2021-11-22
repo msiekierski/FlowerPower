@@ -12,6 +12,7 @@ import axios from 'axios';
 import apiShopListToState from '../../utils/objectMapping/apiShopListToState';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/root-reducer';
+import normalizeString from '../../utils/functions/normalizeString';
 
 const useStyles = makeStyles((theme) => ({
   carouselContainer: {
@@ -57,25 +58,23 @@ const MainPage = () => {
     Array<FlowerShopPreviewCardProps>
   >([]);
 
-  const user = useSelector((state: RootState) => state.user.user);
-
+  const { user, location } = useSelector((state: RootState) => state.user);
   useEffect(() => {
     fetchShops();
-  }, []);
+  }, [location.city]);
 
   const fetchShops = async () => {
     let city = 'Wroclaw';
-    if (user !== null && user.city !== null) {
-      city = user.city!;
+    if (location && location.city) {
+      city = location.city;
     }
     try {
       const { data } = await axios.get(
         `${process.env.REACT_APP_API_ADDRESS}flowerPower/customer/get/shopList`,
-        { params: { city: city } }
+        { params: { city: normalizeString(city) } }
       );
       setRecomenndedShops(data.map((data: any) => apiShopListToState(data)));
-    } catch (e) {
-    }
+    } catch (e) {}
   };
 
   const carouselLinks: Array<string> = [

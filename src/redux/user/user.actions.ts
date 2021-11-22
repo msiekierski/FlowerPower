@@ -1,5 +1,6 @@
 import { Authentication, User } from './user.reducer';
 import { ActionType } from './action.types';
+import { Location } from '../../common/types';
 
 interface LogInUserActionSuccessful {
   type: ActionType.LOGIN_SUCCESSFUL;
@@ -23,9 +24,15 @@ interface StartFetching {
   type: ActionType.START_FETCHING;
 }
 
+interface SetLocation {
+  type: ActionType.SET_LOCATION;
+  payload: Location;
+}
+
 export type Action =
   | LogInUserActionSuccessful
   | LogOutUserAction
   | LogInUserError
   | ClearLoginData
-  | StartFetching;
+  | StartFetching
+  | SetLocation;
