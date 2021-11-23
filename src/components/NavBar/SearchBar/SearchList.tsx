@@ -11,6 +11,9 @@ import axios from 'axios';
 import apiProductSearchToState from '../../../utils/objectMapping/apiProductSearchToState';
 import apiShopSearchToState from '../../../utils/objectMapping/apiShopSearchToState';
 import * as _ from 'lodash';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../redux/root-reducer';
+import normalizeString from '../../../utils/functions/normalizeString';
 
 type ListData = {
   products: Array<ProductSearch>;
@@ -114,10 +117,11 @@ const SearchList: React.FC<Props> = ({ inputText, searchRef, isFocused }) => {
   const [isListHovered, setIsListHovered] = useState<boolean>(false);
   const [width, setWidth] = useState(0);
   const [apiState, setApiState] = useState<ApiCallState>(ApiCallState.IDLE);
+  const { city } = useSelector((root: RootState) => root.user.location);
 
   const inputTextRef = useRef(inputText);
   const groupedItems = _.groupBy(data.products, 'name');
- 
+
   const classes = useStyles({ width })();
 
   useEffect(() => {
@@ -139,11 +143,10 @@ const SearchList: React.FC<Props> = ({ inputText, searchRef, isFocused }) => {
     try {
       setApiState(ApiCallState.FETCH_BEGIN);
       const { data } = await axios.get(getApiUrl(text), {
-        params: { city: 'Wroclaw' },
+        params: { city: normalizeString(city) },
       });
 
       if (text === inputTextRef.current) {
-   
         setData({
           products: data.products.map((obj: any) =>
             apiProductSearchToState(obj)

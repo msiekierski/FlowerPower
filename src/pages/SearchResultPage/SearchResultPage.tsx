@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/root-reducer';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../redux/searchResult';
+import normalizeString from '../../utils/functions/normalizeString';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -61,10 +62,10 @@ const SearchResultPage = () => {
   const classes = useStyles();
 
   const dispatch = useDispatch();
-  const { isLoading, isError, fetchData, filters } = useSelector(
-    (root: RootState) => root.search
-  );
+  const state = useSelector((root: RootState) => root);
+  const { isLoading, isError, fetchData, filters } = state.search;
   const { categoryFilters, colorFilters } = filters;
+  const { city } = state.user.location;
   const {
     fetchSearchDataByPhrase,
     fetchSearchDataByItem,
@@ -74,11 +75,11 @@ const SearchResultPage = () => {
 
   useEffect(() => {
     if (query.get('phrase')) {
-      fetchSearchDataByPhrase(query.get('phrase')!);
+      fetchSearchDataByPhrase(query.get('phrase')!, normalizeString(city));
     } else if (query.get('item')) {
-      fetchSearchDataByItem(query.get('item')!);
+      fetchSearchDataByItem(query.get('item')!, normalizeString(city));
     } else if (query.get('category')) {
-      fetchSearchDataByCategory(query.get('category')!);
+      fetchSearchDataByCategory(query.get('category')!, normalizeString(city));
     }
     return () => {
       clearReducer();

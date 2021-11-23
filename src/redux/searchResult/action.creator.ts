@@ -12,7 +12,7 @@ const getApiUrl = (name: string) =>
 const getApiUrlCategory = (category: string) =>
   `${process.env.REACT_APP_API_ADDRESS}/flowerPower/customer/categoryFilter/${category}`;
 
-export const fetchSearchDataByPhrase = (name: string) => {
+export const fetchSearchDataByPhrase = (name: string, city: string) => {
   return async (dispatch: Dispatch<Action>) => {
     const onSuccess = (data: PageResult) => {
       dispatch({ type: ActionType.FETCH_SUCCESS, payload: data });
@@ -37,7 +37,7 @@ export const fetchSearchDataByPhrase = (name: string) => {
   };
 };
 
-export const fetchSearchDataByItem = (name: string) => {
+export const fetchSearchDataByItem = (name: string, city: string) => {
   return async (dispatch: Dispatch<Action>) => {
     const onSuccess = (data: PageResult) => {
       dispatch({ type: ActionType.FETCH_SUCCESS, payload: data });
@@ -62,7 +62,7 @@ export const fetchSearchDataByItem = (name: string) => {
   };
 };
 
-export const fetchSearchDataByCategory = (category: string) => {
+export const fetchSearchDataByCategory = (category: string, city: string) => {
   return async (dispatch: Dispatch<Action>) => {
     const onSuccess = (data: PageResult) => {
       dispatch({ type: ActionType.FETCH_SUCCESS, payload: data });

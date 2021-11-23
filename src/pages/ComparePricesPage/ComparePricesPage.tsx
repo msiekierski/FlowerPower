@@ -11,6 +11,9 @@ import ItemComparisonCard from '../../components/ItemComparisonCard/ItemComparis
 import ErrorPage from '../ErrorPage/ErrorPage';
 import axios from 'axios';
 import apiProductCompToState from '../../utils/objectMapping/apiProductCompToState';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/root-reducer';
+import normalizeString from '../../utils/functions/normalizeString';
 
 type PageProps = {
   itemId: string;
@@ -38,6 +41,7 @@ const ComparePricesPage = () => {
   );
   const [data, setData] = useState<Array<ComparisonItem>>([]);
   const classes = useStyles();
+  const { city } = useSelector((root: RootState) => root.user.location);
 
   useEffect(() => {
     fetchData();
@@ -47,7 +51,10 @@ const ComparePricesPage = () => {
     try {
       setFetchStatus(ApiCallState.FETCH_BEGIN);
       const { data } = await axios.get(apiUrl, {
-        params: { productId: itemId, city: 'wroclaw' },
+        params: {
+          productId: itemId,
+          city: normalizeString(city).toLowerCase(),
+        },
       });
       const mappedData: Array<ComparisonItem> = data.map((obj: any) =>
         apiProductCompToState(obj)
