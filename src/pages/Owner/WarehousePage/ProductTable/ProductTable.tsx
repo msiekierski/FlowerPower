@@ -19,8 +19,12 @@ import ProductTableRow from './ProductTableRow/ProductTableRow';
 
 const columns: Array<string> = ['ID', 'NAME', 'CATEGORY', 'PRICE', 'QTY'];
 
-const ProductTable = () => {
-  const { items, selectAll } = useSelector((root: RootState) => root.warehouse);
+type Props = {
+  items: Array<WarehouseItem>;
+};
+
+const ProductTable: React.FC<Props> = ({ items }) => {
+  const { selectAll } = useSelector((root: RootState) => root.warehouse);
   const dispatch = useDispatch();
   const { toggleSelectAll } = bindActionCreators(actionCreators, dispatch);
   return (

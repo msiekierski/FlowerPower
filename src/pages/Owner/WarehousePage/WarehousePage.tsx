@@ -21,6 +21,7 @@ import ErrorPage from '../../ErrorPage/ErrorPage';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../redux/warehouse';
 import AddNewProductModal from './AddNewProductModal/AddNewProductModal';
+import { WarehouseItem } from '../../../common/types';
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -78,6 +79,15 @@ const WarehousePage = () => {
     dispatch
   );
   const [showAddProductModal, setShowAddProductModal] = useState(false);
+  const [searchInput, setSearchInput] = useState<string>('');
+
+  const filterItems = (): Array<WarehouseItem> => {
+    let filteredItems = items;
+    filteredItems = filteredItems.filter((item) =>
+      item.name.toLowerCase().includes(searchInput.toLowerCase())
+    );
+    return filteredItems;
+  };
 
   return (
     <>
@@ -105,6 +115,8 @@ const WarehousePage = () => {
             <TextField
               variant="outlined"
               color="secondary"
+              value={searchInput}
+              onChange={(e: any) => setSearchInput(e.target.value)}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -136,7 +148,7 @@ const WarehousePage = () => {
                 <Typography variant="h6">Remove&nbsp;Selected</Typography>
               </div>
             </div>
-            <ProductTable />
+            <ProductTable items={filterItems()} />
           </div>
         </div>
       </div>
