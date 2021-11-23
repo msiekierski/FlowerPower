@@ -1,11 +1,13 @@
 import {
+  Backdrop,
+  CircularProgress,
   IconButton,
   InputAdornment,
   makeStyles,
   TextField,
   Typography,
 } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect } from 'react';
 import StoreSelector from '../../../components/Owner/StoreSelector/StoreSelector';
 import SearchIcon from '@material-ui/icons/Search';
 import SortingSelector from './SortingSelector/SortingSelector';
@@ -13,6 +15,11 @@ import { GrAddCircle } from 'react-icons/gr';
 import { FaRegEdit } from 'react-icons/fa';
 import ProductTable from './ProductTable/ProductTable';
 import { FiTrash } from 'react-icons/fi';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../redux/root-reducer';
+import ErrorPage from '../../ErrorPage/ErrorPage';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../../redux/warehouse';
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -61,6 +68,15 @@ const useStyles = makeStyles((theme) => ({
 
 const WarehousePage = () => {
   const classes = useStyles();
+  const { isLoading, isError, items } = useSelector(
+    (root: RootState) => root.warehouse
+  );
+  const dispatch = useDispatch();
+  const { fetchData, removeSelected } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
+
   return (
     <>
       <div className={classes.header}>
@@ -103,7 +119,10 @@ const WarehousePage = () => {
                 <FaRegEdit size="2rem" />
                 <Typography variant="h6">Edit&nbsp;Selected</Typography>
               </div>
-              <div className={classes.iconText}>
+              <div
+                className={classes.iconText}
+                onClick={() => removeSelected()}
+              >
                 <FiTrash size="2rem" />
                 <Typography variant="h6">Remove&nbsp;Selected</Typography>
               </div>

@@ -10,45 +10,27 @@ import {
   Typography,
 } from '@material-ui/core';
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { WarehouseItem } from '../../../../common/types';
+import { RootState } from '../../../../redux/root-reducer';
+import { actionCreators } from '../../../../redux/warehouse';
 import ProductTableRow from './ProductTableRow/ProductTableRow';
-
 
 const columns: Array<string> = ['ID', 'NAME', 'CATEGORY', 'PRICE', 'QTY'];
 
-const data: Array<WarehouseItem> = [
-  {
-    id: '0001',
-    name: 'Flower 1',
-    category: 'Cat 1',
-    price: 5.99,
-    discount: null,
-    quantity: 5,
-  },
-  {
-    id: '0002',
-    name: 'Flower 2',
-    category: 'Cat 2',
-    price: 5.99,
-    discount: { newPrice: 4.99, dateFrom: new Date(), dateTo: new Date() },
-    quantity: 5,
-  },
-];
-
 const ProductTable = () => {
-  const [selectedAll, setSelectAll] = useState<boolean>(false);
+  const { items, selectAll } = useSelector((root: RootState) => root.warehouse);
+  const dispatch = useDispatch();
+  const { toggleSelectAll } = bindActionCreators(actionCreators, dispatch);
   return (
     <TableContainer>
       <Table size="medium">
         <TableHead>
           <TableRow>
             {columns.map((column, index) => (
-              <TableCell
-                key={index}
-                style={{ fontWeight: 'bold' }}
-                align="center"
-              >
-                <Typography>{column}</Typography>
+              <TableCell key={index} align="center">
+                <Typography style={{ fontWeight: 'bold' }}>{column}</Typography>
               </TableCell>
             ))}
             <TableCell></TableCell>
@@ -58,8 +40,8 @@ const ProductTable = () => {
               <FormControlLabel
                 control={
                   <Checkbox
-                    value={selectedAll}
-                    onClick={() => setSelectAll(!selectedAll)}
+                    value={selectAll}
+                    onClick={() => toggleSelectAll()}
                   />
                 }
                 label="Select&nbsp;all"
@@ -68,7 +50,7 @@ const ProductTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((item) => (
+          {items.map((item) => (
             <ProductTableRow key={item.name} {...item} />
           ))}
         </TableBody>

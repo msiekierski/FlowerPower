@@ -1,8 +1,9 @@
-const dateToWarehouseDateString = (data: Date):string => {
-    const dd = String(data.getDate()).padStart(2, '0');
-    const mm = String(data.getMonth() + 1).padStart(2, '0');
-    const yyyy = data.getFullYear();
-    return `${dd}/${mm}/${yyyy}`
-}
+const dateToWarehouseDateString = (data: Date): string => {
+  const date = new Date();
+  const dd = String(date.getDate()).padStart(2, '0');
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const yyyy = date.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+};
 
 export default dateToWarehouseDateString;

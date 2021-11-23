@@ -170,5 +170,5 @@ export type WarehouseItem = {
   price: number;
   discount: { newPrice: number; dateFrom: Date; dateTo: Date } | null;
   quantity: number;
-  isSelected?: boolean;
+  isSelected: boolean;
 };

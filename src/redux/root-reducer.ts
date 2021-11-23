@@ -6,6 +6,7 @@ import { createWhitelistFilter } from 'redux-persist-transform-filter';
 import cartReducer from './cart/cart.reducer';
 import shopReducer from './shop/shop.reducer';
 import searchReducer from './searchResult/search.reducer';
+import warehouseReducer from './warehouse/warehouse.reducer';
 
 const rootPersistConfig = {
   key: 'root',
@@ -14,20 +15,15 @@ const rootPersistConfig = {
     createWhitelistFilter('user', ['user', 'location']),
     createWhitelistFilter('cart', ['items']),
   ],
-  blacklist: ['shop', 'search'],
-};
-
-const searchPersistConfig = {
-  key: 'search',
-  storage,
-  whitelist: [],
+  blacklist: ['shop', 'search', 'warehouse'],
 };
 
 const rootReducer = combineReducers({
   user: userReducer,
   cart: cartReducer,
   shop: shopReducer,
-  search: persistReducer(searchPersistConfig, searchReducer),
+  search: searchReducer,
+  warehouse: warehouseReducer,
 });
 
 export const pReducer = persistReducer(rootPersistConfig, rootReducer);
