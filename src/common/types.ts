@@ -121,6 +121,7 @@ export enum Roles {
   EMPLOYEE = 'Employee',
   OWNER = 'Owner',
   ADMIN = 'Admin',
+  NONE = 'None',
 }
 
 export type SearchItem = {

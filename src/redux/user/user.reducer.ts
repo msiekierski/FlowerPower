@@ -1,4 +1,4 @@
-import { Location } from '../../common/types';
+import { Location, Roles } from '../../common/types';
 import { ActionType } from './action.types';
 import { Action } from './user.actions';
 
@@ -11,6 +11,7 @@ export type User = {
   street?: string;
   city?: string;
   zipCode?: string;
+  role?: string;
 } | null;
 
 export type Authentication = {
@@ -52,8 +53,6 @@ const reducer = (
     return { ...state, isLoading: true };
   }
   if (action.type === ActionType.SET_LOCATION) {
-    console.log('new state');
-    console.log({ ...state, location: action.payload });
     return { ...state, location: action.payload };
   }
   return state;

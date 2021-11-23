@@ -26,7 +26,8 @@ export const logInUser = (user: User) => {
         email: user?.email,
         password: user?.password,
       });
-      user!.id = data;
+      user!.id = data.split(':')[0];
+      user!.role = data.split(':')[1];
       const response = await axios.get(getShipmentApiUrl(user?.id!));
       user!.name = response.data.name;
       user!.surname = response.data.surname;

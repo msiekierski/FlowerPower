@@ -177,6 +177,7 @@ const NavBar = () => {
               color="secondary"
               onClick={() => setIsLocationShow(!isLocationShown)}
               ref={locIconRef}
+              style={{ cursor: 'pointer' }}
             >
               <LocationOnIcon fontSize="inherit" />
             </Badge>
@@ -205,7 +206,7 @@ const NavBar = () => {
           transition
           style={{ zIndex: 30000 }}
         >
-          {({ TransitionProps }) => (
+          {() => (
             <ClickAwayListener onClickAway={() => setIsLocationShow(false)}>
               <Paper>
                 <LocationInput />

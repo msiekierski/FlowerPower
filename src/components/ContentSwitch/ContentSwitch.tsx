@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
+import { Roles } from '../../common/types';
 import CartPage from '../../pages/CartPage/CartPage';
 import ComparePricesPage from '../../pages/ComparePricesPage/ComparePricesPage';
 import ErrorPage from '../../pages/ErrorPage/ErrorPage';
@@ -12,52 +13,15 @@ import SearchItemPage from '../../pages/SearchItemPage/SearchItemPage';
 import SearchResultPage from '../../pages/SearchResultPage/SearchResultPage';
 import SettingsPage from '../../pages/SettingsPage/SettingsPage';
 import { useAuth } from '../../utils/customHooks/useAuth';
+import ClientContentSwitch from './ClientContentSwitch';
 import PrivateRoute from './PrivateRoute/PrivateRoute';
 
 const ContentSwitch = () => {
-  const isAuth = useAuth();
-  return (
-    <Switch>
-      <Route exact path="/">
-        <MainPage />
-      </Route>
-      <PrivateRoute
-        isAuth={isAuth}
-        redirectPath={'/login'}
-        path="/settings/:option"
-      >
-        <SettingsPage />
-      </PrivateRoute>
-      <Route path="/cart">
-        <CartPage />
-      </Route>
-      <PrivateRoute isAuth={!isAuth} redirectPath={'/'} path="/login">
-        <LoginPage />
-      </PrivateRoute>
-      <PrivateRoute isAuth={!isAuth} redirectPath={'/'} path="/register">
-        <RegisterPage />
-      </PrivateRoute>
-      <Route exact path="/search/item/:itemName">
-        <SearchItemPage />
-      </Route>
-      <Route exact path="/compare/item/:itemId">
-        <ComparePricesPage />
-      </Route>
-      <Route path="/search/">
-        <SearchResultPage />
-      </Route>
-      <Route exact path="/store/:shopName/:shopAddress">
-        <FlowerShopPage />
-      </Route>
-      <Route exact path="/store/:shopName/:shopAddress/item/:itemName">
-        <ProductPage />
-      </Route>
-
-      <Route path="*">
-        <ErrorPage />
-      </Route>
-    </Switch>
-  );
+  const role = useAuth();
+  if (role === Roles.NONE || role === Roles.CLIENT) {
+    return <ClientContentSwitch />;
+  }
+  return <div>xd</div>;
 };
 
 export default ContentSwitch;
