@@ -45,7 +45,7 @@ const ComparePricesPage = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [city]);
 
   const fetchData = async () => {
     try {

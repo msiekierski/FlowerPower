@@ -208,7 +208,7 @@ const EditProductModal: React.FC<Props> = ({ isShown, onClose, product }) => {
           fullWidth
           style={{ marginTop: '20px' }}
         >
-          Add item
+          Save item
         </Button>
       </Paper>
     </Modal>

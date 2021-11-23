@@ -84,7 +84,7 @@ const SearchResultPage = () => {
     return () => {
       clearReducer();
     };
-  }, [query.get('phrase'), query.get('item')]);
+  }, [query.get('phrase'), query.get('item'), query.get('category'), city]);
 
   const filterByCategory = (
     products: Array<SearchResultItem>
