@@ -7,7 +7,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import StoreSelector from '../../../components/Owner/StoreSelector/StoreSelector';
 import SearchIcon from '@material-ui/icons/Search';
 import SortingSelector from './SortingSelector/SortingSelector';
@@ -20,6 +20,7 @@ import { RootState } from '../../../redux/root-reducer';
 import ErrorPage from '../../ErrorPage/ErrorPage';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../redux/warehouse';
+import AddNewProductModal from './AddNewProductModal/AddNewProductModal';
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -76,9 +77,14 @@ const WarehousePage = () => {
     actionCreators,
     dispatch
   );
+  const [showAddProductModal, setShowAddProductModal] = useState(false);
 
   return (
     <>
+      <AddNewProductModal
+        isShown={showAddProductModal}
+        onClose={() => setShowAddProductModal(false)}
+      />
       <div className={classes.header}>
         <Typography variant="h4" style={{ fontWeight: 'bold' }}>
           OWNER'S DASHBOARD - WAREHOUSE
@@ -110,9 +116,12 @@ const WarehousePage = () => {
               }}
             />
             <SortingSelector />
-            <div className={classes.iconText}>
+            <div
+              className={classes.iconText}
+              onClick={() => setShowAddProductModal(true)}
+            >
               <GrAddCircle size="2rem" />
-              <Typography variant="h6">Add new</Typography>
+              <Typography variant="h6">Add&nbsp;new</Typography>
             </div>
             <div className={classes.selectedItemsOptions}>
               <div className={classes.iconText}>
