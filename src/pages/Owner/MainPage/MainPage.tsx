@@ -52,7 +52,7 @@ const cards: Array<CardProps> = [
     description:
       'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Blanditiis sed ad corporis ex eligendi asperiores accusantium sapiente atque eos dicta.',
     imageUrl:
-      'https://lh3.googleusercontent.com/pw/AM-JKLXSTVFDhNAMLn7FlMqhJlKotL-fpxv0pZFy_dTiHLWl83beznClsxs83nd8JSCqhd6nHCn5fq9qLiQmAJRxexNfYsHMmLts63sYTR6sST3ITKYEUHJ97NjsGDxKrr0ta7_VVLWLweIe5knIjBLZ1a8=s348-no',
+      'https://lh3.googleusercontent.com/pw/AM-JKLVr8zpxVqtn4gAWPGJ2YUJcKVuhJEB6iYMGdF_2EQNOD8xqvYWKgxPGmpgEAfBsekLlN2EbLn1n8qMwz3gshaAaWj6iJD0Q2QwUgAEblVa9eeZMf0MD9N3anPA9UzdYm402TFXERdBnkDhbrWXSEJYX=s225-no',
   },
 ];
 
