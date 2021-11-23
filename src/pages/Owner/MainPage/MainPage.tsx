@@ -1,14 +1,11 @@
 import { makeStyles, Typography } from '@material-ui/core';
 
 import React, { useState } from 'react';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+
 import DashboardCard, {
   CardProps,
 } from '../../../components/Owner/DashboardCard/DashboardCard';
+import StoreSelector from '../../../components/Owner/StoreSelector/StoreSelector';
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -59,35 +56,15 @@ const cards: Array<CardProps> = [
   },
 ];
 
-const stores: Array<string> = ['Store 1', 'Store 2', 'Store 3'];
-
 const MainPage = () => {
   const classes = useStyles();
-  const [selectedStore, setSelectedStore] = useState<string>(stores[0]);
   return (
     <>
       <div className={classes.header}>
-        <Typography variant="h5" style={{ fontWeight: 'bold' }}>
+        <Typography variant="h4" style={{ fontWeight: 'bold' }}>
           OWNER'S DASHBOARD
         </Typography>
-        <FormControl style={{ minWidth: '200px' }}>
-          <InputLabel id="demo-multiple-name-label" color="secondary">
-            Store
-          </InputLabel>
-          <Select
-            value={selectedStore}
-            onChange={(event: SelectChangeEvent<typeof selectedStore>) => {
-              setSelectedStore(event.target.value);
-            }}
-            input={<OutlinedInput label="Name" />}
-          >
-            {stores.map((name) => (
-              <MenuItem key={name} value={name}>
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <StoreSelector />
       </div>
       <div className={classes.cards}>
         {cards.map((cardInfo) => (

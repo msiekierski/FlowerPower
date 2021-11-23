@@ -162,3 +162,13 @@ export type Location = {
   city: string;
   formattedAddress: string;
 };
+
+export type WarehouseItem = {
+  id: string;
+  name: string;
+  category: string;
+  price: number;
+  discount: { newPrice: number; dateFrom: Date; dateTo: Date } | null;
+  quantity: number;
+  isSelected?: boolean;
+};

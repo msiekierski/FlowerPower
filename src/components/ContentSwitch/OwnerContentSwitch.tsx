@@ -7,7 +7,7 @@ import ErrorPage from '../../pages/ErrorPage/ErrorPage';
 import FlowerShopPage from '../../pages/FlowerShopPage/FlowerShopPage';
 import LoginPage from '../../pages/LoginPage/LoginPage';
 import MainPage from '../../pages/Owner/MainPage/MainPage';
-import WarehousePage from '../../pages/Owner/WarehousePage/Warehouse';
+import WarehousePage from '../../pages/Owner/WarehousePage/WarehousePage';
 import ProductPage from '../../pages/ProductPage/ProductPage';
 import RegisterPage from '../../pages/RegisterPage.tsx/RegisterPage';
 import SearchItemPage from '../../pages/SearchItemPage/SearchItemPage';
