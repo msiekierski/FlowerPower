@@ -13,15 +13,24 @@ import SearchItemPage from '../../pages/SearchItemPage/SearchItemPage';
 import SearchResultPage from '../../pages/SearchResultPage/SearchResultPage';
 import SettingsPage from '../../pages/SettingsPage/SettingsPage';
 import { useAuth } from '../../utils/customHooks/useAuth';
+import NavBar from '../NavBar/NavBar';
 import ClientContentSwitch from './ClientContentSwitch';
+import OwnerContentSwitch from './OwnerContentSwitch';
 import PrivateRoute from './PrivateRoute/PrivateRoute';
 
 const ContentSwitch = () => {
   const role = useAuth();
   if (role === Roles.NONE || role === Roles.CLIENT) {
-    return <ClientContentSwitch />;
+    return (
+      <>
+        <ClientContentSwitch />
+      </>
+    );
   }
-  return <div>xd</div>;
+  if (role === Roles.OWNER) {
+    return <OwnerContentSwitch />;
+  }
+  return <ErrorPage />;
 };
 
 export default ContentSwitch;
