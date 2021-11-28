@@ -1,4 +1,5 @@
 import {
+  CardMedia,
   Table,
   TableBody,
   TableCell,
@@ -23,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: '100px',
     maxWidth: '90px',
     margin: 'auto',
+    gap: '10px',
     '& img': {
       width: '100%',
       height: '100%',
@@ -60,7 +62,7 @@ const detailsColumns: Array<String> = [
 const OrderDetails: React.FC<Props> = ({ orderedItems }) => {
   const classes = useStyles();
   const orderTotalPrice = orderedItems
-    .map((item) => item.price * item.quantity)
+    .map((item) => (item.price - item.priceDiscount) * item.quantity)
     .reduce((acc, curr) => acc + curr);
 
   return (
@@ -80,21 +82,54 @@ const OrderDetails: React.FC<Props> = ({ orderedItems }) => {
             <TableRow key={index} className={classes.detailsRow}>
               <TableCell align="center">
                 <div className={classes.articleDescription}>
-                  <img src={item.itemImageUrl} alt="ordered item" />
+                  <CardMedia
+                    component="img"
+                    style={{
+                      width: '80px',
+                      height: '70px',
+                      maxWidth: '80px',
+                      maxHeight: '70px',
+                      objectFit: 'fill',
+                    }}
+                    alt="ordered item"
+                    src={item.itemImageUrl}
+                  />
+
                   <div>{item.name}</div>
                 </div>
               </TableCell>
               <TableCell align="center">
                 <div
                   className={classes.circle}
-                  style={{ backgroundColor: item.color }}
+                  style={{
+                    background:
+                      item.color === 'mix'
+                        ? 'linear-gradient(to right, #1a2a6c, #b21f1f, #fdbb2d)'
+                        : item.color,
+                  }}
                 ></div>
                 {item.color}
               </TableCell>
-              <TableCell align="center">{item.price} PLN</TableCell>
-              <TableCell align="center">{item.quantity}</TableCell>
               <TableCell align="center">
-                {item.price * item.quantity} PLN
+                <Typography
+                  style={{
+                    textDecoration:
+                      item.priceDiscount > 0 ? 'line-through' : 'inherit',
+                  }}
+                >
+                  {item.price} PLN
+                </Typography>
+                {item.priceDiscount > 0 && (
+                  <Typography>
+                    {(item.price - item.priceDiscount).toFixed(2)} PLN
+                  </Typography>
+                )}
+              </TableCell>
+              <TableCell align="center">
+                <Typography>{item.quantity}</Typography>
+              </TableCell>
+              <TableCell align="center">
+                <Typography>{item.lineTotal.toFixed(2)} PLN</Typography>
               </TableCell>
             </TableRow>
           ))}
@@ -103,7 +138,7 @@ const OrderDetails: React.FC<Props> = ({ orderedItems }) => {
           <TableRow className={classes.detailsRow}>
             <TableCell align="right" colSpan={detailsColumns.length}>
               <Typography variant="h6">
-                IN TOTAL: {orderTotalPrice} PLN
+                IN TOTAL: {orderTotalPrice.toFixed(2)} PLN
               </Typography>
             </TableCell>
           </TableRow>

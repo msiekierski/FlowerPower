@@ -1,7 +1,7 @@
 export type Order = {
   orderNumber: number;
   date: Date;
-  status: OrderStatus;
+  status: string;
   orderedItems: Array<OrderItem>;
 };
 
@@ -18,20 +18,13 @@ export enum OrderStatus {
 export type OrderItem = {
   itemImageUrl: string;
   name: string;
-  color: FlowerColor;
+  color: string;
   quantity: number;
   price: number;
+  priceDiscount: number;
+  lineTotal: number;
 };
 
-export enum FlowerColor {
-  RED = 'RED',
-  ORANGE = 'ORANGE',
-  PURPLE = 'PURPLE',
-  PINK = 'PINK',
-  YELLOW = 'YELLOW',
-  BLUE = 'BLUE',
-  WHITE = 'WHITE',
-}
 
 export type CartProduct = {
   productId: string;
