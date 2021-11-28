@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
     height: '50px',
     margin: 'auto',
     marginBottom: '5px',
+    border: '1px solid black',
   },
   detailsRow: {
     '& > td': {

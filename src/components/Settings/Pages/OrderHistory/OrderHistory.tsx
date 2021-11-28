@@ -56,7 +56,7 @@ const OrderHistory = () => {
   const [selectedIds, setSelectedIds] = useState<Array<number>>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<Array<string>>([]);
   const [filteredData, setFilteredData] = useState<Array<Order>>(data);
-  const orderStatus = Array.from(new Set(data.map(data => data.status)))
+  const orderStatus = Array.from(new Set(data.map((data) => data.status)));
 
   const [filterDate, setFilterDate] = useState([new Date(), new Date()]);
   useEffect(() => {
@@ -84,7 +84,7 @@ const OrderHistory = () => {
     try {
       setFetchStatus(ApiCallState.FETCH_BEGIN);
       const { data } = await axios.get(apiUrl, {
-        params: { personId: 10 },
+        params: { personId: user!.id },
       });
       const mappedData: Array<Order> = data.map((obj: any) =>
         apiOrderHistoryToState(obj)
