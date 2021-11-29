@@ -5,4 +5,5 @@ export enum ActionType {
   CLEAR_LOGIN_DATA = 'clear_login_data',
   START_FETCHING = 'START_FETCHING',
   SET_LOCATION = 'set_location',
+  SET_DETAILS = 'set_details',
 }

@@ -12,6 +12,7 @@ export type User = {
   city?: string;
   zipCode?: string;
   role?: string;
+  phone?: string;
 } | null;
 
 export type Authentication = {
@@ -54,6 +55,20 @@ const reducer = (
   }
   if (action.type === ActionType.SET_LOCATION) {
     return { ...state, location: action.payload };
+  }
+  if (action.type === ActionType.SET_DETAILS) {
+    return {
+      ...state,
+      user: {
+        ...state.user!,
+        city: action.payload.city,
+        zipCode: action.payload.zipCode,
+        phone: action.payload.phoneNumber,
+        name: action.payload.name,
+        surname: action.payload.surname,
+        street: action.payload.street,
+      },
+    };
   }
   return state;
 };

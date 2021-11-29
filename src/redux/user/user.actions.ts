@@ -1,6 +1,6 @@
 import { Authentication, User } from './user.reducer';
 import { ActionType } from './action.types';
-import { Location } from '../../common/types';
+import { Location, UserDetails } from '../../common/types';
 
 interface LogInUserActionSuccessful {
   type: ActionType.LOGIN_SUCCESSFUL;
@@ -29,10 +29,16 @@ interface SetLocation {
   payload: Location;
 }
 
+interface SetDetails {
+  type: ActionType.SET_DETAILS;
+  payload: UserDetails;
+}
+
 export type Action =
   | LogInUserActionSuccessful
   | LogOutUserAction
   | LogInUserError
   | ClearLoginData
   | StartFetching
-  | SetLocation;
+  | SetLocation
+  | SetDetails;

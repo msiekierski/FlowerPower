@@ -25,7 +25,6 @@ export type OrderItem = {
   lineTotal: number;
 };
 
-
 export type CartProduct = {
   productId: string;
   productImageUrl: string;
@@ -164,4 +163,13 @@ export type WarehouseItem = {
   discount: { newPrice: number; dateFrom: Date; dateTo: Date } | null;
   quantity: number;
   isSelected: boolean;
+};
+
+export type UserDetails = {
+  name: string;
+  surname: string;
+  street: string;
+  city: string;
+  zipCode: string;
+  phoneNumber: string;
 };

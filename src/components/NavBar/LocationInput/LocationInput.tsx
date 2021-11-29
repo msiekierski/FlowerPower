@@ -26,10 +26,9 @@ const LocationInput = () => {
   );
   const [selectedPlace, setSelectedPlace] = useState<any>(null);
   const [inputValue, setInputValue] = useState<string>('');
-  console.log(formattedAddress);
+
   const { ref: materialRef } = usePlacesWidget({
     onPlaceSelected: (place) => {
-      console.log(place);
       setSelectedPlace(place);
     },
 

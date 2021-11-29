@@ -3,7 +3,7 @@ import { User } from './user.reducer';
 import { Dispatch } from 'redux';
 import { Action } from './user.actions';
 import axios from 'axios';
-import { Location } from '../../common/types';
+import { Location, UserDetails } from '../../common/types';
 
 const loginApiUrl =
   process.env.REACT_APP_API_ADDRESS + 'flowerPower/login/check';
@@ -29,11 +29,13 @@ export const logInUser = (user: User) => {
       user!.id = data.split(':')[0];
       user!.role = data.split(':')[1];
       const response = await axios.get(getShipmentApiUrl(user?.id!));
+   
       user!.name = response.data.name;
       user!.surname = response.data.surname;
-      user!.zipCode = response.data.zip;
+      user!.zipCode = response.data.postalCode;
       user!.street = response.data.address;
       user!.city = response.data.city;
+      user!.phone = response.data.phone;
 
       return onSuccess(user);
     } catch (e) {
@@ -59,5 +61,11 @@ export const clearLoginData = () => {
 export const setLocation = (location: Location) => {
   return (dispatch: Dispatch<Action>) => {
     dispatch({ type: ActionType.SET_LOCATION, payload: location });
+  };
+};
+
+export const setDetails = (details: UserDetails) => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch({ type: ActionType.SET_DETAILS, payload: details });
   };
 };

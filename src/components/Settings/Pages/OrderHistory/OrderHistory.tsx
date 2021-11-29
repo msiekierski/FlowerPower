@@ -120,7 +120,7 @@ const OrderHistory = () => {
   if (fetchStatus === ApiCallState.FETCH_ERROR) {
     return <ErrorPage />;
   }
-  console.log(data);
+
   return (
     <>
       {data.length > 0 && (
