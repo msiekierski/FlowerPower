@@ -200,6 +200,30 @@ const OrderHistory = () => {
             </TableRow>
           </TableHead>
           <TableBody>
+            {data.length === 0 && (
+              <Typography
+                variant="h5"
+                style={{
+                  position: 'relative',
+                  left: '50%',
+                  marginTop: '30px',
+                }}
+              >
+                Your order history is empty
+              </Typography>
+            )}
+            {data.length > 0 && filteredData.length === 0 && (
+              <Typography
+                variant="h5"
+                style={{
+                  position: 'relative',
+                  left: '50%',
+                  marginTop: '30px',
+                }}
+              >
+                No order matches selected filters
+              </Typography>
+            )}
             {filteredData.map((order, index) => (
               <OrderHistoryRow order={order} key={index} />
             ))}
