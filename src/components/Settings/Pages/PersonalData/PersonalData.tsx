@@ -94,10 +94,9 @@ const PersonalData = () => {
   ];
 
   const updateUserData = async (data: Values) => {
-    
     try {
       setIsFormSubmitting(true);
-     
+
       await axios.post(getApiUrl(user?.id!), userInfoToApi(data));
       setDetails({
         name: data.Name,
@@ -261,6 +260,10 @@ const PersonalData = () => {
                     size="large"
                     type="submit"
                     className={classes.submitButton}
+                    disabled={
+                      Object.keys(errors).length > 0 ||
+                      Object.values(values).findIndex((str) => str === '') >= 0
+                    }
                   >
                     <div
                       style={{
