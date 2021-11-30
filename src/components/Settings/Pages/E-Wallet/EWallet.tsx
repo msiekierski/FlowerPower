@@ -2,16 +2,16 @@ import React, { ChangeEvent, FocusEvent, useState } from 'react';
 import Cards from 'react-credit-cards';
 import { ReactCreditCardProps } from 'react-credit-cards/index';
 import 'react-credit-cards/es/styles-compiled.css';
-import { Form } from 'formik';
 import {
-  FormControl,
-  Input,
-  InputLabel,
   TextField,
   makeStyles,
   Button,
+  FormHelperText,
 } from '@material-ui/core';
-import MaskedInput from 'react-text-mask';
+import * as Yup from 'yup';
+import { ErrorMessage, Field, Formik } from 'formik';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../redux/root-reducer';
 
 const useStyles = makeStyles((theme) => ({
   walletContainer: {
@@ -34,6 +34,24 @@ const useStyles = makeStyles((theme) => ({
 
 export type Focused = 'name' | 'number' | 'expiry' | 'cvc';
 
+interface FormValues {
+  name: string;
+  cardNumber: string;
+  cvvNumber: string;
+  expiryDate: string;
+}
+
+const validateSchema = Yup.object().shape({
+  name: Yup.string().required('Required'),
+  cardNumber: Yup.string().required('Required'),
+  cvvNumber: Yup.string()
+    .required('Required')
+    .length(3, 'CVC is a 3 digit number'),
+  expiryDate: Yup.string()
+    .required('Required')
+    .matches(/^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/, 'Wrong format'),
+});
+
 const EWallet = () => {
   const classes = useStyles();
   const [cardData, setCardData] = useState<ReactCreditCardProps>({
@@ -44,89 +62,161 @@ const EWallet = () => {
     number: '',
   });
 
+  const { user } = useSelector((root: RootState) => root.user);
+
   const handleInputFocus = (e: FocusEvent<HTMLInputElement>) => {
     const { name } = e.target;
-    setCardData({ ...cardData, focused: name as Focused });
-  };
-
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setCardData({ ...cardData, [name]: value });
+    let mapped = name;
+    if (name === 'cardNumber') {
+      mapped = 'number';
+    }
+    if (name === 'expiryDate') {
+      mapped = 'expiry';
+    }
+    if (name === 'cvvNumber') {
+      mapped = 'cvc';
+    }
+    setCardData({ ...cardData, focused: mapped as Focused });
   };
 
   return (
-    <div className={classes.walletContainer}>
-      <div className={classes.form}>
-        <TextField
-          fullWidth
-          variant="standard"
-          margin="none"
-          size="small"
-          color="secondary"
-          type="text"
-          inputProps={{ maxLength: 16 }}
-          name="number"
-          placeholder="Card number"
-          onChange={handleInputChange}
-          onFocus={handleInputFocus}
-          required
-        />
+    <Formik
+      validationSchema={validateSchema}
+      onSubmit={() => {}}
+      initialValues={{
+        name: user?.creditCard?.nameSurname ? user.creditCard.nameSurname : '',
+        cardNumber: user?.creditCard?.cardNumber
+          ? user.creditCard.cardNumber
+          : '',
+        cvvNumber: user?.creditCard?.cvvNumber ? user.creditCard.cvvNumber : '',
+        expiryDate: user?.creditCard?.expiryDate
+          ? user.creditCard.expiryDate
+          : '',
+      }}
+    >
+      {({ errors, touched, values }) => (
+        <form>
+          <div className={classes.walletContainer}>
+            <div className={classes.form}>
+              <Field name={'cardNumber'}>
+                {({ field, form: { isSubmitting } }: any) => (
+                  <>
+                    <TextField
+                      {...field}
+                      required
+                      fullWidth
+                      variant="standard"
+                      margin="none"
+                      size="small"
+                      color="secondary"
+                      type="text"
+                      inputProps={{ maxLength: 16 }}
+                      placeholder="Card number"
+                      onFocus={handleInputFocus}
+                      error={errors.cardNumber && touched.cardNumber}
+                    />
+                    <FormHelperText style={{ color: 'red' }}>
+                      <ErrorMessage name={'cardNumber'} />
+                    </FormHelperText>
+                  </>
+                )}
+              </Field>
 
-        <TextField
-          fullWidth
-          variant="standard"
-          margin="none"
-          size="small"
-          color="secondary"
-          type="text"
-          name="name"
-          placeholder="Name and surname"
-          onChange={handleInputChange}
-          onFocus={handleInputFocus}
-          required
-        />
-        <TextField
-          fullWidth
-          variant="standard"
-          margin="none"
-          size="small"
-          color="secondary"
-          type="text"
-          name="expiry"
-          inputProps={{ pattern: '/dd/dd', maxLength: 5 }}
-          placeholder="Expiration date"
-          helperText="MM/YY"
-          onChange={handleInputChange}
-          onFocus={handleInputFocus}
-          required
-        />
-        <TextField
-          fullWidth
-          variant="standard"
-          margin="none"
-          size="small"
-          color="secondary"
-          type="text"
-          name="cvc"
-          inputProps={{ maxLength: 3 }}
-          placeholder="CVC"
-          onChange={handleInputChange}
-          onFocus={handleInputFocus}
-          required
-          onBlur={() => setCardData({ ...cardData, focused: 'name' })}
-        />
-        <Button variant="contained" color="secondary" size="large">
-          Save
-        </Button>
-      </div>
-      <Cards
-        cvc={cardData.cvc}
-        expiry={cardData.expiry}
-        focused={cardData.focused}
-        name={cardData.name}
-        number={cardData.number}
-      />
-    </div>
+              <Field name={'name'}>
+                {({ field, form: { isSubmitting } }: any) => (
+                  <>
+                    <TextField
+                      {...field}
+                      fullWidth
+                      variant="standard"
+                      margin="none"
+                      size="small"
+                      color="secondary"
+                      type="text"
+                      placeholder="Name and surname"
+                      onFocus={handleInputFocus}
+                      required
+                      error={errors.name && touched.name}
+                    />
+                    <FormHelperText style={{ color: 'red' }}>
+                      <ErrorMessage name={'name'} />
+                    </FormHelperText>
+                  </>
+                )}
+              </Field>
+
+              <Field name={'expiryDate'}>
+                {({ field, form: { isSubmitting } }: any) => (
+                  <>
+                    <TextField
+                      {...field}
+                      fullWidth
+                      variant="standard"
+                      margin="none"
+                      size="small"
+                      color="secondary"
+                      type="text"
+                      inputProps={{ pattern: '/dd/dd', maxLength: 5 }}
+                      placeholder="Expiration date"
+                      helperText="MM/YY"
+                      onFocus={handleInputFocus}
+                      required
+                      error={errors.expiryDate && touched.expiryDate}
+                    />
+                    <FormHelperText style={{ color: 'red' }}>
+                      <ErrorMessage name={'expiryDate'} />
+                    </FormHelperText>
+                  </>
+                )}
+              </Field>
+
+              <Field name={'cvvNumber'}>
+                {({ field, form: { isSubmitting } }: any) => (
+                  <>
+                    <TextField
+                      {...field}
+                      fullWidth
+                      variant="standard"
+                      margin="none"
+                      size="small"
+                      color="secondary"
+                      type="text"
+                      inputProps={{ maxLength: 3 }}
+                      placeholder="CVC"
+                      onFocus={handleInputFocus}
+                      required
+                      error={errors.cvvNumber && touched.cvvNumber}
+                    />
+                    <FormHelperText style={{ color: 'red' }}>
+                      <ErrorMessage name={'cvvNumber'} />
+                    </FormHelperText>
+                  </>
+                )}
+              </Field>
+
+              <Button
+                variant="contained"
+                color="secondary"
+                size="large"
+                disabled={
+                  Object.keys(errors).length > 0 ||
+                  Object.values(values).findIndex((str) => str === '') >= 0
+                }
+              >
+                Save
+              </Button>
+            </div>
+            <Cards
+              cvc={values.cvvNumber}
+              expiry={values.expiryDate}
+              focused={cardData.focused}
+              name={values.name}
+              number={values.cardNumber}
+            />
+          </div>
+        </form>
+      )}
+    </Formik>
   );
 };
 
