@@ -7,6 +7,7 @@ import { RootState } from '../../redux/root-reducer';
 import { useHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../redux/cart';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   iconItem: {
@@ -84,15 +85,18 @@ const CartPage = () => {
                 .toFixed(2)}{' '}
               PLN
             </Typography>
-            <Button
-              color="secondary"
-              variant="contained"
-              className={classes.orderButton}
+            <Link
+              to="/cart/checkout"
+              style={{ display: 'flex', alignItems: 'end' }}
             >
-              <Typography onClick={() => history.push('/cart/checkout')}>
-                PAY AND ORDER
-              </Typography>
-            </Button>
+              <Button
+                color="secondary"
+                variant="contained"
+                className={classes.orderButton}
+              >
+                <Typography align="right">PAY AND ORDER</Typography>
+              </Button>
+            </Link>
           </div>
         </>
       ) : (

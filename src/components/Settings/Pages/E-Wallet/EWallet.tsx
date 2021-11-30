@@ -12,6 +12,7 @@ import * as Yup from 'yup';
 import { ErrorMessage, Field, Formik } from 'formik';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/root-reducer';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   walletContainer: {
@@ -51,6 +52,9 @@ const validateSchema = Yup.object().shape({
     .required('Required')
     .matches(/^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/, 'Wrong format'),
 });
+
+const getCreditCardApiUrl = (userId: string) =>
+  `${process.env.REACT_APP_API_ADDRESS}/flowerPower/customer/create/creditCard/${userId}`;
 
 const EWallet = () => {
   const classes = useStyles();
@@ -95,7 +99,25 @@ const EWallet = () => {
       }}
     >
       {({ errors, touched, values }) => (
-        <form>
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            try {
+              await axios.post(getCreditCardApiUrl(user?.id!), {
+                cardNumber: values.cardNumber,
+                expirationDate: values.expiryDate,
+                cvv2Number: values.cvvNumber,
+                cardOwner: values.name,
+              });
+              user!.creditCard = {
+                cardNumber: values.cardNumber,
+                expiryDate: values.expiryDate,
+                cvvNumber: values.cvvNumber,
+                nameSurname: values.name,
+              };
+            } catch (e) {}
+          }}
+        >
           <div className={classes.walletContainer}>
             <div className={classes.form}>
               <Field name={'cardNumber'}>
@@ -156,7 +178,6 @@ const EWallet = () => {
                       size="small"
                       color="secondary"
                       type="text"
-                      inputProps={{ pattern: '/dd/dd', maxLength: 5 }}
                       placeholder="Expiration date"
                       helperText="MM/YY"
                       onFocus={handleInputFocus}
@@ -198,6 +219,7 @@ const EWallet = () => {
                 variant="contained"
                 color="secondary"
                 size="large"
+                type="submit"
                 disabled={
                   Object.keys(errors).length > 0 ||
                   Object.values(values).findIndex((str) => str === '') >= 0
