@@ -1,7 +1,9 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import { Roles } from '../../common/types';
 import CartPage from '../../pages/CartPage/CartPage';
+import CheckoutPage from '../../pages/CheckoutPage/CheckoutPage';
 import ComparePricesPage from '../../pages/ComparePricesPage/ComparePricesPage';
 import ErrorPage from '../../pages/ErrorPage/ErrorPage';
 import FlowerShopPage from '../../pages/FlowerShopPage/FlowerShopPage';
@@ -12,11 +14,13 @@ import RegisterPage from '../../pages/RegisterPage.tsx/RegisterPage';
 import SearchItemPage from '../../pages/SearchItemPage/SearchItemPage';
 import SearchResultPage from '../../pages/SearchResultPage/SearchResultPage';
 import SettingsPage from '../../pages/SettingsPage/SettingsPage';
+import { RootState } from '../../redux/root-reducer';
 import { useAuth } from '../../utils/customHooks/useAuth';
 import PrivateRoute from './PrivateRoute/PrivateRoute';
 
 const ClientContentSwitch = () => {
   const isAuth = useAuth() === Roles.CLIENT;
+  const { items } = useSelector((root: RootState) => root.cart);
   return (
     <Switch>
       <Route exact path="/">
@@ -29,7 +33,7 @@ const ClientContentSwitch = () => {
       >
         <SettingsPage />
       </PrivateRoute>
-      <Route path="/cart">
+      <Route exact path="/cart">
         <CartPage />
       </Route>
       <PrivateRoute isAuth={!isAuth} redirectPath={'/'} path="/login">
@@ -52,6 +56,9 @@ const ClientContentSwitch = () => {
       </Route>
       <Route exact path="/store/:shopName/:shopAddress/item/:itemName">
         <ProductPage />
+      </Route>
+      <Route exact path="/cart/checkout">
+        <CheckoutPage />
       </Route>
 
       <Route path="*">

@@ -1,4 +1,4 @@
-import { Location, Roles } from '../../common/types';
+import { CreditCard, Location, Roles } from '../../common/types';
 import { ActionType } from './action.types';
 import { Action } from './user.actions';
 
@@ -13,6 +13,7 @@ export type User = {
   zipCode?: string;
   role?: string;
   phone?: string;
+  creditCard?: CreditCard | null;
 } | null;
 
 export type Authentication = {

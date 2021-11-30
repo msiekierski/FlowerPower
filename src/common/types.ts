@@ -173,3 +173,10 @@ export type UserDetails = {
   zipCode: string;
   phoneNumber: string;
 };
+
+export type CreditCard = {
+  cardNumber?: string;
+  nameSurname?: string;
+  cvvNumber?: string;
+  expiryDate?: string;
+};

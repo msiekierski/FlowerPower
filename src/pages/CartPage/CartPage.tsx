@@ -89,7 +89,9 @@ const CartPage = () => {
               variant="contained"
               className={classes.orderButton}
             >
-              <Typography>PAY AND ORDER</Typography>
+              <Typography onClick={() => history.push('/cart/checkout')}>
+                PAY AND ORDER
+              </Typography>
             </Button>
           </div>
         </>
