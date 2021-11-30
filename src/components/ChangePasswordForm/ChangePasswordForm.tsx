@@ -1,7 +1,9 @@
 import { Button, makeStyles } from '@material-ui/core';
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
+import { RootState } from '../../redux/root-reducer';
 import CustomInputField from '../LoginForm/CustomInputField';
 
 type Props = {
@@ -33,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ChangePasswordForm: React.FC<Props> = ({ onFormSubmit }) => {
   const classes = useStyles();
+  const { user } = useSelector((root: RootState) => root.user);
 
   const initialValues: ChangePasswordFormValues = {
     oldPassword: '',
@@ -41,7 +44,9 @@ const ChangePasswordForm: React.FC<Props> = ({ onFormSubmit }) => {
   };
 
   const validationSchema = Yup.object().shape({
-    oldPassword: Yup.string().required('Required'),
+    oldPassword: Yup.string()
+      .required('Required')
+      .equals([user!.password], 'Invalid password'),
     newPassword: Yup.string().required('Required').min(5, 'Min. 5 characters'),
     repeatNewPassword: Yup.string().oneOf(
       [Yup.ref('newPassword'), null],
@@ -69,6 +74,7 @@ const ChangePasswordForm: React.FC<Props> = ({ onFormSubmit }) => {
             <Field
               name="newPassword"
               label="New password"
+              type="password"
               component={CustomInputField}
               error={touched.newPassword && errors.newPassword}
               helperText={touched.newPassword && errors.newPassword}
@@ -76,6 +82,7 @@ const ChangePasswordForm: React.FC<Props> = ({ onFormSubmit }) => {
             <Field
               name="repeatNewPassword"
               label="Repeat new password"
+              type="password"
               component={CustomInputField}
               error={touched.repeatNewPassword && errors.repeatNewPassword}
               helperText={touched.repeatNewPassword && errors.repeatNewPassword}
