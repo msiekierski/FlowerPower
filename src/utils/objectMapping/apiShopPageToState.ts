@@ -5,6 +5,7 @@ import apiReviewToState from './apiReviewToState';
 export default function apiShopPageToState(object: any) {
   const { openingHours } = object;
   const result: FlowerShop = {
+    id: object.shopId,
     name: object.shopName,
     street: object.address,
     city: object.city + ' ' + object.zip,
@@ -17,7 +18,7 @@ export default function apiShopPageToState(object: any) {
     hasDelivery: object.hasShipment,
     reviews: object.comments.map((comment: any) => apiReviewToState(comment)),
     products: object.products.map((product: any) =>
-      apiFlowerShopProductToState(product)
+      apiFlowerShopProductToState(product, object.shopId)
     ),
     openingHours: [
       mapDate(openingHours.sunday),

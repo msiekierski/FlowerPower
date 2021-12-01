@@ -30,6 +30,7 @@ export type CartProduct = {
   productImageUrl: string;
   itemDescription: string;
   storeName: string;
+  storeId: string;
   itemPrice: number;
   quantity: number;
 };
@@ -62,6 +63,7 @@ export type FlowerShopProduct = {
   productId: string;
   price: number;
   storeName?: string;
+  storeId: string;
   description: string;
   color?: string;
   size?: string;
@@ -72,6 +74,7 @@ export type FlowerShopProduct = {
 };
 
 export type FlowerShop = {
+  id: string;
   name: string;
   street: string;
   city: string;

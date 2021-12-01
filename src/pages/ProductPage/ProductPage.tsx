@@ -178,6 +178,7 @@ const ProductPage = () => {
         `${getDetails(items[selectedItemIndex])}`,
       storeName: urlToString(shopName),
       itemPrice: items[selectedItemIndex].price,
+      storeId: items[selectedItemIndex].storeId,
       quantity: 1,
     };
     addItem(cartProduct);

@@ -14,6 +14,7 @@ export type ShopState = {
 const initData: ShopState = {
   shop: {
     data: {
+      id: '',
       name: '',
       street: '',
       city: '',

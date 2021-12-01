@@ -84,6 +84,7 @@ const FlowerShopItemCard: React.FC<Props> = ({ shopItems }) => {
       itemDescription:
         shopItems[itemId].description + `${getDetails(shopItems[itemId])}`,
       storeName: storeName,
+      storeId: shopItems[itemId].storeId,
       itemPrice: shopItems[itemId].price,
       quantity: 1,
     };
