@@ -7,26 +7,39 @@ import Grid from '@mui/material/Grid';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/root-reducer';
 import { AddressFormValues } from './AddressForm';
-import { Box } from '@material-ui/core';
+import { Box, makeStyles } from '@material-ui/core';
 import Button from '@mui/material/Button';
 import { PaymentFormValues } from './PaymentForm';
 import axios from 'axios';
+import { ShopShipmentMethodInfo } from '../CheckoutPage';
+import { Divider } from '@mui/material';
 
 type Props = {
   address: AddressFormValues;
   payment: PaymentFormValues;
+  shipment: Array<ShopShipmentMethodInfo>;
   handleNext: () => void;
   handleBack: () => void;
 };
 
 const apiUrl = `${process.env.REACT_APP_API_ADDRESS}/flowerPower/customer/post/clientInfoForOrder`;
 
+const useStyles = makeStyles((theme) => ({
+  methods: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+}));
+
 const Review: React.FC<Props> = ({
   address,
   handleNext,
   handleBack,
   payment,
+  shipment,
 }) => {
+  const classes = useStyles();
   const root = useSelector((root: RootState) => root);
   const { items } = root.cart;
   const [isPlacingOrder, setIsPlacingOrder] = React.useState<boolean>(false);
@@ -47,7 +60,7 @@ const Review: React.FC<Props> = ({
   const placeOrder = async () => {
     try {
       setIsPlacingOrder(true);
-      await axios.post(apiUrl, {
+      const body = {
         clientId: root.user.user?.id,
         email: address.Email,
         name: address.Name,
@@ -66,10 +79,16 @@ const Review: React.FC<Props> = ({
           cvv2Number: payment.cvvNumber,
           cardOwner: payment.name,
         },
-        shopProductListList: items.map((item) => {
-          // shopId: item.storeId,
-        }),
-      });
+        shopProductListList: items.map((item) => ({
+          shopId: item.storeId,
+          productsLists: [
+            { productId: item.productId, quantity: item.quantity },
+          ],
+        })),
+        comments: '',
+      };
+
+      await axios.post(apiUrl, body);
       setIsPlacingOrder(false);
     } catch (e) {
       setIsPlacingOrder(false);
@@ -110,6 +129,7 @@ const Review: React.FC<Props> = ({
           </Typography>
         </ListItem>
       </List>
+      <Divider orientation="horizontal" sx={{ my: { xs: 1, md: 1 } }} />
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
@@ -140,6 +160,24 @@ const Review: React.FC<Props> = ({
           </Grid>
         </Grid>
       </Grid>
+      <Divider orientation="horizontal" sx={{ my: { xs: 1, md: 1 } }} />
+      <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+        Shipment Methods
+      </Typography>
+      {shipment.map((ship, index) => (
+        <div key={index} className={classes.methods}>
+          <ListItemText
+            primary={<Typography>{ship.storeName}</Typography>}
+            secondary={
+              <Typography
+                style={{ color: 'rgba(0, 0, 0, 0.6)' }}
+              >{`${ship.address}, ${ship.city}`}</Typography>
+            }
+          />
+          <Typography>{ship.chosenMethod}</Typography>
+        </div>
+      ))}
+      <Divider orientation="horizontal" sx={{ my: { xs: 1, md: 1 } }} />
       <React.Fragment>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>

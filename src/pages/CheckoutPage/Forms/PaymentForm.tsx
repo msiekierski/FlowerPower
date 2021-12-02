@@ -77,7 +77,7 @@ const PaymentForm: React.FC<Props> = ({
     <>
       <Formik
         validationSchema={validateSchema}
-        onSubmit={() => console.log('test2')}
+        onSubmit={() => {}}
         initialValues={{
           name: payment?.name ? payment.name : '',
           cardNumber: payment?.cardNumber ? payment.cardNumber : '',
