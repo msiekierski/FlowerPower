@@ -13,6 +13,7 @@ import { PaymentFormValues } from './PaymentForm';
 import axios from 'axios';
 import { ShopShipmentMethodInfo } from '../CheckoutPage';
 import { Divider } from '@mui/material';
+import * as _ from 'lodash';
 
 type Props = {
   address: AddressFormValues;
@@ -57,6 +58,8 @@ const Review: React.FC<Props> = ({
     { name: 'Expiry date', detail: payment.expiryDate },
   ];
 
+  const groupedById = _.groupBy(items, 'storeId');
+
   const placeOrder = async () => {
     try {
       setIsPlacingOrder(true);
@@ -66,29 +69,33 @@ const Review: React.FC<Props> = ({
         name: address.Name,
         surname: address.Surname,
         phone: address['Phone Number'],
-        shipmentMethod: '',
         deliveryInfo: {
           address: address.Street,
           postalCode: address['Zip Code'],
           city: address.City,
         },
-        paymentType: '',
+        paymentType: 'Visa',
         cardInfoModel: {
           cardNumber: payment.cardNumber,
           expirationDate: payment.expiryDate,
           cvv2Number: payment.cvvNumber,
           cardOwner: payment.name,
         },
-        shopProductListList: items.map((item) => ({
-          shopId: item.storeId,
-          productsLists: [
-            { productId: item.productId, quantity: item.quantity },
-          ],
+        shopProductListList: Object.keys(groupedById).map((storeId) => ({
+          shopId: storeId,
+          shipmentMethod: shipment.find((ship) => ship.storeId === storeId)!
+            .chosenMethod,
+          productLists: groupedById[storeId].map((product) => ({
+            productId: product.productId,
+            quanitity: product.quantity,
+          })),
         })),
         comments: '',
       };
 
-      await axios.post(apiUrl, body);
+      const { data } = await axios.post(apiUrl, body);
+      console.log('resp');
+      console.log(data);
       setIsPlacingOrder(false);
     } catch (e) {
       setIsPlacingOrder(false);

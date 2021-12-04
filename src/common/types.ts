@@ -183,3 +183,10 @@ export type CreditCard = {
   cvvNumber?: string;
   expiryDate?: string;
 };
+
+export type CartItemAvailability = {
+  productId: string;
+  shopId: string;
+  hasInStock: boolean;
+  quantityLeft: number;
+};

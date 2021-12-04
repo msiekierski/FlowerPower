@@ -8,6 +8,10 @@ import { useHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../redux/cart';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Alert } from '@mui/material';
+import { CartItemAvailability } from '../../common/types';
 
 const useStyles = makeStyles((theme) => ({
   iconItem: {
@@ -47,17 +51,66 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '20px',
     rowGap: '15px',
   },
+  errorMessage: {
+    backgroundColor: 'rgba(255, 0, 0, 0.3)',
+    border: '2px solid red',
+    color: 'inherit',
+  },
 }));
+
+const reservationUrl = `${process.env.REACT_APP_API_ADDRESS}/flowerPower/customer/post/productReservation`;
 
 const CartPage = () => {
   const classes = useStyles();
 
   const dispatch = useDispatch();
   const { clearCart } = bindActionCreators(actionCreators, dispatch);
+  const [errorMsg, setErrorMsg] = useState<Array<string>>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const cartItems = useSelector((state: RootState) => state.cart.items);
 
   const history = useHistory();
+
+  const reserveProducts = async () => {
+    try {
+      setIsLoading(true);
+
+      const reservationData = cartItems.map((product) => ({
+        shopId: product.storeId,
+        productId: product.productId,
+        quantity: product.quantity,
+      }));
+      console.log('reservation');
+      console.log(reservationData);
+      const { data } = await axios.post(reservationUrl, {
+        productLists: reservationData,
+      });
+      const notAvailableItems = (data as Array<CartItemAvailability>).filter(
+        (item) => !item.hasInStock
+      );
+      let errData: Array<string> = [];
+      if (notAvailableItems.length > 0) {
+        notAvailableItems.forEach((item, index) => {
+          const cartItem = cartItems.find(
+            (cartItem) =>
+              cartItem.productId === item.productId &&
+              cartItem.storeId === item.shopId
+          );
+          errData.push(
+            `${cartItem?.itemDescription} from ${cartItem?.storeName} - ${item.quantityLeft} items in shop's stock`
+          );
+        });
+        setErrorMsg(errData);
+        setIsLoading(false);
+      } else {
+        history.push('/cart/checkout');
+        return;
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <>
@@ -75,6 +128,18 @@ const CartPage = () => {
       </div>
       {cartItems.length ? (
         <>
+          {errorMsg.length > 0 && (
+            <Alert
+              severity="error"
+              variant="filled"
+              className={classes.errorMessage}
+            >
+              <Typography>One or more item is out of stock.</Typography>
+              {errorMsg.map((error, index) => (
+                <Typography key={index}>{error}</Typography>
+              ))}
+            </Alert>
+          )}
           <CartTable />
           <div className={classes.cartFooter}>
             <Typography variant="h5" align="right">
@@ -85,18 +150,18 @@ const CartPage = () => {
                 .toFixed(2)}{' '}
               PLN
             </Typography>
-            <Link
-              to="/cart/checkout"
-              style={{ display: 'flex', alignItems: 'end' }}
+
+            <Button
+              color="secondary"
+              variant="contained"
+              className={classes.orderButton}
+              disabled={isLoading}
+              onClick={async () => {
+                await reserveProducts();
+              }}
             >
-              <Button
-                color="secondary"
-                variant="contained"
-                className={classes.orderButton}
-              >
-                <Typography align="right">PAY AND ORDER</Typography>
-              </Button>
-            </Link>
+              <Typography align="right">PAY AND ORDER</Typography>
+            </Button>
           </div>
         </>
       ) : (
