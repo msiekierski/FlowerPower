@@ -1,4 +1,9 @@
-import { Container, createTheme, ThemeProvider } from '@material-ui/core';
+import {
+  Container,
+  createTheme,
+  CssBaseline,
+  ThemeProvider,
+} from '@material-ui/core';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -16,6 +21,9 @@ export const Theme = createTheme({
     },
     secondary: {
       main: '#000',
+    },
+    background: {
+      default: '#FCFCFC',
     },
   },
   breakpoints: {
@@ -39,6 +47,7 @@ const App = () => {
     <Router>
       <ThemeProvider theme={Theme}>
         <Container maxWidth="xl">
+          <CssBaseline />
           <NavBar />
           <ContentSwitch />
         </Container>

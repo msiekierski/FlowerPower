@@ -75,7 +75,7 @@ const CartTableRow: React.FC<Props> = ({ cartProduct }) => {
             className={classes.actionText}
             onClick={() => decreaseQuanitity(productId)}
           >
-            <AiOutlineMinus size={25} style={{ padding: '10px' }} />
+            <AiOutlineMinus size={35}  />
           </div>
           <TextField
             type="tel"
@@ -95,7 +95,7 @@ const CartTableRow: React.FC<Props> = ({ cartProduct }) => {
             className={classes.actionText}
             onClick={() => increaseQuantity(productId)}
           >
-            <AiOutlinePlus size={25} style={{ padding: '10px' }} />
+            <AiOutlinePlus size={35}  />
           </div>
         </div>
       </TableCell>

@@ -92,7 +92,7 @@ const Review: React.FC<Props> = ({
         })),
         comments: '',
       };
-
+      console.log(JSON.stringify(body));
       const { data } = await axios.post(apiUrl, body);
       console.log('resp');
       console.log(data);

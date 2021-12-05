@@ -161,10 +161,10 @@ const NavBar = () => {
 
   return (
     <>
-      <AppBar elevation={0} ref={navRef} className={classes.appBar}>
+      <AppBar ref={navRef} className={classes.appBar}>
         <Toolbar className={classes.navigation}>
           <Link to="/" className={classes.logo}>
-            <Logo style={{ maxWidth: '30vw' }} />
+            <Logo style={{ maxWidth: '30vw' }}/>
           </Link>
           <SearchBar
             isSearchFocused={isSearchFocused}

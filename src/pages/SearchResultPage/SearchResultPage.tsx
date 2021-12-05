@@ -22,6 +22,7 @@ import normalizeString from '../../utils/functions/normalizeString';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
+    width: 'calc(100%  - 20px)',
     display: 'inline-grid',
     gridTemplateColumns: '2fr 5fr',
     marginTop: theme.spacing(3),

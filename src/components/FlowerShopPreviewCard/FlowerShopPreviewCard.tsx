@@ -16,7 +16,7 @@ const useStyle = (props: StyleProps) =>
   makeStyles((theme) => ({
     card: {
       minWidth: '220px',
-      
+      padding: '10px 5px',
     },
     container: {
       minHeight: '17vh',

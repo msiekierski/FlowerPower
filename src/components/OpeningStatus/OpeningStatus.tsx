@@ -1,8 +1,13 @@
 import { Collapse, Container, makeStyles, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import { OpeningHours } from '../../common/types';
-import { AiFillCaretDown, AiFillCaretUp } from 'react-icons/ai';
+import {
+  AiFillCaretDown,
+  AiFillCaretUp,
+  AiOutlineCaretDown,
+} from 'react-icons/ai';
 import dayOfWeekAsString from '../../utils/functions/dayOfWeekAsString';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 type Props = {
   openingHours: Array<OpeningHours | null>;
@@ -52,11 +57,13 @@ const OpeningStatus: React.FC<Props> = ({ openingHours }) => {
             <AiFillCaretUp
               className={classes.icon}
               onClick={() => setShowOpeningHours(false)}
+              size={40}
             />
           ) : (
             <AiFillCaretDown
               className={classes.icon}
               onClick={() => setShowOpeningHours(true)}
+              size={40}
             />
           )}
         </div>
@@ -83,7 +90,10 @@ const OpeningStatus: React.FC<Props> = ({ openingHours }) => {
     );
   } else {
     let nextDay = currentDay;
-    if (openingHours[currentDay] !== null && totalDate > openingHours[currentDay]!.to) {
+    if (
+      openingHours[currentDay] !== null &&
+      totalDate > openingHours[currentDay]!.to
+    ) {
       nextDay++;
     }
     while (openingHours[nextDay] === null) {
@@ -124,11 +134,13 @@ const OpeningStatus: React.FC<Props> = ({ openingHours }) => {
             <AiFillCaretUp
               className={classes.icon}
               onClick={() => setShowOpeningHours(false)}
+              size={40}
             />
           ) : (
             <AiFillCaretDown
               className={classes.icon}
               onClick={() => setShowOpeningHours(true)}
+              size={40}
             />
           )}
         </div>
