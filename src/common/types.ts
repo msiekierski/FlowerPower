@@ -76,6 +76,8 @@ export type FlowerShopProduct = {
 export type FlowerShop = {
   id: string;
   name: string;
+  latitude: string;
+  longitude: string;
   street: string;
   city: string;
   phone: string;

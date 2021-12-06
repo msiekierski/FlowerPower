@@ -39,6 +39,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreator } from '../../redux/shop';
 import { RootState } from '../../redux/root-reducer';
+import { GoogleMap, Marker } from 'react-google-maps';
+import MyMapComponent from '../../components/MyMapComponent/MyMapComponent';
 
 type FlowerShopPageParams = {
   shopName: string;
@@ -116,9 +118,7 @@ const FlowerShopPage = () => {
   const dispatch = useDispatch();
   const { fetchShopData, setActiveCategory, setPagination, clearReducer } =
     bindActionCreators(actionCreator, dispatch);
-  const { activeCategory, fetchStatus, shop } = useSelector(
-    (root: RootState) => root.shop
-  );
+  const root = useSelector((root: RootState) => root);
   const {
     name,
     street,
@@ -129,7 +129,15 @@ const FlowerShopPage = () => {
     openingHours,
     products,
     images,
-  } = shop.data;
+    latitude,
+    longitude,
+  } = root.shop.shop.data;
+
+  const { activeCategory, fetchStatus } = root.shop;
+
+  const { pagination } = root.shop.shop;
+
+  const { location } = root.user;
 
   const classes = useStyles();
 
@@ -168,6 +176,9 @@ const FlowerShopPage = () => {
     setPagination(p);
     _itemData.jump(p);
   };
+
+  console.log('location');
+  console.log(location);
 
   if (
     fetchStatus === ApiCallState.IDLE ||
@@ -267,7 +278,7 @@ const FlowerShopPage = () => {
       <Pagination
         count={count}
         size="large"
-        page={shop.pagination}
+        page={pagination}
         variant="outlined"
         shape="rounded"
         onChange={handlePageChange}
@@ -295,7 +306,7 @@ const FlowerShopPage = () => {
       <Pagination
         count={count}
         size="large"
-        page={shop.pagination}
+        page={pagination}
         variant="outlined"
         shape="rounded"
         onChange={handlePageChange}
@@ -305,6 +316,15 @@ const FlowerShopPage = () => {
           marginTop: '20px',
         }}
       />
+      <div id="store-map" style={{ width: '100%', marginTop: '30px' }}>
+        <MyMapComponent
+          storeLat={latitude}
+          storeLong={longitude}
+          userLat={location.lat}
+          userLong={location.long}
+          storeName={name}
+        />
+      </div>
     </>
   );
 };

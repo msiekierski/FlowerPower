@@ -10,6 +10,8 @@ export default function apiShopPageToState(object: any) {
     street: object.address,
     city: object.city + ' ' + object.zip,
     phone: object.phone,
+    latitude: object.latitude,
+    longitude: object.longitude,
     images: [
       object.imagesArr.image1,
       object.imagesArr.image2,

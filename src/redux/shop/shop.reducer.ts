@@ -18,6 +18,8 @@ const initData: ShopState = {
       name: '',
       street: '',
       city: '',
+      latitude: '',
+      longitude: '',
       hasDelivery: false,
       phone: '',
       reviews: [],

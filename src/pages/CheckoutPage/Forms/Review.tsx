@@ -14,6 +14,9 @@ import axios from 'axios';
 import { ShopShipmentMethodInfo } from '../CheckoutPage';
 import { Divider } from '@mui/material';
 import * as _ from 'lodash';
+import { useAuth } from '../../../utils/customHooks/useAuth';
+import { Roles } from '../../../common/types';
+import { userInfo } from 'os';
 
 type Props = {
   address: AddressFormValues;
@@ -59,12 +62,13 @@ const Review: React.FC<Props> = ({
   ];
 
   const groupedById = _.groupBy(items, 'storeId');
+  const isRegistered = useAuth() !== Roles.NONE;
 
   const placeOrder = async () => {
     try {
       setIsPlacingOrder(true);
       const body = {
-        clientId: root.user.user?.id,
+        personId: isRegistered ? root.user.user?.id : 0,
         email: address.Email,
         name: address.Name,
         surname: address.Surname,
@@ -87,7 +91,7 @@ const Review: React.FC<Props> = ({
             .chosenMethod,
           productLists: groupedById[storeId].map((product) => ({
             productId: product.productId,
-            quanitity: product.quantity,
+            quantity: product.quantity,
           })),
         })),
         comments: '',
