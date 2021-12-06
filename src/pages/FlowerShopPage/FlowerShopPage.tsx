@@ -177,9 +177,6 @@ const FlowerShopPage = () => {
     _itemData.jump(p);
   };
 
-  console.log('location');
-  console.log(location);
-
   if (
     fetchStatus === ApiCallState.IDLE ||
     fetchStatus === ApiCallState.FETCH_BEGIN

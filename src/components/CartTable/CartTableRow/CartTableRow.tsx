@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
       height: '100%',
       maxHeight: '90px',
       maxWidth: '90px',
-      objectFit: 'cover',
+      objectFit: 'fill',
     },
   },
   quantity: {
@@ -75,7 +75,7 @@ const CartTableRow: React.FC<Props> = ({ cartProduct }) => {
             className={classes.actionText}
             onClick={() => decreaseQuanitity(productId)}
           >
-            <AiOutlineMinus size={35}  />
+            <AiOutlineMinus size={35} />
           </div>
           <TextField
             type="tel"
@@ -95,7 +95,7 @@ const CartTableRow: React.FC<Props> = ({ cartProduct }) => {
             className={classes.actionText}
             onClick={() => increaseQuantity(productId)}
           >
-            <AiOutlinePlus size={35}  />
+            <AiOutlinePlus size={35} />
           </div>
         </div>
       </TableCell>

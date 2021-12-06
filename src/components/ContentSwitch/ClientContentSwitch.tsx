@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import { Roles } from '../../common/types';
+import BouquetCreatorPage from '../../pages/BouquetCreatorPage/BouquetCreatorPage';
 import CartPage from '../../pages/CartPage/CartPage';
 import CheckoutPage from '../../pages/CheckoutPage/CheckoutPage';
 import ComparePricesPage from '../../pages/ComparePricesPage/ComparePricesPage';
@@ -53,6 +54,9 @@ const ClientContentSwitch = () => {
       </Route>
       <Route exact path="/store/:shopName/:shopAddress">
         <FlowerShopPage />
+      </Route>
+      <Route exact path="/store/:shopName/:shopAddress/creator">
+        <BouquetCreatorPage />
       </Route>
       <Route exact path="/store/:shopName/:shopAddress/item/:itemName">
         <ProductPage />
