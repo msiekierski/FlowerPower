@@ -315,7 +315,7 @@ const FlowerShopPage = () => {
       />
       <div
         id="store-map"
-        style={{ width: '100%', marginTop: '30px', marginBottom: '20px' }}
+        style={{ width: '100%', marginTop: '30px', marginBottom: '100px' }}
       >
         <MyMapComponent
           storeLat={latitude}

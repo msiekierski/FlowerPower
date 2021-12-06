@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import ContentSwitch from './components/ContentSwitch/ContentSwitch';
+import Footer from './components/Footer/Footer';
 import NavBar from './components/NavBar/NavBar';
 import { RootState } from './redux/root-reducer';
 import { actionCreators } from './redux/user';
@@ -71,11 +72,12 @@ const App = () => {
   return (
     <Router>
       <ThemeProvider theme={Theme}>
-        <Container maxWidth="xl">
+        <div style={{ margin: '0 5%', marginBottom: '100px' }}>
           <CssBaseline />
           <NavBar />
           <ContentSwitch />
-        </Container>
+        </div>
+        <Footer />
       </ThemeProvider>
     </Router>
   );
