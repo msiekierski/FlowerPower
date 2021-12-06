@@ -4,12 +4,15 @@ import {
   CssBaseline,
   ThemeProvider,
 } from '@material-ui/core';
+import axios from 'axios';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 import ContentSwitch from './components/ContentSwitch/ContentSwitch';
 import NavBar from './components/NavBar/NavBar';
 import { RootState } from './redux/root-reducer';
+import { actionCreators } from './redux/user';
 
 export const Theme = createTheme({
   shape: {
@@ -42,6 +45,28 @@ export const Theme = createTheme({
 
 const App = () => {
   const { location } = useSelector((root: RootState) => root.user);
+  const { setLocation } = bindActionCreators(actionCreators, useDispatch());
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      fetchLocation(position.coords.latitude, position.coords.longitude);
+    });
+  }, []);
+
+  const fetchLocation = async (lat: number, long: number) => {
+    try {
+      const { data } = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=AIzaSyBqtUDpLTnFrLwf2HJVzMYxHe-w2WE6EFA`
+      );
+      console.log(data.results);
+      setLocation({
+        lat: lat,
+        long: long,
+        city: data.results[0].address_components[4].short_name,
+        formattedAddress: data.results[0].formatted_address,
+      });
+    } catch (e) {}
+  };
 
   return (
     <Router>

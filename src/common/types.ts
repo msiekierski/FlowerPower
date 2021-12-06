@@ -157,7 +157,7 @@ export type Location = {
   lat: number;
   long: number;
   city: string;
-  formattedAddress: string;
+  formattedAddress?: string;
 };
 
 export type WarehouseItem = {
