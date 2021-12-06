@@ -19,8 +19,8 @@ function MyMapComponent(props) {
   const onLoad = React.useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds();
     bounds.extend({
-      lat: parseInt(props.storeLat),
-      lng: parseInt(props.storeLong),
+      lat: parseFloat(props.storeLat),
+      lng: parseFloat(props.storeLong),
     });
     bounds.extend({
       lat: props.userLat,
@@ -37,14 +37,13 @@ function MyMapComponent(props) {
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={containerStyle}
-      center={{ lat: parseInt(props.storeLat), lng: parseInt(props.storeLong) }}
       onLoad={onLoad}
       onUnmount={onUnmount}
     >
       <Marker
         position={{
-          lat: parseInt(props.storeLat),
-          lng: parseInt(props.storeLong),
+          lat: parseFloat(props.storeLat),
+          lng: parseFloat(props.storeLong),
         }}
         label={props.storeName}
       />
@@ -61,4 +60,4 @@ function MyMapComponent(props) {
   );
 }
 
-export default MyMapComponent;
+export default React.memo(MyMapComponent);
