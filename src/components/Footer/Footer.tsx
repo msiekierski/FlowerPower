@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme) => ({
   footer: {
     marginTop: '1rem',
     padding: '1rem',
-    backgroundColor: '#797979',
+    backgroundColor: '#CECECE',
     position: 'fixed',
     width: '100%',
     left: 0,
