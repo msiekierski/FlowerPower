@@ -9,6 +9,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-around',
     width: '100%',
     marginTop: '1.5%',
+    borderBottom: '1px solid',
+    borderBottomColor: theme.palette.divider,
+    paddingBottom: '10px',
   },
   [theme.breakpoints.down(theme.breakpoints.values.md)]: {
     categories: {

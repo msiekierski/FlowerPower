@@ -19,6 +19,7 @@ import { RootState } from '../../redux/root-reducer';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../redux/searchResult';
 import normalizeString from '../../utils/functions/normalizeString';
+import Menu from '../../components/Menu/Menu';
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     borderRightColor: theme.palette.divider,
     height: 'auto',
   },
-  searchResult: { margin: '0 2.5vw' },
+  searchResult: { margin: '0 2.5vw', minWidth: '60vw' },
   items: {
     alignSelf: 'center',
     display: 'flex',
@@ -126,46 +127,49 @@ const SearchResultPage = () => {
     return <ErrorPage />;
   }
   return (
-    <div className={classes.mainContainer}>
-      <div className={classes.filters}>
-        <SearchResultFilters />
-        <Divider />
-      </div>
+    <>
+      <Menu />
+      <div className={classes.mainContainer}>
+        <div className={classes.filters}>
+          <SearchResultFilters />
+          <Divider />
+        </div>
 
-      <div className={classes.searchResult}>
-        {filterData().length > 0 && (
-          <>
-            <Typography variant="h4">
-              Products({filterData().length})
-            </Typography>
-            <div className={classes.items}>
-              {filterData().map((item) => (
-                <SearchResultProduct item={item} key={item.itemId} />
-              ))}
-            </div>
-          </>
-        )}
-        {fetchData.shops.length > 0 && (
-          <>
-            <Typography
-              variant="h4"
-              style={{ marginTop: '30px', marginBottom: '10px' }}
-            >
-              Stores({fetchData.shops.length})
-            </Typography>
-            <div className={classes.shops}>
-              {fetchData.shops.map((store, index) => (
-                <FlowerShopPreviewCard
-                  {...store}
-                  key={index}
-                  fullWidth={true}
-                />
-              ))}
-            </div>
-          </>
-        )}
+        <div className={classes.searchResult}>
+          {filterData().length > 0 && (
+            <>
+              <Typography variant="h4">
+                Products({filterData().length})
+              </Typography>
+              <div className={classes.items}>
+                {filterData().map((item) => (
+                  <SearchResultProduct item={item} key={item.itemId} />
+                ))}
+              </div>
+            </>
+          )}
+          {fetchData.shops.length > 0 && (
+            <>
+              <Typography
+                variant="h4"
+                style={{ marginTop: '30px', marginBottom: '10px' }}
+              >
+                Stores({fetchData.shops.length})
+              </Typography>
+              <div className={classes.shops}>
+                {fetchData.shops.map((store, index) => (
+                  <FlowerShopPreviewCard
+                    {...store}
+                    key={index}
+                    fullWidth={true}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
