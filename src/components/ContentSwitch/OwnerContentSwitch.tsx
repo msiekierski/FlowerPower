@@ -7,6 +7,7 @@ import ErrorPage from '../../pages/ErrorPage/ErrorPage';
 import FlowerShopPage from '../../pages/FlowerShopPage/FlowerShopPage';
 import LoginPage from '../../pages/LoginPage/LoginPage';
 import MainPage from '../../pages/Owner/MainPage/MainPage';
+import StatisticsPage from '../../pages/Owner/StatisticsPage/StatisticsPage';
 import WarehousePage from '../../pages/Owner/WarehousePage/WarehousePage';
 import ProductPage from '../../pages/ProductPage/ProductPage';
 import RegisterPage from '../../pages/RegisterPage.tsx/RegisterPage';
@@ -56,6 +57,9 @@ const OwnerContentSwitch = () => {
       </Route>
       <Route exact path="/owner/warehouse">
         <WarehousePage />
+      </Route>
+      <Route exact path="/owner/statistics">
+        <StatisticsPage />
       </Route>
       <Route path="*">
         <ErrorPage />
