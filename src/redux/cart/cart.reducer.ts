@@ -1,13 +1,15 @@
-import { CartProduct } from '../../common/types';
+import { CartBouquet, CartProduct } from '../../common/types';
 import { ActionType } from './action.types';
 import { Action } from './cart.actions';
 
 export type Cart = {
   items: Array<CartProduct>;
+  bouquets: Array<CartBouquet>;
 };
 
 const initialState: Cart = {
   items: [],
+  bouquets: [],
 };
 
 const reducer = (state: Cart = initialState, action: Action): Cart => {
@@ -77,6 +79,9 @@ const reducer = (state: Cart = initialState, action: Action): Cart => {
         }
       }),
     };
+  }
+  if (action.type === ActionType.ADD_BOUQUET) {
+    return { ...state, bouquets: [...state.bouquets, action.payload] };
   }
   return state;
 };

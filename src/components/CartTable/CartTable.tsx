@@ -11,12 +11,12 @@ import { makeStyles } from '@material-ui/styles';
 import { useSelector } from 'react-redux';
 import CartTableRow from './CartTableRow/CartTableRow';
 import { RootState } from '../../redux/root-reducer';
+import { CartBouquet, CartProduct } from '../../common/types';
 
 const cartColumns: Array<string> = ['PRODUCT', 'PRICE', 'QTY', 'TOTAL'];
 
 const CartTable = () => {
-  const cartItems = useSelector((state: RootState) => state.cart.items);
-  
+  const cart = useSelector((state: RootState) => state.cart);
 
   return (
     <TableContainer>
@@ -36,7 +36,10 @@ const CartTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {cartItems.map((orderItem, index) => (
+          {cart.items.map((orderItem, index) => (
+            <CartTableRow key={index} cartProduct={orderItem} />
+          ))}
+          {cart.bouquets.map((orderItem, index) => (
             <CartTableRow key={index} cartProduct={orderItem} />
           ))}
         </TableBody>

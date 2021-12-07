@@ -13,7 +13,7 @@ const rootPersistConfig = {
   storage,
   transforms: [
     createWhitelistFilter('user', ['user', 'location']),
-    createWhitelistFilter('cart', ['items']),
+    createWhitelistFilter('cart', ['items', 'bouquets']),
   ],
   blacklist: ['shop', 'search', 'warehouse'],
 };

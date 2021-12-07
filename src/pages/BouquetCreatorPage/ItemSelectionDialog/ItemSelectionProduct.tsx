@@ -17,8 +17,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     flexDirection: 'column',
     rowGap: '10px',
-    height: '400px',
+    height: '450px',
     width: '200px',
+   
   },
   item: {
     display: 'flex',

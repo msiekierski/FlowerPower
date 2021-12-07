@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     rowGap: '5vh',
+    marginBottom: '64px',
   },
   header: {
     display: 'flex',
@@ -65,7 +66,6 @@ const ItemSelectionDialog: React.FC<Props> = ({
       onClose={onClose}
       className={classes.mainContainer}
       fullScreen
-      style={{ transform: 'translate(0, -50px)' }}
     >
       <DialogTitle>
         <div className={classes.header}>

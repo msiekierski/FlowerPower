@@ -1,5 +1,5 @@
 import { Dispatch } from 'react';
-import { CartProduct } from '../../common/types';
+import { CartBouquet, CartProduct } from '../../common/types';
 import { ActionType } from './action.types';
 import { Action } from './cart.actions';
 
@@ -38,6 +38,15 @@ export const setArbitraryValue = (itemId: string, value: number) => {
     dispatch({
       type: ActionType.SET_ARBITRARY_VALUE,
       payload: { id: itemId, value },
+    });
+  };
+};
+
+export const addBouquetToCart = (bouquet: CartBouquet) => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch({
+      type: ActionType.ADD_BOUQUET,
+      payload: bouquet,
     });
   };
 };

@@ -192,3 +192,9 @@ export type CartItemAvailability = {
   hasInStock: boolean;
   quantityLeft: number;
 };
+
+export type CartBouquet = {
+  shopId: string;
+  shopName: string;
+  items: Array<CartProduct>;
+}

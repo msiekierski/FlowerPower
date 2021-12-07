@@ -1,5 +1,6 @@
 import {
   Backdrop,
+  Button,
   CircularProgress,
   Grid,
   makeStyles,
@@ -18,6 +19,7 @@ import AddIcon from '@mui/icons-material/Add';
 import ItemSelectionDialog from './ItemSelectionDialog/ItemSelectionDialog';
 import BouquetProduct from './BouquetProduct';
 import { IoIosReturnLeft } from 'react-icons/io';
+import { actionCreators } from '../../redux/cart';
 
 type PageParams = {
   shopName: string;
@@ -65,6 +67,12 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  addToCartButton: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginTop: '15px',
+  },
 }));
 
 const BouquetCreatorPage = () => {
@@ -75,6 +83,7 @@ const BouquetCreatorPage = () => {
     actionCreator,
     dispatch
   );
+  const { addBouquetToCart } = bindActionCreators(actionCreators, dispatch);
   const shop = useSelector((root: RootState) => root.shop);
   const { fetchStatus } = shop;
 
@@ -124,6 +133,31 @@ const BouquetCreatorPage = () => {
       return products.filter((product) => product.category === 'Ornament');
     }
     return [];
+  };
+
+  const getTotalPrice = () => {
+    let total = 0;
+    selectedItems.forEach((item, index) => {
+      total += item.price * quantity[index];
+    });
+    return total;
+  };
+
+  const addBouquet = () => {
+    addBouquetToCart({
+      shopId: shop.shop.data.id,
+      shopName: shop.shop.data.name,
+      items: selectedItems.map((item, index) => ({
+        productId: item.productId,
+        productImageUrl: '',
+        storeName: item.storeName!,
+        itemDescription: `${item.description} (${item.color})`,
+        storeId: item.storeId,
+        itemPrice: item.price,
+        quantity: quantity[index],
+      })),
+    });
+    history.push('/cart');
   };
 
   useEffect(() => {
@@ -235,6 +269,20 @@ const BouquetCreatorPage = () => {
         >
           <AddIcon /> <Typography>Add new product</Typography>
         </div>
+      </div>
+      <Typography align="right" variant="h4">
+        Bouquets total cost: {getTotalPrice().toFixed(2)} PLN
+      </Typography>
+      <div className={classes.addToCartButton}>
+        <Button
+          size="large"
+          variant="contained"
+          color="secondary"
+          style={{ minWidth: '20vw' }}
+          onClick={() => addBouquet()}
+        >
+          Add to the cart
+        </Button>
       </div>
     </>
   );

@@ -45,7 +45,7 @@ const Review: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
   const root = useSelector((root: RootState) => root);
-  const { items } = root.cart;
+  const { items, bouquets } = root.cart;
   const [isPlacingOrder, setIsPlacingOrder] = React.useState<boolean>(false);
   const addresses = [
     `${address.Street}`,
@@ -63,6 +63,21 @@ const Review: React.FC<Props> = ({
 
   const groupedById = _.groupBy(items, 'storeId');
   const isRegistered = useAuth() !== Roles.NONE;
+
+  const getBouquetItems = (storeId: string) => {
+    const index = bouquets.findIndex((bouquet) => bouquet.shopId == storeId);
+    console.log('index: ');
+    console.log(index);
+    if (index < 0) {
+      return [];
+    }
+    return [
+      bouquets[index].items.map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+      })),
+    ];
+  };
 
   const placeOrder = async () => {
     try {
@@ -93,6 +108,7 @@ const Review: React.FC<Props> = ({
             productId: product.productId,
             quantity: product.quantity,
           })),
+          creatorProductList: getBouquetItems(storeId),
         })),
         comments: '',
       };

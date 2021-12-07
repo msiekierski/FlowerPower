@@ -1,4 +1,4 @@
-import { CartProduct } from '../../common/types';
+import { CartBouquet, CartProduct } from '../../common/types';
 import { ActionType } from './action.types';
 
 interface RemoveItem {
@@ -30,10 +30,16 @@ interface ArbitraryValue {
   payload: { id: string; value: number };
 }
 
+interface AddBouquet {
+  type: ActionType.ADD_BOUQUET;
+  payload: CartBouquet;
+}
+
 export type Action =
   | RemoveItem
   | IncreaseQuanitity
   | DecreaseQuanitity
   | ClearCart
   | AddItem
-  | ArbitraryValue;
+  | ArbitraryValue
+  | AddBouquet;
