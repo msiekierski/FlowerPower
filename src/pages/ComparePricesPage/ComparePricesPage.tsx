@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     flex: '1 1 30%',
   },
   searchResult: {
-    flex: '1 1 70%',
+    flex: '1 1 100%',
   },
 }));
 
@@ -81,7 +81,7 @@ const ComparePricesPage = () => {
   }
   return (
     <div className={classes.mainContainer}>
-      <div className={classes.filters}>filters</div>
+      {/* <div className={classes.filters}>filters</div> */}
       <div className={classes.searchResult}>
         <Typography variant="h4" style={{ marginBottom: '20px' }}>
           Choose the best offer for{' '}
