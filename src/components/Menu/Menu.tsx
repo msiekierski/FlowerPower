@@ -30,13 +30,6 @@ const Menu = () => {
           </Link>
         );
       })}
-      {categories.slice(5).map((category, index) => {
-        return (
-          <Typography key={index} variant="h5" style={{ fontWeight: 'bold' }}>
-            {category}
-          </Typography>
-        );
-      })}
     </div>
   );
 };

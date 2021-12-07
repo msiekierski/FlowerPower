@@ -1,5 +1,6 @@
 import {
   Backdrop,
+  Button,
   CircularProgress,
   Container,
   Grid,
@@ -41,6 +42,7 @@ import { actionCreator } from '../../redux/shop';
 import { RootState } from '../../redux/root-reducer';
 import { GoogleMap, Marker } from 'react-google-maps';
 import MyMapComponent from '../../components/MyMapComponent/MyMapComponent';
+import { Link, useLocation } from 'react-router-dom';
 
 type FlowerShopPageParams = {
   shopName: string;
@@ -49,7 +51,7 @@ type FlowerShopPageParams = {
 
 const useStyles = makeStyles((theme) => ({
   headerContainer: {
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(1),
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'start',
@@ -139,6 +141,8 @@ const FlowerShopPage = () => {
 
   const { location } = root.user;
 
+  const pageLocation = useLocation();
+
   const classes = useStyles();
 
   const groupFilteredProducts = () => {
@@ -192,6 +196,25 @@ const FlowerShopPage = () => {
   }
   return (
     <>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          marginTop: '20px',
+        }}
+      >
+        <Link to={`${pageLocation.pathname}/creator`}>
+          <Button
+            size="large"
+            variant="contained"
+            color="secondary"
+            style={{ minWidth: '15vw' }}
+          >
+            Create bouquet
+          </Button>
+        </Link>
+      </div>
       <div className={classes.headerContainer}>
         <div className={classes.shopInfo}>
           <div className={classes.shopName}>
