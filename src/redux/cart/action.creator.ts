@@ -50,3 +50,18 @@ export const addBouquetToCart = (bouquet: CartBouquet) => {
     });
   };
 };
+
+export const setBouquetQuantity = (quantity: number, id: string) => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch({
+      type: ActionType.SET_BOUQUET_QUANTITY,
+      payload: { quantity, id },
+    });
+  };
+};
+
+export const removeBouquet = (id: string) => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch({ type: ActionType.REMOVE_BOUQUET, payload: id });
+  };
+};

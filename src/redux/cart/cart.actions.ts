@@ -35,6 +35,16 @@ interface AddBouquet {
   payload: CartBouquet;
 }
 
+interface SetBouquetQuantity {
+  type: ActionType.SET_BOUQUET_QUANTITY;
+  payload: { id: string; quantity: number };
+}
+
+interface RemoveBouquet {
+  type: ActionType.REMOVE_BOUQUET;
+  payload: string;
+}
+
 export type Action =
   | RemoveItem
   | IncreaseQuanitity
@@ -42,4 +52,6 @@ export type Action =
   | ClearCart
   | AddItem
   | ArbitraryValue
-  | AddBouquet;
+  | AddBouquet
+  | SetBouquetQuantity
+  | RemoveBouquet;

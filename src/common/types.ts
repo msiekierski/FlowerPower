@@ -194,7 +194,9 @@ export type CartItemAvailability = {
 };
 
 export type CartBouquet = {
+  bouquetId: string;
   shopId: string;
   shopName: string;
   items: Array<CartProduct>;
-}
+  quantity: number;
+};

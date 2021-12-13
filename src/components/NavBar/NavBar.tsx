@@ -146,10 +146,13 @@ const NavBar = () => {
   const [isLocationShown, setIsLocationShow] = useState<boolean>(false);
 
   const root = useSelector((root: RootState) => root);
-  const { items } = root.cart;
+  const { items, bouquets } = root.cart;
   const { location } = root.user;
   const totalQuantity = items
     .map((item) => item.quantity)
+    .reduce((acc, quantity) => acc + quantity, 0);
+  const totalBouquets = bouquets
+    .map((bouquet) => bouquet.quantity)
     .reduce((acc, quantity) => acc + quantity, 0);
 
   useEffect(() => {
@@ -164,7 +167,7 @@ const NavBar = () => {
       <AppBar ref={navRef} className={classes.appBar}>
         <Toolbar className={classes.navigation}>
           <Link to="/" className={classes.logo}>
-            <Logo style={{ maxWidth: '30vw' }}/>
+            <Logo style={{ maxWidth: '30vw' }} />
           </Link>
           <SearchBar
             isSearchFocused={isSearchFocused}
@@ -188,7 +191,11 @@ const NavBar = () => {
               </Badge>
             </Link>
             <Link to="/cart">
-              <Badge badgeContent={totalQuantity} showZero color="secondary">
+              <Badge
+                badgeContent={totalQuantity + totalBouquets}
+                showZero
+                color="secondary"
+              >
                 <ShoppingBasketOutlinedIcon fontSize="inherit" />
               </Badge>
             </Link>
@@ -249,7 +256,7 @@ const NavBar = () => {
               <MenuItem style={{ paddingTop: '10px' }}>
                 <Link to="/cart" onClick={() => setIsMenuOpen(false)}>
                   <Badge
-                    badgeContent={totalQuantity}
+                    badgeContent={totalQuantity + totalBouquets}
                     color="secondary"
                     showZero
                   >

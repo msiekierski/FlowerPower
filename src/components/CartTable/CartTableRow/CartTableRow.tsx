@@ -42,8 +42,14 @@ const CartTableRow: React.FC<Props> = ({ cartProduct }) => {
   const classes = useStyles();
 
   const dispatch = useDispatch();
-  const { removeItem, increaseQuantity, decreaseQuanitity, setArbitraryValue } =
-    bindActionCreators(actionCreators, dispatch);
+  const {
+    removeItem,
+    increaseQuantity,
+    decreaseQuanitity,
+    setArbitraryValue,
+    setBouquetQuantity,
+    removeBouquet,
+  } = bindActionCreators(actionCreators, dispatch);
 
   const getBouquetPrice = (bouquet: CartBouquet) => {
     let sum = 0;
@@ -51,7 +57,6 @@ const CartTableRow: React.FC<Props> = ({ cartProduct }) => {
     return sum;
   };
 
-  useEffect(() => {});
   if (Object.keys(cartProduct).includes('items')) {
     const bouquet = cartProduct as CartBouquet;
     return (
@@ -69,11 +74,18 @@ const CartTableRow: React.FC<Props> = ({ cartProduct }) => {
           </div>
         </TableCell>
         <TableCell align="center">
-          <Typography variant="h5">{getBouquetPrice(bouquet)} PLN</Typography>
+          <Typography variant="h5">
+            {(getBouquetPrice(bouquet) * bouquet.quantity).toFixed(2)} PLN
+          </Typography>
         </TableCell>
         <TableCell align="center">
           <div className={classes.quantity}>
-            <div className={classes.actionText} onClick={() => {}}>
+            <div
+              className={classes.actionText}
+              onClick={() =>
+                setBouquetQuantity(bouquet.quantity - 1, bouquet.bouquetId)
+              }
+            >
               <AiOutlineMinus size={35} />
             </div>
             <TextField
@@ -82,15 +94,20 @@ const CartTableRow: React.FC<Props> = ({ cartProduct }) => {
               inputProps={{
                 style: { textAlign: 'center' },
               }}
-              value={1}
-              // onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              //   const value = +event.target.value;
-              //   if (!(Number.isNaN(value) || value <= 0 || value > 1000)) {
-              //     setArbitraryValue(productId, value);
-              //   }
-              // }}
+              value={bouquet.quantity}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                const value = +event.target.value;
+                if (!(Number.isNaN(value) || value <= 0 || value > 1000)) {
+                  setBouquetQuantity(value, bouquet.bouquetId);
+                }
+              }}
             />
-            <div className={classes.actionText} onClick={() => {}}>
+            <div
+              className={classes.actionText}
+              onClick={() =>
+                setBouquetQuantity(bouquet.quantity + 1, bouquet.bouquetId)
+              }
+            >
               <AiOutlinePlus size={35} />
             </div>
           </div>

@@ -47,7 +47,7 @@ const reducer = (state: Cart = initialState, action: Action): Cart => {
     };
   }
   if (action.type === ActionType.CLEAR_CART) {
-    return { ...state, items: [] };
+    return { ...state, items: [], bouquets: [] };
   }
   if (action.type === ActionType.ADD_ITEM) {
     const { productId, storeName } = action.payload;
@@ -82,6 +82,40 @@ const reducer = (state: Cart = initialState, action: Action): Cart => {
   }
   if (action.type === ActionType.ADD_BOUQUET) {
     return { ...state, bouquets: [...state.bouquets, action.payload] };
+  }
+  if (action.type === ActionType.REMOVE_BOUQUET) {
+    return {
+      ...state,
+      bouquets: state.bouquets.filter(
+        (bouquet) => bouquet.bouquetId !== action.payload
+      ),
+    };
+  }
+  if (action.type === ActionType.SET_BOUQUET_QUANTITY) {
+    const index = state.bouquets.findIndex(
+      (bouquet) => bouquet.bouquetId === action.payload.id
+    );
+    if (index < 0) {
+      return state;
+    }
+    if (action.payload.quantity <= 0) {
+      return {
+        ...state,
+        bouquets: state.bouquets.filter(
+          (bouquet) => bouquet.bouquetId !== action.payload.id
+        ),
+      };
+    }
+    return {
+      ...state,
+      bouquets: state.bouquets.map((bouquet) => {
+        if (bouquet.bouquetId === action.payload.id) {
+          return { ...bouquet, quantity: action.payload.quantity };
+        } else {
+          return bouquet;
+        }
+      }),
+    };
   }
   return state;
 };

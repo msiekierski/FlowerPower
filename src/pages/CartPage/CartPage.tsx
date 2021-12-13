@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Alert } from '@mui/material';
-import { CartItemAvailability } from '../../common/types';
+import { CartBouquet, CartItemAvailability } from '../../common/types';
 
 const useStyles = makeStyles((theme) => ({
   iconItem: {
@@ -68,7 +68,20 @@ const CartPage = () => {
   const [errorMsg, setErrorMsg] = useState<Array<string>>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const cart = useSelector((state: RootState) => state.cart);
+
+  const getBouquetPrice = (bouquet: CartBouquet) => {
+    let sum = 0;
+    bouquet.items.forEach((item) => (sum += item.itemPrice * item.quantity));
+    return sum;
+  };
+
+  const itemsValue = cart.items
+    .map((item) => item.itemPrice * item.quantity)
+    .reduce((sum, item) => sum + item);
+  const bouquetsValue = cart.bouquets
+    .map((bouquet) => bouquet.quantity * getBouquetPrice(bouquet))
+    .reduce((sum, item) => sum + item);
 
   const history = useHistory();
 
@@ -76,7 +89,7 @@ const CartPage = () => {
     try {
       setIsLoading(true);
 
-      const reservationData = cartItems.map((product) => ({
+      const reservationData = cart.items.map((product) => ({
         shopId: product.storeId,
         productId: product.productId,
         quantity: product.quantity,
@@ -92,7 +105,7 @@ const CartPage = () => {
       let errData: Array<string> = [];
       if (notAvailableItems.length > 0) {
         notAvailableItems.forEach((item, index) => {
-          const cartItem = cartItems.find(
+          const cartItem = cart.items.find(
             (cartItem) =>
               cartItem.productId === item.productId &&
               cartItem.storeId === item.shopId
@@ -115,7 +128,7 @@ const CartPage = () => {
   return (
     <>
       <div className={classes.cartButtons}>
-        {cartItems.length > 0 && (
+        {cart.items.length > 0 && (
           <div className={classes.iconItem} onClick={() => clearCart()}>
             <Typography className={classes.iconLabel}>CLEAR CART</Typography>
             <FiTrash style={{ fontSize: '1.7rem' }} />
@@ -126,7 +139,7 @@ const CartPage = () => {
           <Typography className={classes.iconLabel}>RETURN</Typography>
         </div>
       </div>
-      {cartItems.length ? (
+      {cart.items.length ? (
         <>
           {errorMsg.length > 0 && (
             <Alert
@@ -143,12 +156,7 @@ const CartPage = () => {
           <CartTable />
           <div className={classes.cartFooter}>
             <Typography variant="h5" align="right">
-              <b>IN TOTAL: </b>{' '}
-              {cartItems
-                .map((item) => item.itemPrice * item.quantity)
-                .reduce((sum, item) => sum + item)
-                .toFixed(2)}{' '}
-              PLN
+              <b>IN TOTAL: </b> {(itemsValue + bouquetsValue).toFixed(2)} PLN
             </Typography>
 
             <Button

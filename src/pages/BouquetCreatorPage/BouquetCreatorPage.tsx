@@ -145,6 +145,7 @@ const BouquetCreatorPage = () => {
 
   const addBouquet = () => {
     addBouquetToCart({
+      bouquetId: Date.now().toString(),
       shopId: shop.shop.data.id,
       shopName: shop.shop.data.name,
       items: selectedItems.map((item, index) => ({
@@ -156,6 +157,7 @@ const BouquetCreatorPage = () => {
         itemPrice: item.price,
         quantity: quantity[index],
       })),
+      quantity: 1,
     });
     history.push('/cart');
   };
