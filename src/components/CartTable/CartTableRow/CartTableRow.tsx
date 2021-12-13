@@ -122,7 +122,7 @@ const CartTableRow: React.FC<Props> = ({ cartProduct }) => {
             className={classes.actionText}
             style={{ color: 'rgba(204, 77, 3, 0.9)' }}
             size={25}
-            onClick={() => {}}
+            onClick={() => setBouquetQuantity(0, bouquet.bouquetId)}
           />
         </TableCell>
       </TableRow>
