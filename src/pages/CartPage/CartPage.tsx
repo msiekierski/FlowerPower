@@ -76,12 +76,18 @@ const CartPage = () => {
     return sum;
   };
 
-  const itemsValue = cart.items
-    .map((item) => item.itemPrice * item.quantity)
-    .reduce((sum, item) => sum + item);
-  const bouquetsValue = cart.bouquets
-    .map((bouquet) => bouquet.quantity * getBouquetPrice(bouquet))
-    .reduce((sum, item) => sum + item);
+  const itemsValue =
+    cart.items.length === 0
+      ? 0
+      : cart.items
+          .map((item) => item.itemPrice * item.quantity)
+          .reduce((sum, item) => sum + item);
+  const bouquetsValue =
+    cart.bouquets.length === 0
+      ? 0
+      : cart.bouquets
+          .map((bouquet) => bouquet.quantity * getBouquetPrice(bouquet))
+          .reduce((sum, item) => sum + item);
 
   const history = useHistory();
 
@@ -128,7 +134,7 @@ const CartPage = () => {
   return (
     <>
       <div className={classes.cartButtons}>
-        {cart.items.length > 0 && (
+        {(cart.items.length > 0 || cart.bouquets.length > 0) && (
           <div className={classes.iconItem} onClick={() => clearCart()}>
             <Typography className={classes.iconLabel}>CLEAR CART</Typography>
             <FiTrash style={{ fontSize: '1.7rem' }} />
@@ -139,7 +145,7 @@ const CartPage = () => {
           <Typography className={classes.iconLabel}>RETURN</Typography>
         </div>
       </div>
-      {cart.items.length ? (
+      {(cart.items.length > 0 || cart.bouquets.length > 0) ? (
         <>
           {errorMsg.length > 0 && (
             <Alert
