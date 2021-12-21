@@ -41,10 +41,13 @@ const LocationInput = () => {
 
   const onPlaceSubmit = () => {
     if (selectedPlace) {
+      let index = selectedPlace.address_components.findIndex((comp: any) =>
+        comp.types.includes('locality')
+      );
       setLocation({
         lat: selectedPlace.geometry?.location?.lat(),
         long: selectedPlace.geometry?.location?.lng(),
-        city: selectedPlace.address_components[2].long_name,
+        city: selectedPlace.address_components[index].long_name,
         formattedAddress: selectedPlace.formatted_address,
       });
     }

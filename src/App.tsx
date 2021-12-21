@@ -49,9 +49,11 @@ const App = () => {
   const { setLocation } = bindActionCreators(actionCreators, useDispatch());
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      fetchLocation(position.coords.latitude, position.coords.longitude);
-    });
+    if (location.lat === 0 && location.long === 0) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        fetchLocation(position.coords.latitude, position.coords.longitude);
+      });
+    }
   }, []);
 
   const fetchLocation = async (lat: number, long: number) => {
@@ -59,7 +61,6 @@ const App = () => {
       const { data } = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=AIzaSyBqtUDpLTnFrLwf2HJVzMYxHe-w2WE6EFA`
       );
-      console.log(data.results);
       setLocation({
         lat: lat,
         long: long,
