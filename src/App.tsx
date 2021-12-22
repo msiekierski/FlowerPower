@@ -61,10 +61,13 @@ const App = () => {
       const { data } = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=AIzaSyBqtUDpLTnFrLwf2HJVzMYxHe-w2WE6EFA`
       );
+      let index = data.results[0].address_components.findIndex((comp: any) =>
+        comp.types.includes('locality')
+      );
       setLocation({
         lat: lat,
         long: long,
-        city: data.results[0].address_components[4].short_name,
+        city: data.results[0].address_components[index].short_name,
         formattedAddress: data.results[0].formatted_address,
       });
     } catch (e) {}
